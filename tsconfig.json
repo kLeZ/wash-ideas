@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"noImplicitAny": true,
+		"target": "es5",
+		"sourceMap": true,
+		"jsx": "react",
+		"allowSyntheticDefaultImports": true,
+		"module": "ESNext",
+		"moduleResolution": "node"
+	},
+	"exclude": [
+		"node_modules"
+	]
+}
