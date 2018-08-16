@@ -34,15 +34,23 @@
 	},
 	"homepage": "https://kLeZ.github.io/wash-ideas",
 	"dependencies": {
+		"@material-ui/core": "^1.5.0",
+		"@material-ui/icons": "^2.0.2",
+		"file-loader": "^1.1.11",
 		"react": "^16.4.2",
-		"react-dom": "^16.4.2"
+		"react-dom": "^16.4.2",
+		"typeface-roboto": "0.0.54"
 	},
 	"devDependencies": {
 		"@types/enzyme": "^3.1.13",
 		"@types/enzyme-adapter-react-16": "^1.0.3",
+		"@types/es6-collections": "^0.5.31",
+		"@types/es6-promise": "^3.3.0",
 		"@types/jest": "^23.3.1",
+		"@types/material-ui": "^0.21.5",
 		"@types/react": "^16.4.11",
 		"@types/react-dom": "^16.0.7",
+		"@types/react-tap-event-plugin": "0.0.30",
 		"awesome-typescript-loader": "^5.2.0",
 		"css-loader": "^1.0.0",
 		"enzyme": "^3.4.2",

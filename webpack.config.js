@@ -18,11 +18,17 @@ module.exports = {
 			test: /\.(ts|tsx)$/,
 			loader: "awesome-typescript-loader"
 		}, {
+			test: /\.css$/,
+			use: ['style-loader', 'css-loader']
+		}, {
 			test: /\.scss$/,
 			use: ExtractTextPlugin.extract({
 				fallback: 'style-loader',
 				use: ['css-loader', 'sass-loader']
 			})
+		}, {
+			test: /\.(woff|woff2|eot|ttf|svg)$/,
+			loader: 'file-loader?name=fonts/[name].[ext]'
 		}]
 	},
 	plugins: [
