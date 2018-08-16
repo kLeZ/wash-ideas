@@ -32,7 +32,7 @@
 	"bugs": {
 		"url": "https://github.com/kLeZ/wash-ideas/issues"
 	},
-	"homepage": "https://github.com/kLeZ/wash-ideas#readme",
+	"homepage": "https://kLeZ.github.io/wash-ideas",
 	"dependencies": {
 		"react": "^16.4.2",
 		"react-dom": "^16.4.2"
