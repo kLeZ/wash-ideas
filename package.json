@@ -1,0 +1,26 @@
+{
+	"name": "wash-ideas",
+	"version": "1.0.0",
+	"description": "Brainstorming presentation dashboard",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kLeZ/wash-ideas.git"
+	},
+	"keywords": [
+		"brainstorm",
+		"dashboard",
+		"gui",
+		"projects",
+		"ideas"
+	],
+	"author": "kLeZ & Morgoth",
+	"license": "GPL-3.0",
+	"bugs": {
+		"url": "https://github.com/kLeZ/wash-ideas/issues"
+	},
+	"homepage": "https://github.com/kLeZ/wash-ideas#readme"
+}
