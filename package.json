@@ -36,7 +36,6 @@
 	"dependencies": {
 		"@material-ui/core": "^1.5.0",
 		"@material-ui/icons": "^2.0.2",
-		"file-loader": "^1.1.11",
 		"react": "^16.4.2",
 		"react-dom": "^16.4.2",
 		"typeface-roboto": "0.0.54"
@@ -56,6 +55,7 @@
 		"enzyme": "^3.4.2",
 		"enzyme-adapter-react-16": "^1.2.0",
 		"extract-text-webpack-plugin": "^4.0.0-beta.0",
+		"file-loader": "^1.1.11",
 		"jest": "^23.5.0",
 		"node-sass": "^4.9.3",
 		"rimraf": "^2.6.2",
