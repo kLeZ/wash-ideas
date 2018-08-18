@@ -69,6 +69,7 @@ Supported commands are (executed through `npm run <cmd>`):
 | **test**  | we love tests. Having them as unit tests or interface tests or whatever, tests and coverage are the most important part for us to have in our project                                                                 |
 | **build** | building is done by the de facto standard tool webpack, that keeps track of all the typescript and sass magic transpiling them all in single js and css files in the _dist_ folder (as all serious project should do) |
 | **start** | this command brings to us a simple http web server for rapid development, something useful that already comes with the nodejs package, without the need to install other obscure pieces of software                   |
+| **watch** | this command watches for changes in the `src/` folder, triggering a rebuild (only the `build` part without tests and linting) on the entire sources                                                                   |
 
 We'll never ever try to tell webpack or other tools in our toolchain to do something they're not supposed to do by the upstream developers: if we find ourselves lacking some tool (like watch or live reload), we will search the right piece for the job, instead of forcing a tool we already have to do something it cannot easily do.  
 

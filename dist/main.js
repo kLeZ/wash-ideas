@@ -30336,7 +30336,7 @@ var App = /** @class */ (function (_super) {
             react__WEBPACK_IMPORTED_MODULE_5__["createElement"](_material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_1___default.a, null),
             react__WEBPACK_IMPORTED_MODULE_5__["createElement"](_material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_0___default.a, { position: "static", color: "default" },
                 react__WEBPACK_IMPORTED_MODULE_5__["createElement"](_material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_3___default.a, null,
-                    react__WEBPACK_IMPORTED_MODULE_5__["createElement"](_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default.a, { variant: "title", color: "inherit" }, "Wash Ideas")))));
+                    react__WEBPACK_IMPORTED_MODULE_5__["createElement"](_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default.a, { variant: "title", color: "inherit" }, "Wash Ideas - Antani.")))));
     };
     return App;
 }(react__WEBPACK_IMPORTED_MODULE_5__["Component"]));

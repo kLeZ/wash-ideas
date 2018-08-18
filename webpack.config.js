@@ -1,5 +1,6 @@
 var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var Visualizer = require('webpack-visualizer-plugin');
 
 module.exports = {
 	entry: {
@@ -35,5 +36,6 @@ module.exports = {
 		new ExtractTextPlugin({
 			filename: 'main.css'
 		}),
+		new Visualizer()
 	]
 };

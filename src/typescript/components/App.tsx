@@ -14,7 +14,7 @@ class App extends React.Component<any, any> {
 				<AppBar position="static" color="default">
 					<Toolbar>
 						<Typography variant="title" color="inherit">
-							Wash Ideas
+							Wash Ideas - Antani.
 						</Typography>
 					</Toolbar>
 				</AppBar>
