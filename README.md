@@ -44,6 +44,7 @@ If you are a developer and you want to contribute to the code, you need to know 
 ### Getting started
 
 Since this is a nodejs project, getting started is very similar as in other projects:
+
 1. `git clone <this repo>`
 2. `npm i`
 3. DONE
@@ -60,7 +61,6 @@ Ensure to have these two software with exactly these versions to avoid random er
 
 The chosen toolchain is based on the npm executable, so you'll likely be using that command whenever you need to do "dev" things.  
 Supported commands are (executed through `npm run <cmd>`):
-
 
 | Command   | Description                                                                                                                                                                                                           |
 | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -96,3 +96,16 @@ Manual testing is done in the usual way (trial and error on the Local Instance).
 Even if the used libraries can be read from the package.json, we believe in clarity and simplicity.  
 
 Wash Ideas is being built with &hearts; through the powerful [React](https://reactjs.org/) and [Material UI](https://material-ui.com/) libraries.
+
+### VSCode extensions (suggested)
+
+* [TypeScript Extension Pack](https://marketplace.visualstudio.com/items?itemName=loiane.ts-extension-pack)
+* [Sass](https://marketplace.visualstudio.com/items?itemName=robinbentley.sass-indented)
+* [Node.js Extension Pack](https://marketplace.visualstudio.com/items?itemName=waderyan.nodejs-extension-pack)
+* [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
+* [markdownlint](https://marketplace.visualstudio.com/items?itemName=davidanson.vscode-markdownlint)
+* [Markdown Shortcuts](https://marketplace.visualstudio.com/items?itemName=mdickin.markdown-shortcuts)
+* [Git Extension Pack](https://marketplace.visualstudio.com/items?itemName=donjayamanne.git-extension-pack)
+* [Code Runner](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner)
+* [Beautify](https://marketplace.visualstudio.com/items?itemName=hookyqr.beautify)
+* [Debugger for Firefox](https://marketplace.visualstudio.com/items?itemName=hbenl.vscode-firefox-debug)

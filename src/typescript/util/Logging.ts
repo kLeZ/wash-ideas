@@ -1,0 +1,8 @@
+import { Category, CategoryConfiguration, CategoryServiceFactory, LogLevel } from "typescript-logging";
+
+// Optionally change default settings, in this example set default logging to Info.
+// Without changing configuration, categories will log to Error.
+CategoryServiceFactory.setDefaultConfiguration(new CategoryConfiguration(LogLevel.Trace));
+
+// Create categories, they will autoregister themselves, one category without parent (root) and a child category.
+export const catRepository = new Category("repository");
