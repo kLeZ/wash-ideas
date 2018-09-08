@@ -6,12 +6,15 @@
 		"jsx": "react",
 		"allowSyntheticDefaultImports": true,
 		"module": "commonjs",
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
 		"types": [
 			"node",
 			"filesystem",
 			"react",
 			"jest",
-			"browserfs"
+			"browserfs",
+			"reflect-metadata"
 		],
 		"typeRoots": [
 			"node_modules/@types",
