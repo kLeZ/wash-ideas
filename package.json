@@ -15,7 +15,9 @@
 		"build": "webpack --mode $npm_package_config_webpackenv",
 		"prestart": "npm run build",
 		"start": "http-server -c-1",
-		"watch": "watch 'webpack --mode $npm_package_config_webpackenv' src/"
+		"watch": "watch 'webpack --mode $npm_package_config_webpackenv' src/",
+		"dist-track": "git update-index --no-skip-worktree dist/*.*",
+		"dist-untrack": "git update-index --skip-worktree dist/*.*"
 	},
 	"repository": {
 		"type": "git",
@@ -61,6 +63,7 @@
 		"extract-text-webpack-plugin": "^4.0.0-beta.0",
 		"file-loader": "^1.1.11",
 		"http-server": "^0.11.1",
+		"inversify": "^4.13.0",
 		"jest": "^23.5.0",
 		"node-sass": "^4.9.3",
 		"rimraf": "^2.6.2",
