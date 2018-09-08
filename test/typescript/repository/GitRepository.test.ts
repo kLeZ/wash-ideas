@@ -18,60 +18,59 @@
 
 import { IContext } from "../../../src/typescript/models/IContext";
 import { IPersistible } from "../../../src/typescript/models/IPersistible";
+import { IRepositoryConfiguration } from "../../../src/typescript/models/IRepositoryConfiguration";
 import { GitRepository } from "../../../src/typescript/repository/GitRepository";
+import { container } from "../ioc/inversify.config";
 import { IGitRepositoryConfiguration } from "./../../../src/typescript/models/IGitRepositoryConfiguration";
+import { Type } from "./RepositoriesTypes";
 
-it("clone branch data of wash-ideas repository without crash", async () => {
-	const gitConfig: IGitRepositoryConfiguration = {
-		type: "git",
-		dir: "wash-ideas",
-		branch: "data",
-		url: "https://github.com/kLeZ/wash-ideas",
-		oauth2format: "github",
-		token: "",
-		fsconf: { fs: "InMemory", options: {} }
-	};
-	const context: IContext = {
-		user: {
-			name: "Alessandro Accardo",
-			email: "julius8774@gmail.com"
-		},
-		configuration: gitConfig
-	};
+// TODO: add description
+describe("", () => {
+	beforeEach(() => {
+		container.snapshot();
+	});
 
-	const obj: IPersistible = {
-		title: `test_${new Date().toISOString()}`,
-		encoding: "utf-8"
-	};
+	afterEach(() => {
+		container.restore();
+	});
 
-	const repo = new GitRepository<IPersistible>();
-	repo.init(context);
-	await repo.open();
-});
-it("remove entire repository folder without crash", async () => {
-	const gitConfig: IGitRepositoryConfiguration = {
-		type: "git",
-		dir: "wash-ideas",
-		branch: "data",
-		url: "https://github.com/kLeZ/wash-ideas",
-		oauth2format: "github",
-		token: "",
-		fsconf: { fs: "InMemory", options: {} }
-	};
-	const context: IContext = {
-		user: {
-			name: "Alessandro Accardo",
-			email: "julius8774@gmail.com"
-		},
-		configuration: gitConfig
-	};
+	it("clone branch data of wash-ideas repository without crash", async () => {
+		const config = container.get<IRepositoryConfiguration>(Type.GITHUB);
+		const context: IContext = {
+			user: {
+				name: "Alessandro Accardo",
+				email: "julius8774@gmail.com"
+			},
+			configuration: config
+		};
 
-	const obj: IPersistible = {
-		title: `test_${new Date().toISOString()}`,
-		encoding: "utf-8"
-	};
+		const obj: IPersistible = {
+			title: `test_${new Date().toISOString()}`,
+			encoding: "utf-8"
+		};
 
-	const repo = new GitRepository<IPersistible>();
-	repo.init(context);
-	await repo.close();
+		const repo = new GitRepository<IPersistible>();
+		repo.init(context);
+		await repo.open();
+	});
+
+	it("remove entire repository folder without crash", async () => {
+		const config = container.get<IRepositoryConfiguration>(Type.GITHUB);
+		const context: IContext = {
+			user: {
+				name: "Alessandro Accardo",
+				email: "julius8774@gmail.com"
+			},
+			configuration: config
+		};
+
+		const obj: IPersistible = {
+			title: `test_${new Date().toISOString()}`,
+			encoding: "utf-8"
+		};
+
+		const repo = new GitRepository<IPersistible>();
+		repo.init(context);
+		await repo.close();
+	});
 });
