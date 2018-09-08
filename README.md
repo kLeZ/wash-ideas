@@ -26,13 +26,13 @@ This repository acts as the project repository AND the fully working instance of
 
 ![GitHub package version](https://img.shields.io/github/package-json/v/kLeZ/wash-ideas.svg)
 [![GitHub license](https://img.shields.io/github/license/kLeZ/wash-ideas.svg)](https://github.com/kLeZ/wash-ideas/blob/master/LICENSE)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square)](https://github.com/kLeZ/wash-ideas/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/kLeZ/wash-ideas/graphs/commit-activity)
 [![GitHub contributors](https://img.shields.io/github/contributors/kLeZ/wash-ideas.svg)](https://github.com/kLeZ/wash-ideas/graphs/contributors/)
 [![GitHub issues](https://img.shields.io/github/issues/kLeZ/wash-ideas.svg)](https://GitHub.com/kLeZ/wash-ideas/issues/)
 [![GitHub issues-closed](https://img.shields.io/github/issues-closed/kLeZ/wash-ideas.svg)](https://GitHub.com/kLeZ/wash-ideas/issues?q=is%3Aissue+is%3Aclosed)
 [![Build Status](https://travis-ci.org/kLeZ/wash-ideas.svg?branch=master)](https://travis-ci.org/kLeZ/wash-ideas)
 [![Coverage Status](https://coveralls.io/repos/github/kLeZ/wash-ideas/badge.svg?branch=master)](https://coveralls.io/github/kLeZ/wash-ideas?branch=master)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 ## See it in action
 
