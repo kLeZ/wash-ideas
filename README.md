@@ -1,6 +1,38 @@
+<!---
+ Copyright (C) 2018 Alessandro Accardo a.k.a. kLeZ & Fabio Scotto di Santolo a.k.a. Plague
+ 
+ This file is part of Wash Ideas.
+ 
+ Wash Ideas is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ Wash Ideas is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
+ 
+-->
+
 # Wash Ideas
 
+This project aims to be the eagle-eye of a single graph of projects and ideas, categorized and ordered by some useful weights and enriched with some details.  
+
 This repository acts as the project repository AND the fully working instance of this piece of software (data comprised).
+
+![GitHub package version](https://img.shields.io/github/package-json/v/kLeZ/wash-ideas.svg)
+[![GitHub license](https://img.shields.io/github/license/kLeZ/wash-ideas.svg)](https://github.com/kLeZ/wash-ideas/blob/master/LICENSE)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/kLeZ/wash-ideas/graphs/commit-activity)
+[![GitHub contributors](https://img.shields.io/github/contributors/kLeZ/wash-ideas.svg)](https://github.com/kLeZ/wash-ideas/graphs/contributors/)
+[![GitHub issues](https://img.shields.io/github/issues/kLeZ/wash-ideas.svg)](https://GitHub.com/kLeZ/wash-ideas/issues/)
+[![GitHub issues-closed](https://img.shields.io/github/issues-closed/kLeZ/wash-ideas.svg)](https://GitHub.com/kLeZ/wash-ideas/issues?q=is%3Aissue+is%3Aclosed)
+[![Build Status](https://travis-ci.org/kLeZ/wash-ideas.svg?branch=master)](https://travis-ci.org/kLeZ/wash-ideas)
+[![Coverage Status](https://coveralls.io/repos/github/kLeZ/wash-ideas/badge.svg?branch=master)](https://coveralls.io/github/kLeZ/wash-ideas?branch=master)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 ## See it in action
 
@@ -44,6 +76,7 @@ If you are a developer and you want to contribute to the code, you need to know 
 ### Getting started
 
 Since this is a nodejs project, getting started is very similar as in other projects:
+
 1. `git clone <this repo>`
 2. `npm i`
 3. DONE
@@ -60,7 +93,6 @@ Ensure to have these two software with exactly these versions to avoid random er
 
 The chosen toolchain is based on the npm executable, so you'll likely be using that command whenever you need to do "dev" things.  
 Supported commands are (executed through `npm run <cmd>`):
-
 
 | Command   | Description                                                                                                                                                                                                           |
 | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -96,3 +128,18 @@ Manual testing is done in the usual way (trial and error on the Local Instance).
 Even if the used libraries can be read from the package.json, we believe in clarity and simplicity.  
 
 Wash Ideas is being built with &hearts; through the powerful [React](https://reactjs.org/) and [Material UI](https://material-ui.com/) libraries.
+
+### VSCode extensions (suggested)
+
+* [TypeScript Extension Pack](https://marketplace.visualstudio.com/items?itemName=loiane.ts-extension-pack)
+* [Sass](https://marketplace.visualstudio.com/items?itemName=robinbentley.sass-indented)
+* [Node.js Extension Pack](https://marketplace.visualstudio.com/items?itemName=waderyan.nodejs-extension-pack)
+* [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
+* [markdownlint](https://marketplace.visualstudio.com/items?itemName=davidanson.vscode-markdownlint)
+* [Markdown Shortcuts](https://marketplace.visualstudio.com/items?itemName=mdickin.markdown-shortcuts)
+* [Git Extension Pack](https://marketplace.visualstudio.com/items?itemName=donjayamanne.git-extension-pack)
+* [Code Runner](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner)
+* [Beautify](https://marketplace.visualstudio.com/items?itemName=hookyqr.beautify)
+* [Debugger for Firefox](https://marketplace.visualstudio.com/items?itemName=hbenl.vscode-firefox-debug)
+* [EditorConfig](https://marketplace.visualstudio.com/items?itemName=editorconfig.editorconfig)
+* [Licenser](https://marketplace.visualstudio.com/items?itemName=ymotongpoo.licenser)

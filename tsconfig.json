@@ -1,14 +1,25 @@
 {
 	"compilerOptions": {
 		"noImplicitAny": true,
-		"target": "es5",
+		"target": "es6",
 		"sourceMap": true,
 		"jsx": "react",
 		"allowSyntheticDefaultImports": true,
-		"module": "ESNext",
-		"moduleResolution": "node"
-	},
-	"exclude": [
-		"node_modules"
-	]
+		"module": "commonjs",
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"types": [
+			"node",
+			"filesystem",
+			"react",
+			"jest",
+			"browserfs",
+			"reflect-metadata"
+		],
+		"typeRoots": [
+			"node_modules/@types",
+			"node_modules/@webassemblyjs"
+		],
+		"lib": ["dom", "es6"],
+	}
 }

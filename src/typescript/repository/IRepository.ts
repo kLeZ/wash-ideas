@@ -16,32 +16,19 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import {
-	createMuiTheme,
-	MuiThemeProvider,
-	Theme
-} from "@material-ui/core/styles";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import * as React from "react";
+import { IPersistible } from "../models/IPersistible";
+import { IContext } from "./../models/IContext";
+import { IRead } from "./IRead";
+import { IWrite } from "./IWrite";
 
-class App extends React.Component<any, any> {
-	public render() {
-		const theme: Theme = createMuiTheme();
-		return (
-			<MuiThemeProvider theme={theme}>
-				<CssBaseline />
-				<AppBar position="static" color="default">
-					<Toolbar>
-						<Typography variant="title" color="inherit">
-							Wash Ideas - Antani.
-						</Typography>
-					</Toolbar>
-				</AppBar>
-			</MuiThemeProvider>
-		);
-	}
+// https://hackernoon.com/generic-repository-with-typescript-and-node-js-731c10a1b98e
+// https://medium.freecodecamp.org/beginner-s-guide-to-react-router-53094349669
+
+export interface IRepository<T extends IPersistible>
+	extends IWrite<T>,
+		IRead<T> {
+	context: IContext;
+	init(context: IContext): void;
+	open(): Promise<void>;
+	close(): Promise<void>;
 }
-export default App;

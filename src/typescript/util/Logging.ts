@@ -16,32 +16,18 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import {
-	createMuiTheme,
-	MuiThemeProvider,
-	Theme
-} from "@material-ui/core/styles";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import * as React from "react";
+	Category,
+	CategoryConfiguration,
+	CategoryServiceFactory,
+	LogLevel
+} from "typescript-logging";
 
-class App extends React.Component<any, any> {
-	public render() {
-		const theme: Theme = createMuiTheme();
-		return (
-			<MuiThemeProvider theme={theme}>
-				<CssBaseline />
-				<AppBar position="static" color="default">
-					<Toolbar>
-						<Typography variant="title" color="inherit">
-							Wash Ideas - Antani.
-						</Typography>
-					</Toolbar>
-				</AppBar>
-			</MuiThemeProvider>
-		);
-	}
-}
-export default App;
+// Optionally change default settings, in this example set default logging to Info.
+// Without changing configuration, categories will log to Error.
+CategoryServiceFactory.setDefaultConfiguration(
+	new CategoryConfiguration(LogLevel.Trace)
+);
+
+// Create categories, they will autoregister themselves, one category without parent (root) and a child category.
+export const catRepository = new Category("repository");
