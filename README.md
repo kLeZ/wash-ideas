@@ -1,4 +1,26 @@
+<!---
+ Copyright (C) 2018 Alessandro Accardo a.k.a. kLeZ & Fabio Scotto di Santolo a.k.a. Plague
+ 
+ This file is part of Wash Ideas.
+ 
+ Wash Ideas is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ Wash Ideas is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
+ 
+-->
+
 # Wash Ideas
+
+This project aims to be the eagle-eye of a single graph of projects and ideas, categorized and ordered by some useful weights and enriched with some details.  
 
 This repository acts as the project repository AND the fully working instance of this piece of software (data comprised).
 
@@ -109,4 +131,5 @@ Wash Ideas is being built with &hearts; through the powerful [React](https://rea
 * [Code Runner](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner)
 * [Beautify](https://marketplace.visualstudio.com/items?itemName=hookyqr.beautify)
 * [Debugger for Firefox](https://marketplace.visualstudio.com/items?itemName=hbenl.vscode-firefox-debug)
-* [EditorConfig](https://editorconfig.org/)
+* [EditorConfig](https://marketplace.visualstudio.com/items?itemName=editorconfig.editorconfig)
+* [Licenser](https://marketplace.visualstudio.com/items?itemName=ymotongpoo.licenser)
