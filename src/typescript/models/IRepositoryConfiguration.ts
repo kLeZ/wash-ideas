@@ -1,3 +1,3 @@
 export interface IRepositoryConfiguration {
-	type: string;
+	type: "git";
 }

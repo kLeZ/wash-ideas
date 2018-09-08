@@ -8,19 +8,15 @@ import { IPersistible } from "../models/IPersistible";
 import { catRepository } from "../util/Logging";
 import { IRepository } from "./IRepository";
 
-export abstract class GitRepository<T extends IPersistible>
+export class GitRepository<T extends IPersistible>
 	implements IRepository<T> {
 	public context: IContext;
 	protected fs: FSModule;
 	protected pfs: any;
-	protected dir: string;
 	protected config: IGitRepositoryConfiguration;
 
 	constructor() {
 		const self = this;
-
-		self.dir = "wash-ideas";
-		catRepository.debug(self.dir);
 	}
 	public init(context: IContext): void {
 		this.context = context;
@@ -29,7 +25,7 @@ export abstract class GitRepository<T extends IPersistible>
 	public open(): Promise<void> {
 		const self = this;
 		return new Promise<void>((resolve, reject) => {
-			BrowserFS.configure({ fs: "IndexedDB", options: {} }, err => {
+			BrowserFS.configure(self.config.fsconf, err => {
 				if (err) {
 					catRepository.error(err.message, err);
 					reject(err);
@@ -47,7 +43,7 @@ export abstract class GitRepository<T extends IPersistible>
 	public close(): Promise<void> {
 		const self = this;
 		return new Promise<void>((resolve, reject) => {
-			self.fs.getRootFS().rmdir(self.dir, err => {
+			self.fs.getRootFS().rmdir(self.config.dir, err => {
 				if (err) {
 					catRepository.error(err.message, err);
 					reject(err);
@@ -60,13 +56,13 @@ export abstract class GitRepository<T extends IPersistible>
 		const self = this;
 		return new Promise<boolean>(async (resolve, reject) => {
 			await self.pfs.writeFile(
-				`${self.dir}/${item.title}.json`,
+				`${self.config.dir}/${item.title}.json`,
 				JSON.stringify(item),
 				item.encoding
 			);
-			await git.add({ dir: self.dir, filepath: `${item.title}.json` });
+			await git.add({ dir: self.config.dir, filepath: `${item.title}.json` });
 			const sha = await git.commit({
-				dir: self.dir,
+				dir: self.config.dir,
 				message: `Added new ${item.constructor.name}: ${
 					item.title
 				}.json`,
@@ -99,12 +95,12 @@ export abstract class GitRepository<T extends IPersistible>
 		const self = this;
 		return new Promise<boolean>(async (resolve, reject) => {
 			await git.pull({
-				dir: self.dir,
+				dir: self.config.dir,
 				oauth2format: self.config.oauth2format,
 				token: self.config.token
 			});
 			const response = await git.push({
-				dir: self.dir,
+				dir: self.config.dir,
 				oauth2format: self.config.oauth2format,
 				token: self.config.token
 			});

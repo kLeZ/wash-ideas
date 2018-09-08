@@ -5,4 +5,6 @@ export interface IGitRepositoryConfiguration extends IRepositoryConfiguration {
 	depth?: number;
 	oauth2format: "github" | "bitbucket" | "gitlab";
 	token: string;
+	dir: string;
+	fsconf: BrowserFS.FileSystemConfiguration;
 }
