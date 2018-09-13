@@ -143,3 +143,5 @@ Wash Ideas is being built with &hearts; through the powerful [React](https://rea
 * [Debugger for Firefox](https://marketplace.visualstudio.com/items?itemName=hbenl.vscode-firefox-debug)
 * [EditorConfig](https://marketplace.visualstudio.com/items?itemName=editorconfig.editorconfig)
 * [Licenser](https://marketplace.visualstudio.com/items?itemName=ymotongpoo.licenser)
+* [Jest](https://marketplace.visualstudio.com/items?itemName=orta.vscode-jest)
+* [Jest Runner](https://marketplace.visualstudio.com/items?itemName=firsttris.vscode-jest-runner)
