@@ -65,7 +65,7 @@ module.exports = {
 	plugins: [
 		new webpack.BannerPlugin({
 			banner: function () {
-				return fs.readFileSync(path.resolve(__dirname, 'COPYING'), 'utf-8');
+				return fs.readFileSync(path.resolve(__dirname, 'BANNER'), 'utf-8');
 			}
 		}),
 		new webpack.ProvidePlugin({
