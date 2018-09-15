@@ -17,10 +17,12 @@
 //
 
 import { Container } from "inversify";
+import { IPersistible } from "../../../src/typescript/models/IPersistible";
 import { IRepositoryConfiguration } from "../../../src/typescript/models/IRepositoryConfiguration";
+import { IRepository } from "../../../src/typescript/repository/IRepository";
 import { Type } from "../repository/RepositoriesTypes";
-import { GitHubRepositoryConfigurationMock } from "../repository/RepositoryConfigurationMock";
+import { GitHubRepositoryMock } from "../repository/RepositoryConfigurationMock";
 
 const container = new Container();
-container.bind<IRepositoryConfiguration>(Type.GITHUB).to(GitHubRepositoryConfigurationMock);
+container.bind<IRepository<IPersistible>>(Type.GITHUB).to(GitHubRepositoryMock);
 export { container };

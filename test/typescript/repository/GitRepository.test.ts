@@ -20,12 +20,12 @@ import { IContext } from "../../../src/typescript/models/IContext";
 import { IPersistible } from "../../../src/typescript/models/IPersistible";
 import { IRepositoryConfiguration } from "../../../src/typescript/models/IRepositoryConfiguration";
 import { GitRepository } from "../../../src/typescript/repository/GitRepository";
+import { IRepository } from "../../../src/typescript/repository/IRepository";
 import { container } from "../ioc/inversify.config";
 import { IGitRepositoryConfiguration } from "./../../../src/typescript/models/IGitRepositoryConfiguration";
 import { Type } from "./RepositoriesTypes";
 
-// TODO: add description
-describe("", () => {
+describe("Open and close repository test", () => {
 	beforeEach(() => {
 		container.snapshot();
 	});
@@ -35,42 +35,12 @@ describe("", () => {
 	});
 
 	it("clone branch data of wash-ideas repository without crash", async () => {
-		const config = container.get<IRepositoryConfiguration>(Type.GITHUB);
-		const context: IContext = {
-			user: {
-				name: "Alessandro Accardo",
-				email: "julius8774@gmail.com"
-			},
-			configuration: config
-		};
-
-		const obj: IPersistible = {
-			title: `test_${new Date().toISOString()}`,
-			encoding: "utf-8"
-		};
-
-		const repo = new GitRepository<IPersistible>();
-		repo.init(context);
+		const repo = container.get<IRepository<IPersistible>>(Type.GITHUB);
 		await repo.open();
 	});
 
-	it("remove entire repository folder without crash", async () => {
-		const config = container.get<IRepositoryConfiguration>(Type.GITHUB);
-		const context: IContext = {
-			user: {
-				name: "Alessandro Accardo",
-				email: "julius8774@gmail.com"
-			},
-			configuration: config
-		};
-
-		const obj: IPersistible = {
-			title: `test_${new Date().toISOString()}`,
-			encoding: "utf-8"
-		};
-
-		const repo = new GitRepository<IPersistible>();
-		repo.init(context);
+	xit("remove entire repository folder without crash", async () => {
+		const repo = container.get<IRepository<IPersistible>>(Type.GITHUB);
 		await repo.close();
 	});
 });
