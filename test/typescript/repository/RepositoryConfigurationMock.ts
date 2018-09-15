@@ -26,13 +26,13 @@ import { container } from "../ioc/inversify.config";
 import { Type } from "./RepositoriesTypes";
 
 class GitHubRepositoryConfigurationMock implements IGitRepositoryConfiguration {
-	public type: "git";
-	public dir: "wash-ideas";
-	public branch: "data";
-	public url: "https://github.com/kLeZ/wash-ideas";
-	public oauth2format: "github";
-	public token: "";
-	public fsconf: { fs: "InMemory"; options: {} };
+	public type: "git" = "git";
+	public dir: string = "wash-ideas";
+	public branch: string = "data";
+	public url: string = "https://github.com/kLeZ/wash-ideas";
+	public oauth2format: "github" | "bitbucket" | "gitlab" = "github";
+	public token: string = "";
+	public fsconf = { fs: "InMemory", options: {} };
 }
 
 // tslint:disable-next-line:max-classes-per-file

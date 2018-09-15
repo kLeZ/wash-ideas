@@ -36,6 +36,7 @@ describe("Open and close repository test", () => {
 
 	it("clone branch data of wash-ideas repository without crash", async () => {
 		const repo = container.get<IRepository<IPersistible>>(Type.GITHUB);
+		repo.init(repo.context);
 		await repo.open();
 	});
 
