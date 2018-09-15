@@ -7,7 +7,7 @@
 		{
 			"type": "firefox",
 			"request": "launch",
-			"name": "Chrome on localhost",
+			"name": "Firefox on localhost",
 			"url": "http://localhost:8080",
 			"preLaunchTask": "serve",
 			"webRoot": "${workspaceFolder}"

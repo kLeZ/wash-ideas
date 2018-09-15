@@ -39,5 +39,6 @@ module.exports = {
 	'collectCoverageFrom': [
 		'src/**/*.{ts,tsx}',
 		'!src/typescript/index.tsx',
+		'!src/typescript/ioc/inversify.config.ts',
 	]
 };

@@ -18,15 +18,18 @@
 
 import * as BrowserFS from "browserfs";
 import { FSModule } from "browserfs/dist/node/core/FS";
+import { injectable } from "inversify";
 import * as git from "isomorphic-git";
 import * as pify from "pify";
+import "reflect-metadata";
 import { IContext } from "../models/IContext";
 import { IGitRepositoryConfiguration } from "../models/IGitRepositoryConfiguration";
 import { IPersistible } from "../models/IPersistible";
 import { catRepository } from "../util/Logging";
 import { IRepository } from "./IRepository";
 
-export class GitRepository<T extends IPersistible> implements IRepository<T> {
+@injectable()
+export abstract class GitRepository<T extends IPersistible> implements IRepository<T> {
 	public context: IContext;
 	protected fs: FSModule;
 	protected pfs: any;
@@ -72,20 +75,14 @@ export class GitRepository<T extends IPersistible> implements IRepository<T> {
 	public create(item: T): Promise<boolean> {
 		const self = this;
 		return new Promise<boolean>(async (resolve, reject) => {
-			await self.pfs.writeFile(
-				`${self.config.dir}/${item.title}.json`,
-				JSON.stringify(item),
-				item.encoding
-			);
+			await self.pfs.writeFile(`${self.config.dir}/${item.title}.json`, JSON.stringify(item), item.encoding);
 			await git.add({
 				dir: self.config.dir,
 				filepath: `${item.title}.json`
 			});
 			const sha = await git.commit({
 				dir: self.config.dir,
-				message: `Added new ${item.constructor.name}: ${
-					item.title
-				}.json`,
+				message: `Added new ${item.constructor.name}: ${item.title}.json`,
 				author: {
 					name: self.context.user.name,
 					email: self.context.user.email
