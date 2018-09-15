@@ -20,7 +20,7 @@ import { Container } from "inversify";
 import { IPersistible } from "../../../src/typescript/models/IPersistible";
 import { IRepositoryConfiguration } from "../../../src/typescript/models/IRepositoryConfiguration";
 import { IRepository } from "../../../src/typescript/repository/IRepository";
-import { Type } from "../repository/RepositoriesTypes";
+import { Type } from "../../../src/typescript/repository/RepositoriesTypes";
 import { GitHubRepositoryMock } from "../repository/RepositoryConfigurationMock";
 
 const container = new Container();

@@ -23,7 +23,7 @@ import { GitRepository } from "../../../src/typescript/repository/GitRepository"
 import { IRepository } from "../../../src/typescript/repository/IRepository";
 import { container } from "../ioc/inversify.config";
 import { IGitRepositoryConfiguration } from "./../../../src/typescript/models/IGitRepositoryConfiguration";
-import { Type } from "./RepositoriesTypes";
+import { Type } from "../../../src/typescript/repository/RepositoriesTypes";
 
 describe("Open and close repository test", () => {
 	beforeEach(() => {
@@ -36,7 +36,6 @@ describe("Open and close repository test", () => {
 
 	it("clone branch data of wash-ideas repository without crash", async () => {
 		const repo = container.get<IRepository<IPersistible>>(Type.GITHUB);
-		repo.init(repo.context);
 		await repo.open();
 	});
 

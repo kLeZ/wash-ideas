@@ -23,7 +23,7 @@ import { IRepositoryConfiguration } from "../../../src/typescript/models/IReposi
 import { IUser } from "../../../src/typescript/models/IUser";
 import { GitRepository } from "../../../src/typescript/repository/GitRepository";
 import { container } from "../ioc/inversify.config";
-import { Type } from "./RepositoriesTypes";
+import { Type } from "../../../src/typescript/repository/RepositoriesTypes";
 
 class GitHubRepositoryConfigurationMock implements IGitRepositoryConfiguration {
 	public type: "git" = "git";
