@@ -16,10 +16,12 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-const Type = {
+const RepositoryType = {
 	GITHUB: Symbol.for("Github"),
 	BITBUCKET: Symbol.for("Bitbucket"),
 	GITLAB: Symbol.for("Gitlab")
 };
-
-export { Type };
+const ContextType = {
+	DEFAULT: Symbol.for("Default")
+};
+export { RepositoryType, ContextType };

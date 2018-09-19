@@ -30,22 +30,15 @@ import { IRepository } from "./IRepository";
 
 @injectable()
 export abstract class GitRepository<T extends IPersistible> implements IRepository<T> {
-	public context: IContext;
+	protected context: IContext;
 	protected fs: FSModule;
 	protected pfs: any;
-	protected config: IGitRepositoryConfiguration;
 
-	constructor() {
-		const self = this;
-	}
-	public init(context: IContext): void {
-		this.context = context;
-		this.config = this.context.configuration as IGitRepositoryConfiguration;
-	}
 	public open(): Promise<void> {
 		const self = this;
+		const config = self.context.configuration as IGitRepositoryConfiguration;
 		return new Promise<void>((resolve, reject) => {
-			BrowserFS.configure(self.config.fsconf, err => {
+			BrowserFS.configure(config.fsconf, err => {
 				if (err) {
 					catRepository.error(err.message, err);
 					reject(err);
@@ -62,8 +55,9 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 	}
 	public close(): Promise<void> {
 		const self = this;
+		const config = self.context.configuration as IGitRepositoryConfiguration;
 		return new Promise<void>((resolve, reject) => {
-			self.fs.getRootFS().rmdir(self.config.dir, err => {
+			self.fs.getRootFS().rmdir(config.dir, err => {
 				if (err) {
 					catRepository.error(err.message, err);
 					reject(err);
@@ -74,14 +68,15 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 	}
 	public create(item: T): Promise<boolean> {
 		const self = this;
+		const config = self.context.configuration as IGitRepositoryConfiguration;
 		return new Promise<boolean>(async (resolve, reject) => {
-			await self.pfs.writeFile(`${self.config.dir}/${item.title}.json`, JSON.stringify(item), item.encoding);
+			await self.pfs.writeFile(`${config.dir}/${item.title}.json`, JSON.stringify(item), item.encoding);
 			await git.add({
-				dir: self.config.dir,
+				dir: config.dir,
 				filepath: `${item.title}.json`
 			});
 			const sha = await git.commit({
-				dir: self.config.dir,
+				dir: config.dir,
 				message: `Added new ${item.constructor.name}: ${item.title}.json`,
 				author: {
 					name: self.context.user.name,
@@ -97,29 +92,41 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 		});
 	}
 	public update(id: string, item: T): Promise<boolean> {
+		const self = this;
+		const config = self.context.configuration as IGitRepositoryConfiguration;
+
 		throw new Error("Method not implemented.");
 	}
 	public delete(id: string): Promise<boolean> {
+		const self = this;
+		const config = self.context.configuration as IGitRepositoryConfiguration;
+
 		throw new Error("Method not implemented.");
 	}
 	public find(item: T): Promise<T[]> {
+		const self = this;
+		const config = self.context.configuration as IGitRepositoryConfiguration;
+
 		throw new Error("Method not implemented.");
 	}
 	public findOne(id: string): Promise<T> {
+		const self = this;
+		const config = self.context.configuration as IGitRepositoryConfiguration;
 		throw new Error("Method not implemented.");
 	}
 	private sync(): Promise<boolean> {
 		const self = this;
+		const config = self.context.configuration as IGitRepositoryConfiguration;
 		return new Promise<boolean>(async (resolve, reject) => {
 			await git.pull({
-				dir: self.config.dir,
-				oauth2format: self.config.oauth2format,
-				token: self.config.token
+				dir: config.dir,
+				oauth2format: config.oauth2format,
+				token: config.token
 			});
 			const response = await git.push({
-				dir: self.config.dir,
-				oauth2format: self.config.oauth2format,
-				token: self.config.token
+				dir: config.dir,
+				oauth2format: config.oauth2format,
+				token: config.token
 			});
 			resolve(response.errors === null || response.errors.length === 0);
 		});

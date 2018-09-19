@@ -18,12 +18,9 @@
 
 import { IContext } from "../../../src/typescript/models/IContext";
 import { IPersistible } from "../../../src/typescript/models/IPersistible";
-import { IRepositoryConfiguration } from "../../../src/typescript/models/IRepositoryConfiguration";
-import { GitRepository } from "../../../src/typescript/repository/GitRepository";
 import { IRepository } from "../../../src/typescript/repository/IRepository";
+import { ContextType, RepositoryType } from "../../../src/typescript/repository/Symbols";
 import { container } from "../ioc/inversify.config";
-import { IGitRepositoryConfiguration } from "./../../../src/typescript/models/IGitRepositoryConfiguration";
-import { Type } from "./RepositoriesTypes";
 
 describe("Open and close repository test", () => {
 	beforeEach(() => {
@@ -34,14 +31,22 @@ describe("Open and close repository test", () => {
 		container.restore();
 	});
 
+	it("Test context rebind", async () => {
+		let ctx: IContext = container.get<IContext>(ContextType.DEFAULT);
+		expect(ctx.user.name).toBe("Alessandro Accardo");
+		ctx.user.name = "Fabio Scotto di Santolo";
+		container.rebind<IContext>(ContextType.DEFAULT).toConstantValue(ctx);
+		ctx = container.get<IContext>(ContextType.DEFAULT);
+		expect(ctx.user.name).toBe("Fabio Scotto di Santolo");
+	});
+
 	it("clone branch data of wash-ideas repository without crash", async () => {
-		const repo = container.get<IRepository<IPersistible>>(Type.GITHUB);
-		repo.init(repo.context);
+		const repo = container.get<IRepository<IPersistible>>(RepositoryType.GITHUB);
 		await repo.open();
 	});
 
 	xit("remove entire repository folder without crash", async () => {
-		const repo = container.get<IRepository<IPersistible>>(Type.GITHUB);
+		const repo = container.get<IRepository<IPersistible>>(RepositoryType.GITHUB);
 		await repo.close();
 	});
 });
