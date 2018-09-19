@@ -18,7 +18,7 @@
 
 import * as BrowserFS from "browserfs";
 import { FSModule } from "browserfs/dist/node/core/FS";
-import { injectable, inject } from "inversify";
+import { injectable } from "inversify";
 import * as git from "isomorphic-git";
 import * as pify from "pify";
 import "reflect-metadata";
@@ -27,7 +27,6 @@ import { IGitRepositoryConfiguration } from "../models/IGitRepositoryConfigurati
 import { IPersistible } from "../models/IPersistible";
 import { catRepository } from "../util/Logging";
 import { IRepository } from "./IRepository";
-import { Type } from "./RepositoriesTypes";
 
 @injectable()
 export abstract class GitRepository<T extends IPersistible> implements IRepository<T> {

@@ -20,10 +20,10 @@ import { inject, injectable } from "inversify";
 import { IContext } from "../models/IContext";
 import { IPersistible } from "../models/IPersistible";
 import { GitRepository } from "./GitRepository";
-import { Type } from "./RepositoriesTypes";
+import { ContextType } from "./Symbols";
 
 @injectable()
 export class GitHubRepository<T extends IPersistible> extends GitRepository<T> {
-	@inject(Type.GITHUB)
+	@inject(ContextType.DEFAULT)
 	protected context: IContext;
 }

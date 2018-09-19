@@ -17,6 +17,8 @@
 //
 
 import { Container } from "inversify";
+import { catRepository } from "../util/Logging";
 
 const container = new Container();
 export { container };
+catRepository.trace("Inversify SRC");
