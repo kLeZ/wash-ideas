@@ -38,18 +38,26 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
 		return new Promise<void>((resolve, reject) => {
-			BrowserFS.configure(config.fsconf, err => {
-				if (err) {
-					catRepository.error(err.message, err);
-					reject(err);
+			self.initFS().then(async () => {
+				const exists: boolean = await self.pfs.existsSync(config.dir);
+				if (exists === false) {
+					await self.pfs.mkdir(config.dir);
+					await self.pfs.readdir(config.dir);
+
+					await git.clone({
+						dir: config.dir,
+						corsProxy: "https://cors.isomorphic-git.org",
+						url: config.url,
+						ref: config.branch,
+						singleBranch: true,
+						depth: config.depth || 5
+					});
+					resolve();
+				} else {
+					reject(new Error("Not yet implemented"));
 				}
-				self.fs = BrowserFS.BFSRequire("fs");
-				// Initialize isomorphic-git with our new file system
-				git.plugins.set("fs", self.fs);
-				// make a Promisified version for convenience
-				self.pfs = pify(self.fs);
-				catRepository.trace("BrowserFS configured!");
-				resolve();
+			}).catch((reason) => {
+				reject(reason);
 			});
 		});
 	}
@@ -113,6 +121,26 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
 		throw new Error("Method not implemented.");
+	}
+
+	private initFS(): Promise<void> {
+		const self = this;
+		const config = self.context.configuration as IGitRepositoryConfiguration;
+		return new Promise<void>((resolve, reject) => {
+			BrowserFS.configure(config.fsconf, err => {
+				if (err) {
+					catRepository.error(err.message, err);
+					reject(err);
+				}
+				self.fs = BrowserFS.BFSRequire("fs");
+				// Initialize isomorphic-git with our new file system
+				git.plugins.set("fs", self.fs);
+				// make a Promisified version for convenience
+				self.pfs = pify(self.fs);
+				catRepository.trace("BrowserFS configured!");
+				resolve();
+			});
+		});
 	}
 	private sync(): Promise<boolean> {
 		const self = this;

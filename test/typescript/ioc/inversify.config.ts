@@ -23,10 +23,9 @@ import { GitHubRepository } from "../../../src/typescript/repository/GithubRepos
 import { IRepository } from "../../../src/typescript/repository/IRepository";
 import { ContextType, RepositoryType } from "../../../src/typescript/repository/Symbols";
 import { catRepository } from "../../../src/typescript/util/Logging";
-import { GitHubContextMock } from "../repository/RepositoryConfigurationMock";
+import { GitHubContextMock } from "../models/RepositoryConfigurationMock";
 
 const container = new Container();
-container.bind<IContext>(ContextType.DEFAULT).to(GitHubContextMock);
 container.bind<IRepository<IPersistible>>(RepositoryType.GITHUB).to(GitHubRepository);
 export { container };
 catRepository.trace("Inversify TST");

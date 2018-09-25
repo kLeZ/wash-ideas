@@ -17,27 +17,39 @@
 //
 
 import { IContext } from "../../../src/typescript/models/IContext";
+import { IGitRepositoryConfiguration } from "../../../src/typescript/models/IGitRepositoryConfiguration";
 import { IPersistible } from "../../../src/typescript/models/IPersistible";
 import { IRepository } from "../../../src/typescript/repository/IRepository";
 import { ContextType, RepositoryType } from "../../../src/typescript/repository/Symbols";
 import { container } from "../ioc/inversify.config";
 
 describe("Open and close repository test", () => {
+	beforeAll(() => {
+		const configuration: IGitRepositoryConfiguration = {
+			type: "git",
+			dir: "wash-ideas",
+			branch: "data",
+			url: "https://github.com/kLeZ/wash-ideas",
+			oauth2format: "github",
+			token: "",
+			fsconf: { fs: "InMemory", options: {} }
+		};
+		const ctx: IContext = {
+			user: {
+				name: "Alessandro Accardo",
+				email: "julius8774@gmail.com"
+			},
+			configuration
+		};
+		container.bind<IContext>(ContextType.DEFAULT).toConstantValue(ctx);
+	});
+
 	beforeEach(() => {
 		container.snapshot();
 	});
 
 	afterEach(() => {
 		container.restore();
-	});
-
-	it("Test context rebind", async () => {
-		let ctx: IContext = container.get<IContext>(ContextType.DEFAULT);
-		expect(ctx.user.name).toBe("Alessandro Accardo");
-		ctx.user.name = "Fabio Scotto di Santolo";
-		container.rebind<IContext>(ContextType.DEFAULT).toConstantValue(ctx);
-		ctx = container.get<IContext>(ContextType.DEFAULT);
-		expect(ctx.user.name).toBe("Fabio Scotto di Santolo");
 	});
 
 	it("clone branch data of wash-ideas repository without crash", async () => {
@@ -47,6 +59,7 @@ describe("Open and close repository test", () => {
 
 	xit("remove entire repository folder without crash", async () => {
 		const repo = container.get<IRepository<IPersistible>>(RepositoryType.GITHUB);
+		await repo.open();
 		await repo.close();
 	});
 });

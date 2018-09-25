@@ -22,6 +22,6 @@ const RepositoryType = {
 	GITLAB: Symbol.for("Gitlab")
 };
 const ContextType = {
-	DEFAULT: Symbol.for("Default")
+	DEFAULT: Symbol.for("Default Context")
 };
 export { RepositoryType, ContextType };
