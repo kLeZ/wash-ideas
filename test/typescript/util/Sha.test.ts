@@ -21,3 +21,24 @@ import { Sha, ShaType } from "../../../src/typescript/util/Sha";
 it("Create an Sha instance", () => {
 	const res: Sha = new Sha(ShaType.SHA1, "096a8a4a0cbc3c5cada45263d8b61775f54a2ee3");
 });
+it("Invalid hash", () => {
+	const mock = jest.fn(() => {
+		return new Sha(ShaType.SHA1, "bubusettete");
+	});
+	expect(mock).toThrowError(new Error("Invalid hash!"));
+});
+it("Unknown hash type", () => {
+	const mock = jest.fn(() => {
+		const mockType = {
+			t: Symbol.for("mockType")
+		};
+		return new Sha(mockType.t, "096a8a4a0cbc3c5cada45263d8b61775f54a2ee3");
+	});
+	expect(mock).toThrowError(new Error("Unknown hash type!"));
+});
+it("Invalid hash", () => {
+	const mock = jest.fn(() => {
+		return new Sha(ShaType.SHA1, null);
+	});
+	expect(mock).toThrowError(new Error("The hash cannot be null!"));
+});

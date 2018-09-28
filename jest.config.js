@@ -39,6 +39,7 @@ module.exports = {
 	'collectCoverageFrom': [
 		'src/**/*.{ts,tsx}',
 		'!src/typescript/index.tsx',
-		'!src/typescript/ioc/inversify.config.ts',
+		'!src/**/*.config.ts',
+		'!src/typescript/util/GitClient.ts', // This is a proxy for a library. We do not test 3rd party libraries!
 	]
 };
