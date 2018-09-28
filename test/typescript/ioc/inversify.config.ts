@@ -17,15 +17,16 @@
 //
 
 import { Container } from "inversify";
-import { IContext } from "../../../src/typescript/models/IContext";
 import { IPersistible } from "../../../src/typescript/models/IPersistible";
 import { GitHubRepository } from "../../../src/typescript/repository/GithubRepository";
 import { IRepository } from "../../../src/typescript/repository/IRepository";
-import { ContextType, RepositoryType } from "../../../src/typescript/repository/Symbols";
-import { catRepository } from "../../../src/typescript/util/Logging";
-import { GitHubContextMock } from "../models/RepositoryConfigurationMock";
+import { RepositoryType, Types } from "../../../src/typescript/repository/Symbols";
+import { IGitClient } from "../../../src/typescript/util/IGitClient";
+import { logIoc } from "../../../src/typescript/util/Logging";
+import { GitClientMock } from "../util/GitClientMock";
 
 const container = new Container();
+container.bind<IGitClient>(Types.GIT_CLIENT).to(GitClientMock);
 container.bind<IRepository<IPersistible>>(RepositoryType.GITHUB).to(GitHubRepository);
 export { container };
-catRepository.trace("Inversify TST");
+logIoc.trace("Inversify TST");

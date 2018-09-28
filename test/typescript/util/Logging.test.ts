@@ -16,8 +16,14 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as Logging from "../../../src/typescript/util/Logging";
+import { logIoc, logRepo, logUtils } from "../../../src/typescript/util/Logging";
 
-it("Logging in default category with level info without crash", () => {
-	Logging.catRepository.info("Logging test done");
+it("Logging in repository category with level info without crash", () => {
+	logRepo.info("Logging test done");
+});
+it("Logging in utils category with level info without crash", () => {
+	logUtils.info("Logging test done");
+});
+it("Logging in ioc category with level info without crash", () => {
+	logIoc.info("Logging test done");
 });

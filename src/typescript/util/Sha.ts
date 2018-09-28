@@ -16,13 +16,33 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-const RepositoryType = {
-	GITHUB: Symbol.for("Github"),
-	BITBUCKET: Symbol.for("Bitbucket"),
-	GITLAB: Symbol.for("Gitlab")
+export const ShaType = {
+	SHA1: Symbol.for("SHA 1"),
+	SHA256: Symbol.for("SHA 256"),
 };
-const Types = {
-	CONTEXT: Symbol.for("Default Context"),
-	GIT_CLIENT: Symbol.for("Git Client")
-};
-export { RepositoryType, Types };
+
+export class Sha {
+	private type: symbol;
+	private hash: string;
+
+	constructor(type: symbol, sha: string) {
+		if (sha !== null) {
+			switch (type) {
+				case ShaType.SHA1: {
+					if (/[a-fA-F0-9]{40}/.test(sha)) {
+						this.hash = sha;
+						this.type = type;
+					} else {
+						throw new Error("Invalid hash!");
+					}
+					break;
+				}
+				default: {
+					throw new Error("Unknown hash type!");
+				}
+			}
+		} else {
+			throw new Error("The hash cannot be null!");
+		}
+	}
+}

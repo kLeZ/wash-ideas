@@ -30,4 +30,6 @@ CategoryServiceFactory.setDefaultConfiguration(
 );
 
 // Create categories, they will autoregister themselves, one category without parent (root) and a child category.
-export const catRepository = new Category("repository");
+export const logRepo = new Category("repository");
+export const logUtils = new Category("utils");
+export const logIoc = new Category("ioc");

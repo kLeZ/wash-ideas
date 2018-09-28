@@ -19,11 +19,14 @@
 import { inject, injectable } from "inversify";
 import { IContext } from "../models/IContext";
 import { IPersistible } from "../models/IPersistible";
+import { IGitClient } from "../util/IGitClient";
 import { GitRepository } from "./GitRepository";
-import { ContextType } from "./Symbols";
+import { Types } from "./Symbols";
 
 @injectable()
 export class GitHubRepository<T extends IPersistible> extends GitRepository<T> {
-	@inject(ContextType.DEFAULT)
+	@inject(Types.CONTEXT)
 	protected context: IContext;
+	@inject(Types.GIT_CLIENT)
+	protected client: IGitClient;
 }

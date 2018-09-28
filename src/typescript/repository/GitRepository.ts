@@ -16,94 +16,96 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as BrowserFS from "browserfs";
-import { FSModule } from "browserfs/dist/node/core/FS";
 import { injectable } from "inversify";
-import * as git from "isomorphic-git";
-import * as pify from "pify";
 import "reflect-metadata";
 import { IContext } from "../models/IContext";
 import { IGitRepositoryConfiguration } from "../models/IGitRepositoryConfiguration";
 import { IPersistible } from "../models/IPersistible";
-import { catRepository } from "../util/Logging";
+import { IGitClient } from "../util/IGitClient";
+import { logRepo } from "../util/Logging";
 import { IRepository } from "./IRepository";
 
 @injectable()
 export abstract class GitRepository<T extends IPersistible> implements IRepository<T> {
 	protected context: IContext;
-	protected fs: FSModule;
-	protected pfs: any;
+	protected client: IGitClient;
 
 	public open(): Promise<void> {
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
-		return new Promise<void>((resolve, reject) => {
-			self.initFS().then(async () => {
-				const exists: boolean = await self.pfs.existsSync(config.dir);
-				if (exists === false) {
-					await self.pfs.mkdir(config.dir);
-					await self.pfs.readdir(config.dir);
+		return new Promise<void>(async (resolve, reject) => {
+			await self.client.init();
 
-					await git.clone({
-						dir: config.dir,
-						corsProxy: "https://cors.isomorphic-git.org",
-						url: config.url,
-						ref: config.branch,
-						singleBranch: true,
-						depth: config.depth || 5
-					});
-					resolve();
-				} else {
-					reject(new Error("Not yet implemented"));
-				}
-			}).catch((reason) => {
-				reject(reason);
-			});
+			if (self.client.exists(config.dir) === false) {
+				self.client.mkdir(config.dir);
+				self.client.readdir(config.dir);
+				await self.client.clone({
+					dir: config.dir,
+					corsProxy: "https://cors.isomorphic-git.org",
+					url: config.url,
+					ref: config.branch,
+					singleBranch: true,
+					depth: config.depth || 5,
+				});
+				resolve();
+			} else {
+				reject(new Error("Not yet implemented"));
+			}
 		});
 	}
 	public close(): Promise<void> {
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
-		return new Promise<void>((resolve, reject) => {
-			self.fs.getRootFS().rmdir(config.dir, err => {
-				if (err) {
-					catRepository.error(err.message, err);
-					reject(err);
-				}
+		return new Promise<void>(async (resolve, reject) => {
+			await self.client.init();
+
+			const synced: boolean = await self.sync();
+			if (synced === true) {
 				resolve();
-			});
+			} else {
+				reject("Not synced!");
+			}
 		});
 	}
 	public create(item: T): Promise<boolean> {
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
 		return new Promise<boolean>(async (resolve, reject) => {
-			await self.pfs.writeFile(`${config.dir}/${item.title}.json`, JSON.stringify(item), item.encoding);
-			await git.add({
-				dir: config.dir,
-				filepath: `${item.title}.json`
-			});
-			const sha = await git.commit({
-				dir: config.dir,
-				message: `Added new ${item.constructor.name}: ${item.title}.json`,
-				author: {
-					name: self.context.user.name,
-					email: self.context.user.email
+			try {
+				await self.client.init();
+
+				const path = `${config.dir}/${item.title}.json`;
+				if (self.client.exists(path) === false) {
+					await self.persist(path, item, resolve);
+				} else {
+					logRepo.warn("Specified entity already exists! Please use the update method");
+					reject("Specified entity already exists! Please use the update method");
 				}
-			});
-			if (sha !== null && /[a-fA-F0-9]{40}/.test(sha)) {
-				const ret = await self.sync();
-				resolve(ret);
-			} else {
-				resolve(false);
+			} catch (error) {
+				logRepo.error(error.message, error);
+				reject(error);
 			}
 		});
 	}
 	public update(id: string, item: T): Promise<boolean> {
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
+		return new Promise<boolean>(async (resolve, reject) => {
+			try {
+				await self.client.init();
 
-		throw new Error("Method not implemented.");
+				const path = `${config.dir}/${item.title}.json`;
+				if (self.client.exists(path) === true) {
+					await self.persist(path, item, resolve);
+				} else {
+					logRepo.warn("Specified entity doesn't exist yet! Please use the create method");
+					reject("Specified entity doesn't exist yet! Please use the create method");
+				}
+			} catch (error) {
+				logRepo.error(error.message, error);
+				reject(error);
+			}
+		});
 	}
 	public delete(id: string): Promise<boolean> {
 		const self = this;
@@ -120,43 +122,47 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 	public findOne(id: string): Promise<T> {
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
+
 		throw new Error("Method not implemented.");
 	}
 
-	private initFS(): Promise<void> {
-		const self = this;
-		const config = self.context.configuration as IGitRepositoryConfiguration;
-		return new Promise<void>((resolve, reject) => {
-			BrowserFS.configure(config.fsconf, err => {
-				if (err) {
-					catRepository.error(err.message, err);
-					reject(err);
-				}
-				self.fs = BrowserFS.BFSRequire("fs");
-				// Initialize isomorphic-git with our new file system
-				git.plugins.set("fs", self.fs);
-				// make a Promisified version for convenience
-				self.pfs = pify(self.fs);
-				catRepository.trace("BrowserFS configured!");
-				resolve();
-			});
-		});
-	}
 	private sync(): Promise<boolean> {
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
 		return new Promise<boolean>(async (resolve, reject) => {
-			await git.pull({
+			await self.client.pull({
 				dir: config.dir,
 				oauth2format: config.oauth2format,
-				token: config.token
+				token: config.token,
 			});
-			const response = await git.push({
+			const response = await self.client.push({
 				dir: config.dir,
 				oauth2format: config.oauth2format,
-				token: config.token
+				token: config.token,
 			});
-			resolve(response.errors === null || response.errors.length === 0);
+			resolve(response.errors === null || response.errors ? response.errors.length === 0 : true);
 		});
+	}
+	private async persist(path: string, item: T, resolve: (value?: boolean | PromiseLike<boolean>) => void) {
+		const config = this.context.configuration as IGitRepositoryConfiguration;
+		this.client.writeFile(path, JSON.stringify(item), item.encoding);
+		await this.client.add({
+			dir: config.dir,
+			filepath: `${item.title}.json`,
+		});
+		const sha = await this.client.commit({
+			dir: config.dir,
+			message: `Added new ${item.constructor.name}: ${item.title}.json`,
+			author: {
+				name: this.context.user.name,
+				email: this.context.user.email,
+			},
+		});
+		if (sha !== null) {
+			const ret = await this.sync();
+			resolve(ret);
+		} else {
+			resolve(false);
+		}
 	}
 }

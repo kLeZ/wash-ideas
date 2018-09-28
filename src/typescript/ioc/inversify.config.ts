@@ -17,8 +17,16 @@
 //
 
 import { Container } from "inversify";
-import { catRepository } from "../util/Logging";
+import { IPersistible } from "../models/IPersistible";
+import { GitHubRepository } from "../repository/GithubRepository";
+import { IRepository } from "../repository/IRepository";
+import { RepositoryType, Types } from "../repository/Symbols";
+import { GitClient } from "../util/GitClient";
+import { IGitClient } from "../util/IGitClient";
+import { logIoc } from "../util/Logging";
 
 const container = new Container();
+container.bind<IGitClient>(Types.GIT_CLIENT).to(GitClient);
+container.bind<IRepository<IPersistible>>(RepositoryType.GITHUB).to(GitHubRepository);
 export { container };
-catRepository.trace("Inversify SRC");
+logIoc.trace("Inversify SRC");

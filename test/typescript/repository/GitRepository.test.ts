@@ -20,7 +20,7 @@ import { IContext } from "../../../src/typescript/models/IContext";
 import { IGitRepositoryConfiguration } from "../../../src/typescript/models/IGitRepositoryConfiguration";
 import { IPersistible } from "../../../src/typescript/models/IPersistible";
 import { IRepository } from "../../../src/typescript/repository/IRepository";
-import { ContextType, RepositoryType } from "../../../src/typescript/repository/Symbols";
+import { RepositoryType, Types } from "../../../src/typescript/repository/Symbols";
 import { container } from "../ioc/inversify.config";
 
 describe("Open and close repository test", () => {
@@ -41,7 +41,7 @@ describe("Open and close repository test", () => {
 			},
 			configuration
 		};
-		container.bind<IContext>(ContextType.DEFAULT).toConstantValue(ctx);
+		container.bind<IContext>(Types.CONTEXT).toConstantValue(ctx);
 	});
 
 	beforeEach(() => {
@@ -57,9 +57,8 @@ describe("Open and close repository test", () => {
 		await repo.open();
 	});
 
-	xit("remove entire repository folder without crash", async () => {
+	it("remove entire repository folder without crash", async () => {
 		const repo = container.get<IRepository<IPersistible>>(RepositoryType.GITHUB);
-		await repo.open();
 		await repo.close();
 	});
 });
