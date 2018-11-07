@@ -45,6 +45,12 @@ module.exports = {
 	module: {
 		noParse: /browserfs\.js/,
 		rules: [{
+			test: /locales/,
+			loader: '@alienfast/i18next-loader',
+			query: {
+				relativePathAsNamespace: true
+			}
+		}, {
 			test: /\.(ts|tsx)$/,
 			loader: "ts-loader",
 			exclude: /node_modules/

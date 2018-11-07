@@ -23,6 +23,7 @@ const RepositoryType = {
 };
 const Types = {
 	CONTEXT: Symbol.for("Default Context"),
-	GIT_CLIENT: Symbol.for("Git Client")
+	GIT_CLIENT: Symbol.for("Git Client"),
+	LOCALIZATION: Symbol.for("Localization")
 };
 export { RepositoryType, Types };

@@ -14,33 +14,6 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
-// 
 
-module.exports = {
-	'roots': [
-		'<rootDir>/src',
-		'<rootDir>/test'
-	],
-	'transform': {
-		'.*\.tsx?$': 'ts-jest'
-	},
-	'testRegex': '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
-	'moduleFileExtensions': [
-		'ts',
-		'tsx',
-		'js',
-		'jsx',
-		'json',
-		'node'
-	],
-	'moduleNameMapper': {
-		'\.(css|jpg|png)$': '<rootDir>/empty-module.js',
-	},
-	'collectCoverageFrom': [
-		'src/**/*.{ts,tsx}',
-		'!src/typescript/index.tsx',
-		'!src/**/*.config.ts',
-		'!src/typescript/util/GitClient.ts', // This is a proxy for a library. We do not test 3rd party libraries!
-		'!src/typescript/util/Locales.ts', // This is a data file, no need to test it.
-	]
-};
+
+// root locales

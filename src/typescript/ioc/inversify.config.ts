@@ -16,17 +16,22 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { Container } from "inversify";
+import { Container, interfaces } from "inversify";
 import { IPersistible } from "../models/IPersistible";
 import { GitHubRepository } from "../repository/GithubRepository";
 import { IRepository } from "../repository/IRepository";
 import { RepositoryType, Types } from "../repository/Symbols";
 import { GitClient } from "../util/GitClient";
 import { IGitClient } from "../util/IGitClient";
+import { resources } from "../util/Locales";
+import Localization from "../util/Localization";
 import { logIoc } from "../util/Logging";
 
 const container = new Container();
 container.bind<IGitClient>(Types.GIT_CLIENT).to(GitClient);
 container.bind<IRepository<IPersistible>>(RepositoryType.GITHUB).to(GitHubRepository);
+container.bind<Localization>(Types.LOCALIZATION).toDynamicValue((context: interfaces.Context) => {
+	return new Localization(resources);
+});
 export { container };
 logIoc.trace("Inversify SRC");
