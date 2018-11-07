@@ -21,5 +21,11 @@ import { render } from "react-dom";
 import "typeface-roboto";
 import "../scss/main.scss";
 import App from "./components/App";
+import { container } from "./ioc/inversify.config";
+import { Types } from "./repository/Symbols";
+import Localization from "./util/Localization";
+import { logUtils } from "./util/Logging";
 
+const i18n = container.get<Localization>(Types.LOCALIZATION);
+logUtils.info(i18n.t("main.test"));
 render(<App />, document.getElementById("root"));
