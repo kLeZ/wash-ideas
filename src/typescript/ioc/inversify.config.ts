@@ -30,8 +30,6 @@ import { logIoc } from "../util/Logging";
 const container = new Container();
 container.bind<IGitClient>(Types.GIT_CLIENT).to(GitClient);
 container.bind<IRepository<IPersistible>>(RepositoryType.GITHUB).to(GitHubRepository);
-container.bind<Localization>(Types.LOCALIZATION).toDynamicValue((context: interfaces.Context) => {
-	return new Localization(resources);
-});
+container.bind<Localization>(Types.LOCALIZATION).toConstantValue(new Localization(resources));
 export { container };
 logIoc.trace("Inversify SRC");

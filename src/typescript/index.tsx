@@ -28,4 +28,5 @@ import { logUtils } from "./util/Logging";
 
 const i18n = container.get<Localization>(Types.LOCALIZATION);
 logUtils.info(i18n.t("main.test"));
+
 render(<App />, document.getElementById("root"));
