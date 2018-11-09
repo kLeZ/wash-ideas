@@ -110,8 +110,10 @@ export interface IGitClient {
 	exists(path: string): boolean;
 	init(): Promise<void>;
 	mkdir(path: string): void;
-	readdir(path: string): void;
+	readdir(path: string): string[];
 	pull(args: IPullArgs): Promise<void>;
 	push(args: IPushArgs): Promise<IPushResult>;
 	writeFile(path: string, content: string, encoding: string): void;
+	readFile(path: string, encoding: string): string;
+	deleteFile(path: string): void;
 }

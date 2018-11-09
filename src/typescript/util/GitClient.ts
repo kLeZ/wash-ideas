@@ -17,7 +17,7 @@
 //
 
 import * as BrowserFS from "browserfs";
-import { FSModule } from "browserfs/dist/node/core/FS";
+import FS, { FSModule } from "browserfs/dist/node/core/FS";
 import { inject, injectable } from "inversify";
 import * as git from "isomorphic-git";
 import * as pify from "pify";
@@ -31,7 +31,7 @@ import { Sha, ShaType } from "./Sha";
 @injectable()
 export class GitClient implements IGitClient {
 	private config: IGitRepositoryConfiguration;
-	private pfs: any;
+	private pfs: FS;
 
 	constructor(@inject(Types.CONTEXT) ctx: IContext) {
 		this.config = ctx.configuration as IGitRepositoryConfiguration;
@@ -76,7 +76,7 @@ export class GitClient implements IGitClient {
 	public mkdir(path: string): void {
 		return this.pfs.mkdirSync(path);
 	}
-	public readdir(path: string): void {
+	public readdir(path: string): string[] {
 		return this.pfs.readdirSync(path);
 	}
 	public pull(args: IPullArgs): Promise<void> {
@@ -87,6 +87,12 @@ export class GitClient implements IGitClient {
 	}
 	public writeFile(path: string, content: string, encoding: string): void {
 		return this.pfs.writeFileSync(path, content, encoding);
+	}
+	public readFile(path: string, encoding: string): string {
+		return this.pfs.readFileSync(path, encoding);
+	}
+	public deleteFile(path: string): void {
+		return this.pfs.unlinkSync(path);
 	}
 
 	private initFS(): Promise<FSModule> {

@@ -94,7 +94,7 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 			try {
 				await self.client.init();
 
-				const path = `${config.dir}/${item.title}.json`;
+				const path = `${config.dir}/${id}.json`;
 				if (self.client.exists(path) === true) {
 					await self.persist(path, item, resolve);
 				} else {
@@ -111,19 +111,41 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
 
-		throw new Error("Method not implemented.");
+		return new Promise<boolean>((resolve, reject) => {
+			try {
+				self.client.deleteFile(id);
+				resolve(self.client.exists(id) === false);
+			} catch (e) {
+				reject(e);
+			}
+		});
 	}
 	public find(item: T): Promise<T[]> {
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
 
-		throw new Error("Method not implemented.");
+		return new Promise<T[]>((resolve, reject) => {
+			try {
+				const items: T[] = self.client
+					.readdir(config.dir)
+					.map(file => JSON.parse(file) as T)
+					.filter(i => {
+						return i.conforms(item);
+					});
+				resolve(items);
+			} catch (e) {
+				reject(e);
+			}
+		});
 	}
 	public findOne(id: string): Promise<T> {
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
 
-		throw new Error("Method not implemented.");
+		return new Promise<T>(async (resolve, reject) => {
+			const fileContent = self.client.readFile(`${config.dir}/${id}.json`, "utf-8");
+			resolve(JSON.parse(fileContent) as T);
+		});
 	}
 
 	private sync(): Promise<boolean> {

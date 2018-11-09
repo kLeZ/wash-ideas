@@ -112,7 +112,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = {"en":{"translation":{"main":{"test":"mickey"}}},"it":{"translation":{"main":{"test":"topolino"}}}}
+module.exports = {"en":{"translation":{"app":{"title":"Wash Ideas - Borogoves."},"main":{"test":"mickey"}}},"it":{"translation":{"app":{"title":"Wash Ideas - Antani."},"main":{"test":"topolino"}}}}
 
 /***/ }),
 
@@ -93688,6 +93688,8 @@ const styles_1 = __webpack_require__(/*! @material-ui/core/styles */ "./node_mod
 const Toolbar_1 = __webpack_require__(/*! @material-ui/core/Toolbar */ "./node_modules/@material-ui/core/Toolbar/index.js");
 const Typography_1 = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/Typography/index.js");
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const inversify_config_1 = __webpack_require__(/*! ../../../test/typescript/ioc/inversify.config */ "./test/typescript/ioc/inversify.config.ts");
+const Symbols_1 = __webpack_require__(/*! ../repository/Symbols */ "./src/typescript/repository/Symbols.ts");
 class App extends React.Component {
     render() {
         const theme = styles_1.createMuiTheme();
@@ -93695,7 +93697,7 @@ class App extends React.Component {
             React.createElement(CssBaseline_1.default, null),
             React.createElement(AppBar_1.default, { position: "static", color: "default" },
                 React.createElement(Toolbar_1.default, null,
-                    React.createElement(Typography_1.default, { variant: "title", color: "inherit" }, "Wash Ideas - Antani.")))));
+                    React.createElement(Typography_1.default, { variant: "title", color: "inherit" }, inversify_config_1.container.get(Symbols_1.Types.LOCALIZATION).t("app.title"))))));
     }
 }
 exports.default = App;
@@ -93783,9 +93785,7 @@ const container = new inversify_1.Container();
 exports.container = container;
 container.bind(Symbols_1.Types.GIT_CLIENT).to(GitClient_1.GitClient);
 container.bind(Symbols_1.RepositoryType.GITHUB).to(GithubRepository_1.GitHubRepository);
-container.bind(Symbols_1.Types.LOCALIZATION).toDynamicValue((context) => {
-    return new Localization_1.default(Locales_1.resources);
-});
+container.bind(Symbols_1.Types.LOCALIZATION).toConstantValue(new Localization_1.default(Locales_1.resources));
 Logging_1.logIoc.trace("Inversify SRC");
 
 
@@ -93900,7 +93900,7 @@ let GitRepository = class GitRepository {
         return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
             try {
                 yield self.client.init();
-                const path = `${config.dir}/${item.title}.json`;
+                const path = `${config.dir}/${id}.json`;
                 if (self.client.exists(path) === true) {
                     yield self.persist(path, item, resolve);
                 }
@@ -93918,17 +93918,41 @@ let GitRepository = class GitRepository {
     delete(id) {
         const self = this;
         const config = self.context.configuration;
-        throw new Error("Method not implemented.");
+        return new Promise((resolve, reject) => {
+            try {
+                self.client.deleteFile(id);
+                resolve(self.client.exists(id) === false);
+            }
+            catch (e) {
+                reject(e);
+            }
+        });
     }
     find(item) {
         const self = this;
         const config = self.context.configuration;
-        throw new Error("Method not implemented.");
+        return new Promise((resolve, reject) => {
+            try {
+                const items = self.client
+                    .readdir(config.dir)
+                    .map(file => JSON.parse(file))
+                    .filter(i => {
+                    return i.conforms(item);
+                });
+                resolve(items);
+            }
+            catch (e) {
+                reject(e);
+            }
+        });
     }
     findOne(id) {
         const self = this;
         const config = self.context.configuration;
-        throw new Error("Method not implemented.");
+        return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+            const fileContent = self.client.readFile(`${config.dir}/${id}.json`, "utf-8");
+            resolve(JSON.parse(fileContent));
+        }));
     }
     sync() {
         const self = this;
@@ -94183,6 +94207,12 @@ let GitClient = class GitClient {
     writeFile(path, content, encoding) {
         return this.pfs.writeFileSync(path, content, encoding);
     }
+    readFile(path, encoding) {
+        return this.pfs.readFileSync(path, encoding);
+    }
+    deleteFile(path) {
+        return this.pfs.unlinkSync(path);
+    }
     initFS() {
         const self = this;
         return new Promise((resolve, reject) => {
@@ -94385,6 +94415,192 @@ class Sha {
     }
 }
 exports.Sha = Sha;
+
+
+/***/ }),
+
+/***/ "./test/typescript/ioc/inversify.config.ts":
+/*!*************************************************!*\
+  !*** ./test/typescript/ioc/inversify.config.ts ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (C) 2018 Alessandro Accardo a.k.a. kLeZ & Fabio Scotto di Santolo a.k.a. Plague
+//
+// This file is part of Wash Ideas.
+//
+// Wash Ideas is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Wash Ideas is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
+//
+Object.defineProperty(exports, "__esModule", { value: true });
+const inversify_1 = __webpack_require__(/*! inversify */ "./node_modules/inversify/lib/inversify.js");
+const GithubRepository_1 = __webpack_require__(/*! ../../../src/typescript/repository/GithubRepository */ "./src/typescript/repository/GithubRepository.ts");
+const Symbols_1 = __webpack_require__(/*! ../../../src/typescript/repository/Symbols */ "./src/typescript/repository/Symbols.ts");
+const Localization_1 = __webpack_require__(/*! ../../../src/typescript/util/Localization */ "./src/typescript/util/Localization.ts");
+const Logging_1 = __webpack_require__(/*! ../../../src/typescript/util/Logging */ "./src/typescript/util/Logging.ts");
+const GitClientMock_1 = __webpack_require__(/*! ../util/GitClientMock */ "./test/typescript/util/GitClientMock.ts");
+const LocalesMock_1 = __webpack_require__(/*! ../util/LocalesMock */ "./test/typescript/util/LocalesMock.ts");
+const container = new inversify_1.Container();
+exports.container = container;
+container.bind(Symbols_1.Types.GIT_CLIENT).to(GitClientMock_1.GitClientMock);
+container.bind(Symbols_1.RepositoryType.GITHUB).to(GithubRepository_1.GitHubRepository);
+container.bind(Symbols_1.Types.LOCALIZATION).toConstantValue(new Localization_1.default(LocalesMock_1.resources));
+Logging_1.logIoc.trace("Inversify TST");
+
+
+/***/ }),
+
+/***/ "./test/typescript/util/GitClientMock.ts":
+/*!***********************************************!*\
+  !*** ./test/typescript/util/GitClientMock.ts ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (C) 2018 Alessandro Accardo a.k.a. kLeZ & Fabio Scotto di Santolo a.k.a. Plague
+//
+// This file is part of Wash Ideas.
+//
+// Wash Ideas is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Wash Ideas is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
+//
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const inversify_1 = __webpack_require__(/*! inversify */ "./node_modules/inversify/lib/inversify.js");
+const Sha_1 = __webpack_require__(/*! ../../../src/typescript/util/Sha */ "./src/typescript/util/Sha.ts");
+let GitClientMock = class GitClientMock {
+    add(args) {
+        return new Promise((resolve, reject) => {
+            resolve();
+        });
+    }
+    clone(args) {
+        return new Promise((resolve, reject) => {
+            resolve();
+        });
+    }
+    commit(args) {
+        return new Promise((resolve, reject) => {
+            const res = new Sha_1.Sha(Sha_1.ShaType.SHA1, "096a8a4a0cbc3c5cada45263d8b61775f54a2ee3");
+            resolve(res);
+        });
+    }
+    exists(path) {
+        return false;
+    }
+    init() {
+        return new Promise((resolve, reject) => {
+            resolve();
+        });
+    }
+    mkdir(path) {
+        return;
+    }
+    readdir(path) {
+        return [path];
+    }
+    pull(args) {
+        return new Promise((resolve, reject) => {
+            resolve();
+        });
+    }
+    push(args) {
+        return new Promise((resolve, reject) => {
+            const res = {};
+            resolve(res);
+        });
+    }
+    writeFile(path, content, encoding) {
+        return;
+    }
+    readFile(path, encoding) {
+        return "";
+    }
+    deleteFile(path) {
+        return;
+    }
+};
+GitClientMock = __decorate([
+    inversify_1.injectable()
+], GitClientMock);
+exports.GitClientMock = GitClientMock;
+
+
+/***/ }),
+
+/***/ "./test/typescript/util/LocalesMock.ts":
+/*!*********************************************!*\
+  !*** ./test/typescript/util/LocalesMock.ts ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (C) 2018 Alessandro Accardo a.k.a. kLeZ & Fabio Scotto di Santolo a.k.a. Plague
+//
+// This file is part of Wash Ideas.
+//
+// Wash Ideas is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Wash Ideas is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
+Object.defineProperty(exports, "__esModule", { value: true });
+const resources = {
+    en: {
+        translation: {
+            main: {
+                test: "goofy",
+            },
+        },
+    },
+    it: {
+        translation: {
+            main: {
+                test: "pippo",
+            },
+        },
+    },
+};
+exports.resources = resources;
 
 
 /***/ }),

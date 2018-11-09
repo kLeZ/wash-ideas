@@ -18,14 +18,13 @@
 
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import {
-	createMuiTheme,
-	MuiThemeProvider,
-	Theme
-} from "@material-ui/core/styles";
+import { createMuiTheme, MuiThemeProvider, Theme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import * as React from "react";
+import { container } from "../../../test/typescript/ioc/inversify.config";
+import { Types } from "../repository/Symbols";
+import Localization from "../util/Localization";
 
 class App extends React.Component<any, any> {
 	public render() {
@@ -36,7 +35,7 @@ class App extends React.Component<any, any> {
 				<AppBar position="static" color="default">
 					<Toolbar>
 						<Typography variant="title" color="inherit">
-							Wash Ideas - Antani.
+							{container.get<Localization>(Types.LOCALIZATION).t("app.title")}
 						</Typography>
 					</Toolbar>
 				</AppBar>

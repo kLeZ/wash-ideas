@@ -57,8 +57,8 @@ export class GitClientMock implements IGitClient {
 	public mkdir(path: string): void {
 		return;
 	}
-	public readdir(path: string): void {
-		return;
+	public readdir(path: string): string[] {
+		return [path];
 	}
 	public pull(args: IPullArgs): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
@@ -72,6 +72,12 @@ export class GitClientMock implements IGitClient {
 		});
 	}
 	public writeFile(path: string, content: string, encoding: string): void {
+		return;
+	}
+	public readFile(path: string, encoding: string): string {
+		return "";
+	}
+	public deleteFile(path: string): void {
 		return;
 	}
 }
