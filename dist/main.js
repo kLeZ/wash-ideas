@@ -93855,7 +93855,8 @@ let GitRepository = class GitRepository {
                 resolve();
             }
             else {
-                reject(new Error("Not yet implemented"));
+                Logging_1.logRepo.warn("Repository has already been cloned");
+                resolve();
             }
         }));
     }
@@ -93894,13 +93895,13 @@ let GitRepository = class GitRepository {
             }
         }));
     }
-    update(id, item) {
+    update(filename, item) {
         const self = this;
         const config = self.context.configuration;
         return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
             try {
                 yield self.client.init();
-                const path = `${config.dir}/${id}.json`;
+                const path = `${config.dir}/${filename}.json`;
                 if (self.client.exists(path) === true) {
                     yield self.persist(path, item, resolve);
                 }
@@ -93915,30 +93916,28 @@ let GitRepository = class GitRepository {
             }
         }));
     }
-    delete(id) {
+    delete(path) {
         const self = this;
         const config = self.context.configuration;
         return new Promise((resolve, reject) => {
             try {
-                self.client.deleteFile(id);
-                resolve(self.client.exists(id) === false);
+                self.client.deleteFile(path);
+                resolve(self.client.exists(path) === false);
             }
             catch (e) {
                 reject(e);
             }
         });
     }
-    find(item) {
+    find(comparer) {
         const self = this;
         const config = self.context.configuration;
         return new Promise((resolve, reject) => {
             try {
                 const items = self.client
                     .readdir(config.dir)
-                    .map(file => JSON.parse(file))
-                    .filter(i => {
-                    return i.conforms(item);
-                });
+                    .map(file => JSON.parse(self.client.readFile(file, "utf-8")))
+                    .filter(comparer);
                 resolve(items);
             }
             catch (e) {
@@ -93946,11 +93945,11 @@ let GitRepository = class GitRepository {
             }
         });
     }
-    findOne(id) {
+    findOne(filename) {
         const self = this;
         const config = self.context.configuration;
         return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
-            const fileContent = self.client.readFile(`${config.dir}/${id}.json`, "utf-8");
+            const fileContent = self.client.readFile(`${config.dir}/${filename}.json`, "utf-8");
             resolve(JSON.parse(fileContent));
         }));
     }
@@ -94495,10 +94494,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = __webpack_require__(/*! inversify */ "./node_modules/inversify/lib/inversify.js");
 const Sha_1 = __webpack_require__(/*! ../../../src/typescript/util/Sha */ "./src/typescript/util/Sha.ts");
+const MyObject_1 = __webpack_require__(/*! ./MyObject */ "./test/typescript/util/MyObject.ts");
 let GitClientMock = class GitClientMock {
+    constructor() {
+        this.ROOT_PATH = "wash-ideas";
+        this.tkn = ["Goofy", "Pluto", "Mickey"];
+        this.elements = new Map();
+        this.elements.set(`${this.ROOT_PATH}/${this.tkn[0]}0.json`, JSON.stringify(new MyObject_1.MyObject(`${this.tkn[0]}0`, "utf-8")));
+        this.elements.set(`${this.ROOT_PATH}/${this.tkn[0]}1.json`, JSON.stringify(new MyObject_1.MyObject(`${this.tkn[0]}1`, "utf-8")));
+        this.elements.set(`${this.ROOT_PATH}/${this.tkn[0]}2.json`, JSON.stringify(new MyObject_1.MyObject(`${this.tkn[0]}2`, "utf-8")));
+        this.elements.set(`${this.ROOT_PATH}/${this.tkn[1]}0.json`, JSON.stringify(new MyObject_1.MyObject(`${this.tkn[1]}0`, "utf-8")));
+        this.elements.set(`${this.ROOT_PATH}/${this.tkn[1]}1.json`, JSON.stringify(new MyObject_1.MyObject(`${this.tkn[1]}1`, "utf-8")));
+        this.elements.set(`${this.ROOT_PATH}/${this.tkn[1]}2.json`, JSON.stringify(new MyObject_1.MyObject(`${this.tkn[1]}2`, "utf-8")));
+        this.elements.set(`${this.ROOT_PATH}/${this.tkn[2]}0.json`, JSON.stringify(new MyObject_1.MyObject(`${this.tkn[2]}0`, "utf-8")));
+        this.elements.set(`${this.ROOT_PATH}/${this.tkn[2]}1.json`, JSON.stringify(new MyObject_1.MyObject(`${this.tkn[2]}1`, "utf-8")));
+        this.elements.set(`${this.ROOT_PATH}/${this.tkn[2]}2.json`, JSON.stringify(new MyObject_1.MyObject(`${this.tkn[2]}2`, "utf-8")));
+    }
     add(args) {
         return new Promise((resolve, reject) => {
             resolve();
@@ -94516,7 +94533,7 @@ let GitClientMock = class GitClientMock {
         });
     }
     exists(path) {
-        return false;
+        return this.ROOT_PATH === path || this.elements.has(path);
     }
     init() {
         return new Promise((resolve, reject) => {
@@ -94527,7 +94544,7 @@ let GitClientMock = class GitClientMock {
         return;
     }
     readdir(path) {
-        return [path];
+        return Array.from(this.elements.keys());
     }
     pull(args) {
         return new Promise((resolve, reject) => {
@@ -94541,17 +94558,18 @@ let GitClientMock = class GitClientMock {
         });
     }
     writeFile(path, content, encoding) {
-        return;
+        this.elements.set(path, JSON.stringify(new MyObject_1.MyObject(content, encoding)));
     }
     readFile(path, encoding) {
-        return "";
+        return this.elements.get(path);
     }
     deleteFile(path) {
-        return;
+        this.elements.delete(path);
     }
 };
 GitClientMock = __decorate([
-    inversify_1.injectable()
+    inversify_1.injectable(),
+    __metadata("design:paramtypes", [])
 ], GitClientMock);
 exports.GitClientMock = GitClientMock;
 
@@ -94601,6 +94619,47 @@ const resources = {
     },
 };
 exports.resources = resources;
+
+
+/***/ }),
+
+/***/ "./test/typescript/util/MyObject.ts":
+/*!******************************************!*\
+  !*** ./test/typescript/util/MyObject.ts ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (C) 2018 Alessandro Accardo a.k.a. kLeZ & Fabio Scotto di Santolo a.k.a. Plague
+//
+// This file is part of Wash Ideas.
+//
+// Wash Ideas is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Wash Ideas is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
+//
+Object.defineProperty(exports, "__esModule", { value: true });
+class MyObject {
+    constructor(title, encoding) {
+        this.title = title;
+        this.encoding = encoding;
+    }
+    conforms(other) {
+        return this.title === other.title;
+    }
+}
+exports.MyObject = MyObject;
 
 
 /***/ }),
