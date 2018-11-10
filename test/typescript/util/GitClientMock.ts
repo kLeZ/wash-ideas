@@ -17,6 +17,7 @@
 //
 
 import { injectable } from "inversify";
+import { IPersistible } from "../../../src/typescript/models/IPersistible";
 import {
 	IAddArgs,
 	ICloneArgs,
@@ -24,12 +25,28 @@ import {
 	IGitClient,
 	IPullArgs,
 	IPushArgs,
-	IPushResult,
+	IPushResult
 } from "../../../src/typescript/util/IGitClient";
 import { Sha, ShaType } from "../../../src/typescript/util/Sha";
 
 @injectable()
 export class GitClientMock implements IGitClient {
+	private elements: Map<string, string>;
+
+	private ROOT_PATH: string = "wash-ideas/";
+
+	public constructor() {
+		this.elements.set(`${this.ROOT_PATH}/Goofy0.json`, JSON.stringify(new MyObject("Goofy0", "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/Goofy1.json`, JSON.stringify(new MyObject("Goofy1", "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/Goofy2.json`, JSON.stringify(new MyObject("Goofy2", "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/Pluto0.json`, JSON.stringify(new MyObject("Pluto0", "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/Pluto1.json`, JSON.stringify(new MyObject("Pluto1", "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/Pluto2.json`, JSON.stringify(new MyObject("Pluto2", "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/Mickey0.json`, JSON.stringify(new MyObject("Mickey0", "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/Mickey1.json`, JSON.stringify(new MyObject("Mickey1", "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/Mickey2.json`, JSON.stringify(new MyObject("Mickey2", "utf-8")));
+	}
+
 	public add(args: IAddArgs): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
 			resolve();
@@ -47,7 +64,7 @@ export class GitClientMock implements IGitClient {
 		});
 	}
 	public exists(path: string): boolean {
-		return false;
+		return this.ROOT_PATH === path || this.elements.has(path);
 	}
 	public init(): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
@@ -58,7 +75,7 @@ export class GitClientMock implements IGitClient {
 		return;
 	}
 	public readdir(path: string): string[] {
-		return [path];
+		return Array.from(this.elements.keys());
 	}
 	public pull(args: IPullArgs): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
@@ -72,12 +89,27 @@ export class GitClientMock implements IGitClient {
 		});
 	}
 	public writeFile(path: string, content: string, encoding: string): void {
-		return;
+		this.elements.set(path, JSON.stringify(new MyObject(content, encoding)));
 	}
 	public readFile(path: string, encoding: string): string {
-		return "";
+		return this.elements.get(path);
 	}
 	public deleteFile(path: string): void {
-		return;
+		this.elements.delete(path);
+	}
+}
+
+// tslint:disable-next-line:max-classes-per-file
+class MyObject implements IPersistible {
+	public title: string;
+	public encoding: string;
+
+	public constructor(title: string, encoding: string) {
+		this.title = title;
+		this.encoding = encoding;
+	}
+
+	public conforms(other: IPersistible): boolean {
+		return this.title === other.title;
 	}
 }
