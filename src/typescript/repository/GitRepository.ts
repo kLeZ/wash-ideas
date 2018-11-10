@@ -49,7 +49,8 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 				});
 				resolve();
 			} else {
-				reject(new Error("Not yet implemented"));
+				logRepo.warn("Repository has already been cloned");
+				resolve();
 			}
 		});
 	}
@@ -87,14 +88,14 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 			}
 		});
 	}
-	public update(id: string, item: T): Promise<boolean> {
+	public update(filename: string, item: T): Promise<boolean> {
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
 		return new Promise<boolean>(async (resolve, reject) => {
 			try {
 				await self.client.init();
 
-				const path = `${config.dir}/${id}.json`;
+				const path = `${config.dir}/${filename}.json`;
 				if (self.client.exists(path) === true) {
 					await self.persist(path, item, resolve);
 				} else {
@@ -107,20 +108,20 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 			}
 		});
 	}
-	public delete(id: string): Promise<boolean> {
+	public delete(path: string): Promise<boolean> {
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
 
 		return new Promise<boolean>((resolve, reject) => {
 			try {
-				self.client.deleteFile(id);
-				resolve(self.client.exists(id) === false);
+				self.client.deleteFile(path);
+				resolve(self.client.exists(path) === false);
 			} catch (e) {
 				reject(e);
 			}
 		});
 	}
-	public find(item: T): Promise<T[]> {
+	public find(comparer: (value: T) => boolean): Promise<T[]> {
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
 
@@ -128,22 +129,20 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 			try {
 				const items: T[] = self.client
 					.readdir(config.dir)
-					.map(file => JSON.parse(file) as T)
-					.filter(i => {
-						return i.conforms(item);
-					});
+					.map(file => JSON.parse(self.client.readFile(file, "utf-8")) as T)
+					.filter(comparer);
 				resolve(items);
 			} catch (e) {
 				reject(e);
 			}
 		});
 	}
-	public findOne(id: string): Promise<T> {
+	public findOne(filename: string): Promise<T> {
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
 
 		return new Promise<T>(async (resolve, reject) => {
-			const fileContent = self.client.readFile(`${config.dir}/${id}.json`, "utf-8");
+			const fileContent = self.client.readFile(`${config.dir}/${filename}.json`, "utf-8");
 			resolve(JSON.parse(fileContent) as T);
 		});
 	}

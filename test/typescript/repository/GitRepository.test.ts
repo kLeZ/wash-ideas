@@ -18,47 +18,67 @@
 
 import { IContext } from "../../../src/typescript/models/IContext";
 import { IGitRepositoryConfiguration } from "../../../src/typescript/models/IGitRepositoryConfiguration";
-import { IPersistible } from "../../../src/typescript/models/IPersistible";
+import { IPersistible } from '../../../src/typescript/models/IPersistible';
 import { IRepository } from "../../../src/typescript/repository/IRepository";
 import { RepositoryType, Types } from "../../../src/typescript/repository/Symbols";
 import { container } from "../ioc/inversify.config";
+import { MyObject } from "../util/MyObject";
 
-describe("Open and close repository test", () => {
-	beforeAll(() => {
-		const configuration: IGitRepositoryConfiguration = {
-			type: "git",
-			dir: "wash-ideas",
-			branch: "data",
-			url: "https://github.com/kLeZ/wash-ideas",
-			oauth2format: "github",
-			token: "",
-			fsconf: { fs: "InMemory", options: {} }
-		};
-		const ctx: IContext = {
-			user: {
-				name: "Alessandro Accardo",
-				email: "julius8774@gmail.com"
-			},
-			configuration
-		};
-		container.bind<IContext>(Types.CONTEXT).toConstantValue(ctx);
-	});
+beforeAll(() => {
+	const configuration: IGitRepositoryConfiguration = {
+		type: "git",
+		dir: "wash-ideas",
+		branch: "data",
+		url: "https://github.com/kLeZ/wash-ideas",
+		oauth2format: "github",
+		token: "",
+		fsconf: { fs: "InMemory", options: {} },
+	};
+	const ctx: IContext = {
+		user: {
+			name: "Alessandro Accardo",
+			email: "julius8774@gmail.com",
+		},
+		configuration,
+	};
+	container.bind<IContext>(Types.CONTEXT).toConstantValue(ctx);
+});
 
-	beforeEach(() => {
-		container.snapshot();
-	});
+beforeEach(() => {
+	container.snapshot();
+});
 
-	afterEach(() => {
-		container.restore();
-	});
+afterEach(() => {
+	container.restore();
+});
 
-	it("clone branch data of wash-ideas repository without crash", async () => {
-		const repo = container.get<IRepository<IPersistible>>(RepositoryType.GITHUB);
-		await repo.open();
-	});
+it("clone branch data of wash-ideas repository without crash", async () => {
+	const repo = container.get<IRepository<IPersistible>>(RepositoryType.GITHUB);
+	await repo.open();
+});
 
-	it("remove entire repository folder without crash", async () => {
-		const repo = container.get<IRepository<IPersistible>>(RepositoryType.GITHUB);
-		await repo.close();
+it("remove entire repository folder without crash", async () => {
+	const repo = container.get<IRepository<IPersistible>>(RepositoryType.GITHUB);
+	await repo.close();
+});
+
+it("Tests the find one method searching for the 'Goofy0' instance", async () => {
+	const repo = container.get<IRepository<IPersistible>>(RepositoryType.GITHUB);
+	const el = await repo.findOne("Goofy0");
+	expect(el).toEqual({
+		title: "Goofy0",
+		encoding: "utf-8"
 	});
+});
+
+it("Tests the find method searching for the 'Goofy*' instance", async () => {
+	const repo = container.get<IRepository<IPersistible>>(RepositoryType.GITHUB);
+	const els = await repo.find(val => {
+		return /Goofy[0-9]+/.test(val.title);
+	});
+	expect(els).toEqual(expect.arrayContaining([
+		new MyObject("Goofy0", "utf-8"),
+		new MyObject("Goofy1", "utf-8"),
+		new MyObject("Goofy2", "utf-8")
+	]));
 });

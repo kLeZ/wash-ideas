@@ -16,7 +16,16 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-export interface IPersistible {
-	title: string;
-	encoding: string;
+import { IPersistible } from "../../../src/typescript/models/IPersistible";
+
+export class MyObject implements IPersistible {
+	public title: string;
+	public encoding: string;
+	public constructor(title: string, encoding: string) {
+		this.title = title;
+		this.encoding = encoding;
+	}
+	public conforms(other: IPersistible): boolean {
+		return this.title === other.title;
+	}
 }

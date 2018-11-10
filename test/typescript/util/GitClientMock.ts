@@ -17,7 +17,6 @@
 //
 
 import { injectable } from "inversify";
-import { IPersistible } from "../../../src/typescript/models/IPersistible";
 import {
 	IAddArgs,
 	ICloneArgs,
@@ -25,26 +24,29 @@ import {
 	IGitClient,
 	IPullArgs,
 	IPushArgs,
-	IPushResult
+	IPushResult,
 } from "../../../src/typescript/util/IGitClient";
 import { Sha, ShaType } from "../../../src/typescript/util/Sha";
+import { MyObject } from "./MyObject";
 
 @injectable()
 export class GitClientMock implements IGitClient {
 	private elements: Map<string, string>;
 
-	private ROOT_PATH: string = "wash-ideas/";
+	private ROOT_PATH: string = "wash-ideas";
+	private tkn: string[] = ["Goofy", "Pluto", "Mickey"];
 
 	public constructor() {
-		this.elements.set(`${this.ROOT_PATH}/Goofy0.json`, JSON.stringify(new MyObject("Goofy0", "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/Goofy1.json`, JSON.stringify(new MyObject("Goofy1", "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/Goofy2.json`, JSON.stringify(new MyObject("Goofy2", "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/Pluto0.json`, JSON.stringify(new MyObject("Pluto0", "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/Pluto1.json`, JSON.stringify(new MyObject("Pluto1", "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/Pluto2.json`, JSON.stringify(new MyObject("Pluto2", "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/Mickey0.json`, JSON.stringify(new MyObject("Mickey0", "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/Mickey1.json`, JSON.stringify(new MyObject("Mickey1", "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/Mickey2.json`, JSON.stringify(new MyObject("Mickey2", "utf-8")));
+		this.elements = new Map<string, string>();
+		this.elements.set(`${this.ROOT_PATH}/${this.tkn[0]}0.json`, JSON.stringify(new MyObject(`${this.tkn[0]}0`, "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/${this.tkn[0]}1.json`, JSON.stringify(new MyObject(`${this.tkn[0]}1`, "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/${this.tkn[0]}2.json`, JSON.stringify(new MyObject(`${this.tkn[0]}2`, "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/${this.tkn[1]}0.json`, JSON.stringify(new MyObject(`${this.tkn[1]}0`, "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/${this.tkn[1]}1.json`, JSON.stringify(new MyObject(`${this.tkn[1]}1`, "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/${this.tkn[1]}2.json`, JSON.stringify(new MyObject(`${this.tkn[1]}2`, "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/${this.tkn[2]}0.json`, JSON.stringify(new MyObject(`${this.tkn[2]}0`, "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/${this.tkn[2]}1.json`, JSON.stringify(new MyObject(`${this.tkn[2]}1`, "utf-8")));
+		this.elements.set(`${this.ROOT_PATH}/${this.tkn[2]}2.json`, JSON.stringify(new MyObject(`${this.tkn[2]}2`, "utf-8")));
 	}
 
 	public add(args: IAddArgs): Promise<void> {
@@ -96,20 +98,5 @@ export class GitClientMock implements IGitClient {
 	}
 	public deleteFile(path: string): void {
 		this.elements.delete(path);
-	}
-}
-
-// tslint:disable-next-line:max-classes-per-file
-class MyObject implements IPersistible {
-	public title: string;
-	public encoding: string;
-
-	public constructor(title: string, encoding: string) {
-		this.title = title;
-		this.encoding = encoding;
-	}
-
-	public conforms(other: IPersistible): boolean {
-		return this.title === other.title;
 	}
 }
