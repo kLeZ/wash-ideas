@@ -18,7 +18,7 @@
 
 import { IContext } from "../../../src/typescript/models/IContext";
 import { IGitRepositoryConfiguration } from "../../../src/typescript/models/IGitRepositoryConfiguration";
-import { IPersistible } from '../../../src/typescript/models/IPersistible';
+import { IPersistible } from "../../../src/typescript/models/IPersistible";
 import { IRepository } from "../../../src/typescript/repository/IRepository";
 import { RepositoryType, Types } from "../../../src/typescript/repository/Symbols";
 import { container } from "../ioc/inversify.config";
@@ -36,7 +36,7 @@ beforeAll(() => {
 	};
 	const ctx: IContext = {
 		user: {
-			name: "Alessandro Accardo",
+			name: "kLeZ",
 			email: "julius8774@gmail.com",
 		},
 		configuration,
