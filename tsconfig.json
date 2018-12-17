@@ -5,7 +5,7 @@
 		"sourceMap": true,
 		"jsx": "react",
 		"allowSyntheticDefaultImports": true,
-		"allowJs": true,
+		"allowJs": false,
 		"module": "commonjs",
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,

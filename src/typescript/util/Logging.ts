@@ -33,3 +33,4 @@ CategoryServiceFactory.setDefaultConfiguration(
 export const logRepo = new Category("repository");
 export const logUtils = new Category("utils");
 export const logIoc = new Category("ioc");
+export const logComponent = new Category("component");

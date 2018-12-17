@@ -27,6 +27,7 @@ import Localization from "./util/Localization";
 import { logUtils } from "./util/Logging";
 
 const i18n = container.get<Localization>(Types.LOCALIZATION);
-logUtils.info(i18n.t("main.test"));
+logUtils.debug(i18n.t("main.test"));
+logUtils.debug(JSON.stringify(i18n.t("app.configuration_form", { returnObjects: true })));
 
 render(<App />, document.getElementById("root"));

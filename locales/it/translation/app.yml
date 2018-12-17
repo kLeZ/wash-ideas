@@ -17,10 +17,10 @@
 
 title: Wash Ideas - Antani.
 configuration_form:
-  - token_label: Token di accesso
-  - token_visibility_label: Commuta visibilità del token
-  - url_label: Url
-  - oauth2format_label: Fornitore OAuth2
-  - name_label: Nome
-  - email_label: Email
-  - load_button_text: Carica
+  token_label: Token di accesso
+  token_visibility_label: Commuta visibilità del token
+  url_label: Url
+  oauth2format_label: Fornitore OAuth2
+  name_label: Nome
+  email_label: Email
+  load_button_text: Carica

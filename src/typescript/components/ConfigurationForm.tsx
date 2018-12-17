@@ -1,13 +1,14 @@
 import {
 	Button,
 	Divider,
+	FormControl,
 	IconButton,
 	Input,
 	InputAdornment,
 	InputLabel,
 	List,
 	ListItem,
-	MenuItem,
+	NativeSelect,
 	Select,
 	TextField,
 } from "@material-ui/core";
@@ -21,6 +22,7 @@ import { IUser } from "../models/IUser";
 import { Types } from "../repository/Symbols";
 import Extender from "../util/Extender";
 import Localization from "../util/Localization";
+import { logComponent } from "../util/Logging";
 
 interface IFormState {
 	showToken: boolean;
@@ -29,12 +31,19 @@ interface IFormState {
 }
 
 class ConfigurationForm extends React.Component<any, IFormState> {
+	private l10n: any;
+
 	constructor(props: any) {
 		super(props);
 		this.handleClickShowToken = this.handleClickShowToken.bind(this);
 		this.handleConfigurationChange = this.handleConfigurationChange.bind(this);
 		this.handleUserChange = this.handleUserChange.bind(this);
 		this.initContext = this.initContext.bind(this);
+
+		this.l10n = container
+			.get<Localization>(Types.LOCALIZATION)
+			.t("app.configuration_form", { returnObjects: true });
+		logComponent.trace(JSON.stringify(this.l10n));
 
 		this.state = {
 			showToken: false,
@@ -58,18 +67,30 @@ class ConfigurationForm extends React.Component<any, IFormState> {
 		this.setState(s => ({ showToken: !s.showToken }));
 	}
 
-	public handleConfigurationChange(
-		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-	) {
-		this.setState(s => ({
-			configuration: Extender.extends(s.configuration, { [event.target.name]: event.target.value }),
-		}));
+	public handleConfigurationChange(name: string) {
+		return (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+			if (event.target != null) {
+				const prev = JSON.stringify(this.state.configuration);
+				logComponent.debug(`configuration change :: [${name}]: ${event.target.value} :: prev: ${prev}`);
+				this.setState({
+					configuration: Extender.extends(this.state.configuration, {
+						[name]: event.target.value,
+					}),
+				});
+			}
+		};
 	}
 
-	public handleUserChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-		this.setState(s => ({
-			user: Extender.extends(s.user, { [event.target.name]: event.target.value }),
-		}));
+	public handleUserChange(name: string) {
+		return (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+			if (event.target != null) {
+				const prev = JSON.stringify(this.state.user);
+				logComponent.debug(`user change :: [${name}]: ${event.target.value} :: prev: ${prev}`);
+				this.setState({
+					user: Extender.extends(this.state.user, { [name]: event.target.value }),
+				});
+			}
+		};
 	}
 
 	public initContext(): void {
@@ -81,85 +102,85 @@ class ConfigurationForm extends React.Component<any, IFormState> {
 	}
 
 	public render() {
-		const l10n = container
-			.get<Localization>(Types.LOCALIZATION)
-			.t("app.configuration_form", { returnObjects: true });
 		return (
 			<List style={{ width: 350 }}>
 				<ListItem>
 					<TextField
 						id="name"
-						name="name"
-						label={l10n.name_label}
-						placeholder={l10n.name_label}
-						value={this.state.user.name}
-						onChange={this.handleUserChange}
-						margin="normal"
+						label={this.l10n.name_label}
+						defaultValue={this.state.user.name}
+						onChange={this.handleUserChange("name")}
+						fullWidth
 					/>
 				</ListItem>
 				<ListItem>
 					<TextField
 						id="email"
-						name="email"
-						label={l10n.email_label}
-						placeholder={l10n.email_label}
-						value={this.state.user.email}
-						onChange={this.handleUserChange}
-						margin="normal"
+						label={this.l10n.email_label}
+						defaultValue={this.state.user.email}
+						onChange={this.handleUserChange("email")}
+						fullWidth
 					/>
 				</ListItem>
 				<Divider />
 				<ListItem>
 					<TextField
 						id="url"
-						name="url"
-						label={l10n.url_label}
-						placeholder={l10n.url_label}
-						value={this.state.configuration.url}
-						onChange={this.handleConfigurationChange}
-						margin="normal"
+						label={this.l10n.url_label}
+						defaultValue={this.state.configuration.url}
+						onChange={this.handleConfigurationChange("url")}
+						fullWidth
 					/>
 				</ListItem>
 				<ListItem>
-					<InputLabel htmlFor="oauth2format">{l10n.oauth2format_label}</InputLabel>
-					<Select
-						value={this.state.configuration.oauth2format}
-						onChange={this.handleConfigurationChange}
-						placeholder={l10n.oauth2format_label}
-						inputProps={{
-							name: "oauth2format",
-							id: "oauth2format",
-						}}
-					>
-						{/* proper names of services, no need to l6e */}
-						<MenuItem value="github">GitHub</MenuItem>
-						<MenuItem value="bitbucket">BitBucket</MenuItem>
-						<MenuItem value="gitlab">GitLab</MenuItem>
-					</Select>
+					<FormControl fullWidth>
+						<InputLabel shrink htmlFor="oauth2format-compo">
+							{this.l10n.oauth2format_label}
+						</InputLabel>
+						<NativeSelect
+							value={this.state.configuration.oauth2format}
+							onChange={this.handleConfigurationChange("oauth2format")}
+							// input={<Input id="oauth2format-compo" name="oauth2format" />}
+							inputProps={{
+								id: "oauth2format-compo",
+								name: "oauth2format",
+							}}
+							fullWidth
+						>
+							{/* proper names of services, no need to l6e */}
+							<option value="github">GitHub</option>
+							<option value="bitbucket">BitBucket</option>
+							<option value="gitlab">GitLab</option>
+						</NativeSelect>
+					</FormControl>
 				</ListItem>
 				<ListItem>
-					<InputLabel htmlFor="token">{l10n.token_label}</InputLabel>
-					<Input
-						id="token"
-						name="token"
-						type={this.state.showToken ? "text" : "password"}
-						value={this.state.configuration.token}
-						onChange={this.handleConfigurationChange}
-						placeholder={l10n.token_label}
-						endAdornment={
-							<InputAdornment position="end">
-								<IconButton
-									aria-label={l10n.token_visibility_label}
-									onClick={this.handleClickShowToken}
-								>
-									{this.state.showToken ? <Visibility /> : <VisibilityOff />}
-								</IconButton>
-							</InputAdornment>
-						}
-					/>
+					<FormControl fullWidth>
+						<InputLabel shrink htmlFor="token-compo">
+							{this.l10n.token_label}
+						</InputLabel>
+						<Input
+							id="token-compo"
+							name="token"
+							type={this.state.showToken ? "text" : "password"}
+							defaultValue={this.state.configuration.token}
+							onChange={this.handleConfigurationChange("token")}
+							placeholder={this.l10n.token_label}
+							endAdornment={
+								<InputAdornment position="end">
+									<IconButton
+										aria-label={this.l10n.token_visibility_label}
+										onClick={this.handleClickShowToken}
+									>
+										{this.state.showToken ? <Visibility /> : <VisibilityOff />}
+									</IconButton>
+								</InputAdornment>
+							}
+						/>
+					</FormControl>
 				</ListItem>
 				<Divider />
-				<Button>{l10n.load_button_text}</Button>
+				<Button onClick={this.initContext}>{this.l10n.load_button_text}</Button>
 			</List>
 		);
 	}

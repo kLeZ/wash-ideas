@@ -20,6 +20,16 @@ const resources = {
 		translation: {
 			main: {
 				test: "goofy",
+				test_obj: {
+					lang: "EN",
+					prop1: "aaa",
+					prop2: "bbb",
+					prop3: "ccc",
+					prop4: {
+						prop4_1: 111,
+						prop4_2: 222,
+					},
+				}
 			},
 		},
 	},
@@ -27,6 +37,16 @@ const resources = {
 		translation: {
 			main: {
 				test: "pippo",
+				test_obj: {
+					lang: "IT",
+					prop1: "aaa",
+					prop2: "bbb",
+					prop3: "ccc",
+					prop4: {
+						prop4_1: 111,
+						prop4_2: 222,
+					},
+				}
 			},
 		},
 	},

@@ -29,3 +29,31 @@ it("Test localization in italian", () => {
 	i18n.changeLanguage("it");
 	expect(i18n.t("main.test")).toBe("pippo");
 });
+it("Test localization multiple items in english", () => {
+	const i18n = container.get<Localization>(Types.LOCALIZATION);
+	i18n.changeLanguage("en");
+	expect(i18n.t("main.test_obj", { returnObjects: true })).toEqual({
+		lang: "EN",
+		prop1: "aaa",
+		prop2: "bbb",
+		prop3: "ccc",
+		prop4: {
+			prop4_1: 111,
+			prop4_2: 222,
+		},
+	});
+});
+it("Test localization multiple items in italian", () => {
+	const i18n = container.get<Localization>(Types.LOCALIZATION);
+	i18n.changeLanguage("it");
+	expect(i18n.t("main.test_obj", { returnObjects: true })).toEqual({
+		lang: "IT",
+		prop1: "aaa",
+		prop2: "bbb",
+		prop3: "ccc",
+		prop4: {
+			prop4_1: 111,
+			prop4_2: 222,
+		},
+	});
+});
