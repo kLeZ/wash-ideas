@@ -25,8 +25,10 @@ import Typography from "@material-ui/core/Typography";
 import MenuIcon from "@material-ui/icons/Menu";
 import * as React from "react";
 import { container } from "../../../test/typescript/ioc/inversify.config";
+import { IContext } from "../models/IContext";
 import { Types } from "../repository/Symbols";
 import Localization from "../util/Localization";
+import { logComponent } from "../util/Logging";
 import ConfigurationForm from "./ConfigurationForm";
 import SideBar from "./SideBar";
 
@@ -43,13 +45,23 @@ class App extends React.Component<any, any> {
 		this.sidebar.current.toggleSideBar();
 	}
 
+	public loadCallback() {
+		const self = this;
+		return () => {
+			self.toggle();
+			const ctx = container.get<IContext>(Types.CONTEXT);
+			logComponent.debug(`Loaded Context :: ${JSON.stringify(ctx)}`);
+			// TODO: open repo and load entities logic goes here!
+		};
+	}
+
 	public render() {
 		const theme: Theme = createMuiTheme();
 		return (
 			<MuiThemeProvider theme={theme}>
 				<CssBaseline />
 				<SideBar open={false} side="left" ref={this.sidebar}>
-					<ConfigurationForm />
+					<ConfigurationForm loadCallback={this.loadCallback()} />
 				</SideBar>
 				<AppBar position="static" color="default">
 					<Toolbar>

@@ -9,7 +9,6 @@ import {
 	List,
 	ListItem,
 	NativeSelect,
-	Select,
 	TextField,
 } from "@material-ui/core";
 import Visibility from "@material-ui/icons/Visibility";
@@ -24,17 +23,24 @@ import Extender from "../util/Extender";
 import Localization from "../util/Localization";
 import { logComponent } from "../util/Logging";
 
-interface IFormState {
+interface IConfigurationFormState {
 	showToken: boolean;
 	configuration: IGitRepositoryConfiguration;
 	user: IUser;
 }
 
-class ConfigurationForm extends React.Component<any, IFormState> {
-	private l10n: any;
+interface IConfigurationFormProps {
+	loadCallback: () => void;
+}
 
-	constructor(props: any) {
+class ConfigurationForm extends React.Component<IConfigurationFormProps, IConfigurationFormState> {
+	private l10n: any;
+	private cb: () => void;
+
+	constructor(props: IConfigurationFormProps) {
 		super(props);
+		this.cb = props.loadCallback;
+
 		this.handleClickShowToken = this.handleClickShowToken.bind(this);
 		this.handleConfigurationChange = this.handleConfigurationChange.bind(this);
 		this.handleUserChange = this.handleUserChange.bind(this);
@@ -73,7 +79,7 @@ class ConfigurationForm extends React.Component<any, IFormState> {
 				const prev = JSON.stringify(this.state.configuration);
 				logComponent.debug(`configuration change :: [${name}]: ${event.target.value} :: prev: ${prev}`);
 				this.setState({
-					configuration: Extender.extends(this.state.configuration, {
+					configuration: Extender.extends(Extender.Default, {}, this.state.configuration, {
 						[name]: event.target.value,
 					}),
 				});
@@ -87,7 +93,7 @@ class ConfigurationForm extends React.Component<any, IFormState> {
 				const prev = JSON.stringify(this.state.user);
 				logComponent.debug(`user change :: [${name}]: ${event.target.value} :: prev: ${prev}`);
 				this.setState({
-					user: Extender.extends(this.state.user, { [name]: event.target.value }),
+					user: Extender.extends(Extender.Default, {}, this.state.user, { [name]: event.target.value }),
 				});
 			}
 		};
@@ -98,12 +104,14 @@ class ConfigurationForm extends React.Component<any, IFormState> {
 			user: this.state.user,
 			configuration: this.state.configuration,
 		};
+		logComponent.debug(`Binding Context :: ${JSON.stringify(ctx)}`);
 		container.bind<IContext>(Types.CONTEXT).toConstantValue(ctx);
+		this.cb();
 	}
 
 	public render() {
 		return (
-			<List style={{ width: 350 }}>
+			<List className="configuration-form-list">
 				<ListItem>
 					<TextField
 						id="name"
@@ -140,7 +148,6 @@ class ConfigurationForm extends React.Component<any, IFormState> {
 						<NativeSelect
 							value={this.state.configuration.oauth2format}
 							onChange={this.handleConfigurationChange("oauth2format")}
-							// input={<Input id="oauth2format-compo" name="oauth2format" />}
 							inputProps={{
 								id: "oauth2format-compo",
 								name: "oauth2format",
@@ -149,8 +156,10 @@ class ConfigurationForm extends React.Component<any, IFormState> {
 						>
 							{/* proper names of services, no need to l6e */}
 							<option value="github">GitHub</option>
+							{/* FIXME: not supported yet
 							<option value="bitbucket">BitBucket</option>
 							<option value="gitlab">GitLab</option>
+							*/}
 						</NativeSelect>
 					</FormControl>
 				</ListItem>
@@ -180,7 +189,9 @@ class ConfigurationForm extends React.Component<any, IFormState> {
 					</FormControl>
 				</ListItem>
 				<Divider />
-				<Button onClick={this.initContext}>{this.l10n.load_button_text}</Button>
+				<Button variant="contained" onClick={this.initContext} className="cta-ok">
+					{this.l10n.load_button_text}
+				</Button>
 			</List>
 		);
 	}

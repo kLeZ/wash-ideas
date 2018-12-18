@@ -16,8 +16,8 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 
 export interface IExtenderOptions {
-	OverwriteValue?: boolean;
-	OverwriteObject?: boolean;
+	OverwriteValue: boolean;
+	OverwriteObject: boolean;
 }
 
 class Extender {
@@ -34,15 +34,9 @@ class Extender {
 		OverwriteValue: true,
 	};
 
-	public static extends(...srcObjs: any[]): any;
-	public static extends(options: IExtenderOptions, ...srcObjs: any[]): any;
-	public static extends(dest: any, ...srcObjs: any[]): any;
-	public static extends(options: IExtenderOptions, dest: any, ...srcObjs: any[]): any;
-
-	public static extends(options?: IExtenderOptions | {}, dest: any = {}, ...srcObjs: any[]): any {
-		const opt = this.extendSingle(this.Force, options, this.Default);
+	public static extends(options: IExtenderOptions = this.Default, dest: any, ...srcObjs: any[]): any {
 		for (const obj of srcObjs) {
-			Extender.extendSingle(opt, dest, obj);
+			dest = Extender.extendSingle(options, dest, obj);
 		}
 		return dest;
 	}

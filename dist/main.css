@@ -17,5 +17,10 @@
  *     along with Wash Ideas.  If not, see <http:   www.gnu.org/licenses/>.
  * 
  */
+.configuration-form-list {
+  width: 350px; }
+  .configuration-form-list .cta-ok {
+    float: right;
+    margin: 8px; }
 
 /*# sourceMappingURL=main.css.map*/
