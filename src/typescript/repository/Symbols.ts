@@ -16,14 +16,9 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-const RepositoryType = {
-	GITHUB: Symbol.for("Github"),
-	BITBUCKET: Symbol.for("Bitbucket"),
-	GITLAB: Symbol.for("Gitlab")
-};
 const Types = {
 	CONTEXT: Symbol.for("Default Context"),
 	GIT_CLIENT: Symbol.for("Git Client"),
 	LOCALIZATION: Symbol.for("Localization")
 };
-export { RepositoryType, Types };
+export { Types };

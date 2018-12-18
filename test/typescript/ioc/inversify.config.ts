@@ -16,11 +16,11 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { Container, interfaces } from "inversify";
+import { Container } from "inversify";
 import { IPersistible } from "../../../src/typescript/models/IPersistible";
 import { GitHubRepository } from "../../../src/typescript/repository/GithubRepository";
 import { IRepository } from "../../../src/typescript/repository/IRepository";
-import { RepositoryType, Types } from "../../../src/typescript/repository/Symbols";
+import { Types } from "../../../src/typescript/repository/Symbols";
 import { IGitClient } from "../../../src/typescript/util/IGitClient";
 import Localization from "../../../src/typescript/util/Localization";
 import { logIoc } from "../../../src/typescript/util/Logging";
@@ -29,7 +29,7 @@ import { resources } from "../util/LocalesMock";
 
 const container = new Container();
 container.bind<IGitClient>(Types.GIT_CLIENT).to(GitClientMock);
-container.bind<IRepository<IPersistible>>(RepositoryType.GITHUB).to(GitHubRepository);
+container.bind<IRepository<IPersistible>>("github").to(GitHubRepository);
 container.bind<Localization>(Types.LOCALIZATION).toConstantValue(new Localization(resources));
 export { container };
 logIoc.trace("Inversify TST");

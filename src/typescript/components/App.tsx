@@ -26,6 +26,10 @@ import MenuIcon from "@material-ui/icons/Menu";
 import * as React from "react";
 import { container } from "../../../test/typescript/ioc/inversify.config";
 import { IContext } from "../models/IContext";
+import { IGitRepositoryConfiguration } from "../models/IGitRepositoryConfiguration";
+import { IPersistible } from "../models/IPersistible";
+import Project from "../models/Project";
+import { IRepository } from "../repository/IRepository";
 import { Types } from "../repository/Symbols";
 import Localization from "../util/Localization";
 import { logComponent } from "../util/Logging";
@@ -39,20 +43,6 @@ class App extends React.Component<any, any> {
 		super(props);
 		this.sidebar = React.createRef<SideBar>();
 		this.toggle = this.toggle.bind(this);
-	}
-
-	public toggle() {
-		this.sidebar.current.toggleSideBar();
-	}
-
-	public loadCallback() {
-		const self = this;
-		return () => {
-			self.toggle();
-			const ctx = container.get<IContext>(Types.CONTEXT);
-			logComponent.debug(`Loaded Context :: ${JSON.stringify(ctx)}`);
-			// TODO: open repo and load entities logic goes here!
-		};
 	}
 
 	public render() {
@@ -73,8 +63,36 @@ class App extends React.Component<any, any> {
 						</Typography>
 					</Toolbar>
 				</AppBar>
+
 			</MuiThemeProvider>
 		);
+	}
+
+	private toggle() {
+		this.sidebar.current.toggleSideBar();
+	}
+
+	private loadCallback() {
+		const self = this;
+		return () => {
+			self.toggle();
+			const ctx = container.get<IContext>(Types.CONTEXT);
+			logComponent.debug(`Loaded Context :: ${JSON.stringify(ctx)}`);
+			const type = (ctx.configuration as IGitRepositoryConfiguration).oauth2format;
+			this.loadItems(type);
+		};
+	}
+
+	private async loadItems(type: string) {
+		const repo = container.get<IRepository<IPersistible>>(type);
+		await repo.open();
+		repo.find(_ => true).then(items => {
+			for (const item of items) {
+				if (item instanceof Project) {
+					// TODO: instantiate project card
+				}
+			}
+		});
 	}
 }
 export default App;

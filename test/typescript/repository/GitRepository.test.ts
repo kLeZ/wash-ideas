@@ -20,7 +20,7 @@ import { IContext } from "../../../src/typescript/models/IContext";
 import { IGitRepositoryConfiguration } from "../../../src/typescript/models/IGitRepositoryConfiguration";
 import { IPersistible } from "../../../src/typescript/models/IPersistible";
 import { IRepository } from "../../../src/typescript/repository/IRepository";
-import { RepositoryType, Types } from "../../../src/typescript/repository/Symbols";
+import { Types } from "../../../src/typescript/repository/Symbols";
 import { container } from "../ioc/inversify.config";
 import { MyObject } from "../util/MyObject";
 
@@ -53,17 +53,20 @@ afterEach(() => {
 });
 
 it("clone branch data of wash-ideas repository without crash", async () => {
-	const repo = container.get<IRepository<IPersistible>>(RepositoryType.GITHUB);
+	const type = (container.get<IContext>(Types.CONTEXT).configuration as IGitRepositoryConfiguration).oauth2format;
+	const repo = container.get<IRepository<IPersistible>>(type);
 	await repo.open();
 });
 
 it("remove entire repository folder without crash", async () => {
-	const repo = container.get<IRepository<IPersistible>>(RepositoryType.GITHUB);
+	const type = (container.get<IContext>(Types.CONTEXT).configuration as IGitRepositoryConfiguration).oauth2format;
+	const repo = container.get<IRepository<IPersistible>>(type);
 	await repo.close();
 });
 
 it("Tests the find one method searching for the 'Goofy0' instance", async () => {
-	const repo = container.get<IRepository<IPersistible>>(RepositoryType.GITHUB);
+	const type = (container.get<IContext>(Types.CONTEXT).configuration as IGitRepositoryConfiguration).oauth2format;
+	const repo = container.get<IRepository<IPersistible>>(type);
 	const el = await repo.findOne("Goofy0");
 	expect(el).toEqual({
 		title: "Goofy0",
@@ -72,7 +75,8 @@ it("Tests the find one method searching for the 'Goofy0' instance", async () => 
 });
 
 it("Tests the find method searching for the 'Goofy*' instance", async () => {
-	const repo = container.get<IRepository<IPersistible>>(RepositoryType.GITHUB);
+	const type = (container.get<IContext>(Types.CONTEXT).configuration as IGitRepositoryConfiguration).oauth2format;
+	const repo = container.get<IRepository<IPersistible>>(type);
 	const els = await repo.find(val => {
 		return /Goofy[0-9]+/.test(val.title);
 	});
