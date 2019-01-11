@@ -25,7 +25,7 @@ export class MyObject implements IPersistible {
 		this.title = title;
 		this.encoding = encoding;
 	}
-	public conforms(other: IPersistible): boolean {
-		return this.title === other.title;
+	public getType() {
+		return Symbol.for("MyObject");
 	}
 }

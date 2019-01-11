@@ -14,7 +14,7 @@ import {
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import * as React from "react";
-import { container } from "../../../test/typescript/ioc/inversify.config";
+import { container } from "../ioc/inversify.config";
 import { IContext } from "../models/IContext";
 import { IGitRepositoryConfiguration } from "../models/IGitRepositoryConfiguration";
 import { IUser } from "../models/IUser";
@@ -22,6 +22,7 @@ import { Types } from "../repository/Symbols";
 import Extender from "../util/Extender";
 import Localization from "../util/Localization";
 import { logComponent } from "../util/Logging";
+import { OAuth2Format } from "../util/OAuth2Format";
 
 interface IConfigurationFormState {
 	showToken: boolean;
@@ -57,7 +58,7 @@ class ConfigurationForm extends React.Component<IConfigurationFormProps, IConfig
 				type: "git",
 				dir: "wash-ideas",
 				url: "https://github.com/kLeZ/wash-ideas",
-				oauth2format: "github",
+				oauth2format: OAuth2Format.GitHub,
 				token: "",
 				branch: "data",
 				fsconf: { fs: "IndexedDB", options: {} },
@@ -156,6 +157,7 @@ class ConfigurationForm extends React.Component<IConfigurationFormProps, IConfig
 						>
 							{/* proper names of services, no need to l6e */}
 							<option value="github">GitHub</option>
+							<option value="test">Test</option>
 							{/* FIXME: not supported yet
 							<option value="bitbucket">BitBucket</option>
 							<option value="gitlab">GitLab</option>

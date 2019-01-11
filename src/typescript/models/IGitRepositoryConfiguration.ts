@@ -16,12 +16,13 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+import { OAuth2Format } from "../util/OAuth2Format";
 import { IRepositoryConfiguration } from "./IRepositoryConfiguration";
 export interface IGitRepositoryConfiguration extends IRepositoryConfiguration {
 	url: string;
 	branch: string;
 	depth?: number;
-	oauth2format: "github" | "bitbucket" | "gitlab";
+	oauth2format: OAuth2Format;
 	token: string;
 	dir: string;
 	fsconf: BrowserFS.FileSystemConfiguration;

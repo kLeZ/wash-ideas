@@ -17,6 +17,9 @@
  *     along with Wash Ideas.  If not, see <http:   www.gnu.org/licenses/>.
  * 
  */
+.grow {
+  flex-grow: 1; }
+
 .configuration-form-list {
   width: 350px; }
   .configuration-form-list .cta-ok {

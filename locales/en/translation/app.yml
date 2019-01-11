@@ -24,3 +24,5 @@ configuration_form:
   name_label: Name
   email_label: Email
   load_button_text: Load
+cards:
+  goto_repo_url: Navigate to code repository

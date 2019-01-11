@@ -24,3 +24,5 @@ configuration_form:
   name_label: Nome
   email_label: Email
   load_button_text: Carica
+  cards:
+    goto_repo_url: Vai al repository dei sorgenti

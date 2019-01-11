@@ -21,6 +21,7 @@ import { IGitRepositoryConfiguration } from "../../../src/typescript/models/IGit
 import { IPersistible } from "../../../src/typescript/models/IPersistible";
 import { IRepository } from "../../../src/typescript/repository/IRepository";
 import { Types } from "../../../src/typescript/repository/Symbols";
+import { OAuth2Format } from "../../../src/typescript/util/OAuth2Format";
 import { container } from "../ioc/inversify.config";
 import { MyObject } from "../util/MyObject";
 
@@ -30,7 +31,7 @@ beforeAll(() => {
 		dir: "wash-ideas",
 		branch: "data",
 		url: "https://github.com/kLeZ/wash-ideas",
-		oauth2format: "github",
+		oauth2format: OAuth2Format.GitHub,
 		token: "",
 		fsconf: { fs: "InMemory", options: {} },
 	};

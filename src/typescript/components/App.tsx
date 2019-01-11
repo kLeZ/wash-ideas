@@ -23,26 +23,31 @@ import { createMuiTheme, MuiThemeProvider, Theme } from "@material-ui/core/style
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import MenuIcon from "@material-ui/icons/Menu";
+import RefreshIcon from "@material-ui/icons/Refresh";
 import * as React from "react";
-import { container } from "../../../test/typescript/ioc/inversify.config";
+import { container } from "../ioc/inversify.config";
 import { IContext } from "../models/IContext";
 import { IGitRepositoryConfiguration } from "../models/IGitRepositoryConfiguration";
-import { IPersistible } from "../models/IPersistible";
-import Project from "../models/Project";
-import { IRepository } from "../repository/IRepository";
 import { Types } from "../repository/Symbols";
 import Localization from "../util/Localization";
 import { logComponent } from "../util/Logging";
 import ConfigurationForm from "./ConfigurationForm";
 import SideBar from "./SideBar";
+import WashBoard from "./WashBoard";
 
 class App extends React.Component<any, any> {
 	private sidebar: React.RefObject<SideBar>;
+	private board: React.RefObject<WashBoard>;
 
 	constructor(props: any) {
 		super(props);
 		this.sidebar = React.createRef<SideBar>();
+		this.board = React.createRef<WashBoard>();
 		this.toggle = this.toggle.bind(this);
+		this.refresh = this.refresh.bind(this);
+		this.state = {
+			repoType: null,
+		};
 	}
 
 	public render() {
@@ -53,23 +58,32 @@ class App extends React.Component<any, any> {
 				<SideBar open={false} side="left" ref={this.sidebar}>
 					<ConfigurationForm loadCallback={this.loadCallback()} />
 				</SideBar>
-				<AppBar position="static" color="default">
+				<AppBar position="sticky" color="default">
 					<Toolbar>
-						<IconButton color="inherit" aria-label="Menu" onClick={this.toggle}>
+						<IconButton className="grow" color="inherit" aria-label="Menu" onClick={this.toggle}>
 							<MenuIcon />
 						</IconButton>
-						<Typography variant="title" color="inherit">
+						<Typography className="grow" variant="title" color="inherit">
 							{container.get<Localization>(Types.LOCALIZATION).t("app.title")}
 						</Typography>
+						<IconButton color="inherit" aria-label="Refresh" onClick={this.refresh}>
+							<RefreshIcon />
+						</IconButton>
 					</Toolbar>
 				</AppBar>
-
+				<WashBoard ref={this.board} />
 			</MuiThemeProvider>
 		);
 	}
 
 	private toggle() {
 		this.sidebar.current.toggleSideBar();
+	}
+
+	private refresh() {
+		const ctx = container.get<IContext>(Types.CONTEXT);
+		const type = (ctx.configuration as IGitRepositoryConfiguration).oauth2format;
+		this.board.current.loadItems(type);
 	}
 
 	private loadCallback() {
@@ -79,20 +93,9 @@ class App extends React.Component<any, any> {
 			const ctx = container.get<IContext>(Types.CONTEXT);
 			logComponent.debug(`Loaded Context :: ${JSON.stringify(ctx)}`);
 			const type = (ctx.configuration as IGitRepositoryConfiguration).oauth2format;
-			this.loadItems(type);
+			self.board.current.loadItems(type);
+			logComponent.debug("Just set WashBoard component");
 		};
-	}
-
-	private async loadItems(type: string) {
-		const repo = container.get<IRepository<IPersistible>>(type);
-		await repo.open();
-		repo.find(_ => true).then(items => {
-			for (const item of items) {
-				if (item instanceof Project) {
-					// TODO: instantiate project card
-				}
-			}
-		});
 	}
 }
 export default App;

@@ -17,6 +17,7 @@
 
 import { IPersistible } from "./IPersistible";
 import { IUser } from "./IUser";
+import { PersistibleType } from "./Symbols";
 
 class Project implements IPersistible {
 	public title: string;
@@ -29,5 +30,9 @@ class Project implements IPersistible {
 	public created: Date;
 	public modified: Date;
 	public author: IUser;
+	public editor: IUser;
+	public getType() {
+		return PersistibleType.PROJECT;
+	}
 }
 export default Project;

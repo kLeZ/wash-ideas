@@ -153,12 +153,12 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 		return new Promise<boolean>(async (resolve, reject) => {
 			await self.client.pull({
 				dir: config.dir,
-				oauth2format: config.oauth2format,
+				oauth2format: config.oauth2format as "github" | "bitbucket" | "gitlab",
 				token: config.token,
 			});
 			const response = await self.client.push({
 				dir: config.dir,
-				oauth2format: config.oauth2format,
+				oauth2format: config.oauth2format as "github" | "bitbucket" | "gitlab",
 				token: config.token,
 			});
 			resolve(response.errors === null || response.errors ? response.errors.length === 0 : true);

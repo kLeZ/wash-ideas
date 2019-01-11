@@ -19,6 +19,7 @@
 import { IContext } from "../../../src/typescript/models/IContext";
 import { IGitRepositoryConfiguration } from "../../../src/typescript/models/IGitRepositoryConfiguration";
 import { Types } from "../../../src/typescript/repository/Symbols";
+import { OAuth2Format } from "../../../src/typescript/util/OAuth2Format";
 import { container } from "../ioc/inversify.config";
 
 describe("Test for inversify API generic usage", () => {
@@ -36,7 +37,7 @@ describe("Test for inversify API generic usage", () => {
 			dir: "wash-ideas",
 			branch: "data",
 			url: "https://github.com/kLeZ/wash-ideas",
-			oauth2format: "github",
+			oauth2format: OAuth2Format.GitHub,
 			token: "",
 			fsconf: { fs: "InMemory", options: {} }
 		};
