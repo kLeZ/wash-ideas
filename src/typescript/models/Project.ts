@@ -20,16 +20,16 @@ import { IUser } from "./IUser";
 import { PersistibleType } from "./Symbols";
 
 class Project implements IPersistible {
-	public title: string;
-	public encoding: string;
-	public description: string;
-	public repoUrl: string;
-	public progress: number;
-	public stars: number;
-	public nextTaskHardness: number;
+	public title: string; // ✓
+	public encoding: string; // ✓
+	public description: string; // ✓
+	public repoUrl: string; // ✓
+	public progress: number; // ✓
+	public stars: number; // ✓
+	public nextTaskHardness: number; // ✓
 	public created: Date;
-	public modified: Date;
-	public author: IUser;
+	public modified: Date; // ✓
+	public author: IUser; // ✓
 	public editor: IUser;
 	public getType() {
 		return PersistibleType.PROJECT;

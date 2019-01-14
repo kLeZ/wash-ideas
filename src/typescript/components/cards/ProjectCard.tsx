@@ -15,13 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Avatar, Card, CardContent, CardHeader, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
+import {
+	Avatar,
+	Badge,
+	Card,
+	CardContent,
+	CardHeader,
+	IconButton,
+	LinearProgress,
+	Menu,
+	MenuItem,
+	Typography,
+} from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import * as React from "react";
 import { container } from "../../ioc/inversify.config";
 import Project from "../../models/Project";
 import { Types } from "../../repository/Symbols";
 import Localization from "../../util/Localization";
+import Rating from "../Rating";
 import ICardProps from "./ICardProps";
 
 interface IProjectCardState {
@@ -32,6 +44,9 @@ interface IProjectCardState {
 class ProjectCard extends React.Component<ICardProps, IProjectCardState> {
 	constructor(props: ICardProps) {
 		super(props);
+		this.handleMenuClick = this.handleMenuClick.bind(this);
+		this.handleMenuClose = this.handleMenuClose.bind(this);
+		this.goTo = this.goTo.bind(this);
 		this.state = {
 			item: props.item as Project,
 			anchorEl: null,
@@ -67,17 +82,24 @@ class ProjectCard extends React.Component<ICardProps, IProjectCardState> {
 								onClose={this.handleMenuClose}
 							>
 								<MenuItem onClick={this.goTo(this.state.item.repoUrl)}>
-									{container.get<Localization>(Types.LOCALIZATION).t("cards.goto_repo_url")}
+									{container.get<Localization>(Types.LOCALIZATION).t("cards.project.goto_repo_url")}
 								</MenuItem>
 							</Menu>
 						</div>
 					}
-					title={item.title}
+					title={
+						<Badge color="primary" badgeContent={item.nextTaskHardness} style={{ padding: "0 16px" }}>
+							{item.title}
+						</Badge>
+					}
 					subheader={item.modified.toLocaleString()}
 				/>
 				<CardContent>
-					<Typography component="p">{item.description}</Typography>
+					<Typography paragraph>{item.description}</Typography>
 				</CardContent>
+				<LinearProgress variant="determinate" value={item.progress} />
+				// Vaffanculo mo so dovuto fa da solo...
+				<Rating disabled rating={item.stars} />
 			</Card>
 		);
 	}
