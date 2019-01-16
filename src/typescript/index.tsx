@@ -22,9 +22,21 @@ import "typeface-roboto";
 import "../scss/main.scss";
 import App from "./components/App";
 import { container } from "./ioc/inversify.config";
+import { IPersistible } from "./models/IPersistible";
+import { GitHubRepository } from "./repository/GithubRepository";
+import { IRepository } from "./repository/IRepository";
 import { Types } from "./repository/Symbols";
+import { TestRepository } from "./repository/TestRepository";
+import { GitClient } from "./util/GitClient";
+import { IGitClient } from "./util/IGitClient";
+import { resources } from "./util/Locales";
 import Localization from "./util/Localization";
 import { logUtils } from "./util/Logging";
+
+container.bind<IGitClient>(Types.GIT_CLIENT).to(GitClient);
+container.bind<IRepository<IPersistible>>("test").to(TestRepository);
+container.bind<IRepository<IPersistible>>("github").to(GitHubRepository);
+container.bind<Localization>(Types.LOCALIZATION).toConstantValue(new Localization(resources));
 
 const i18n = container.get<Localization>(Types.LOCALIZATION);
 logUtils.debug(i18n.t("main.test"));

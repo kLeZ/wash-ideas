@@ -17,7 +17,6 @@
 //
 
 import { AppBar, CssBaseline, IconButton, Toolbar, Typography } from "@material-ui/core";
-import Colors from "@material-ui/core/colors";
 import { createMuiTheme, MuiThemeProvider, Theme } from "@material-ui/core/styles";
 import { Menu as MenuIcon, Refresh as RefreshIcon } from "@material-ui/icons";
 import * as React from "react";
