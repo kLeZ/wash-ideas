@@ -22,12 +22,12 @@ import { container } from "../ioc/inversify.config";
 it("Test localization in english", () => {
 	const i18n = container.get<Localization>(Types.LOCALIZATION);
 	i18n.changeLanguage("en");
-	expect(i18n.t("main.test")).toBe("goofy");
+	expect(i18n.t("main.test")).toBe("mickey");
 });
 it("Test localization in italian", () => {
 	const i18n = container.get<Localization>(Types.LOCALIZATION);
 	i18n.changeLanguage("it");
-	expect(i18n.t("main.test")).toBe("pippo");
+	expect(i18n.t("main.test")).toBe("topolino");
 });
 it("Test localization multiple items in english", () => {
 	const i18n = container.get<Localization>(Types.LOCALIZATION);
@@ -41,6 +41,7 @@ it("Test localization multiple items in english", () => {
 			prop4_1: 111,
 			prop4_2: 222,
 		},
+		prop5: "ddd"
 	});
 });
 it("Test localization multiple items in italian", () => {
@@ -55,5 +56,6 @@ it("Test localization multiple items in italian", () => {
 			prop4_1: 111,
 			prop4_2: 222,
 		},
+		prop5: "ddd"
 	});
 });

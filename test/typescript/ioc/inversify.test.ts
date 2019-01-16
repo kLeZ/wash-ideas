@@ -20,7 +20,7 @@ import { IContext } from "../../../src/typescript/models/IContext";
 import { IGitRepositoryConfiguration } from "../../../src/typescript/models/IGitRepositoryConfiguration";
 import { Types } from "../../../src/typescript/repository/Symbols";
 import { OAuth2Format } from "../../../src/typescript/util/OAuth2Format";
-import { container } from "../ioc/inversify.config";
+import { container } from "./inversify.config";
 
 describe("Test for inversify API generic usage", () => {
 	beforeEach(() => {

@@ -19,7 +19,7 @@ const resources = {
 	en: {
 		translation: {
 			main: {
-				test: "goofy",
+				test: "mickey",
 				test_obj: {
 					lang: "EN",
 					prop1: "aaa",
@@ -29,14 +29,33 @@ const resources = {
 						prop4_1: 111,
 						prop4_2: 222,
 					},
-				}
+					prop5: "ddd",
+				},
+			},
+			app: {
+				title: "Wash Ideas - Borogoves.",
+				configuration_form: {
+					token_label: "Access Token",
+					token_visibility_label: "Toggle token visibility",
+					url_label: "Url",
+					oauth2format_label: "OAuth2 Provider",
+					name_label: "Name",
+					email_label: "Email",
+					load_button_text: "Load",
+				},
+			},
+			cards: {
+				edit_item: "Edit",
+				project: {
+					goto_repo_url: "Navigate to code repository",
+				},
 			},
 		},
 	},
 	it: {
 		translation: {
 			main: {
-				test: "pippo",
+				test: "topolino",
 				test_obj: {
 					lang: "IT",
 					prop1: "aaa",
@@ -46,7 +65,26 @@ const resources = {
 						prop4_1: 111,
 						prop4_2: 222,
 					},
-				}
+					prop5: "ddd",
+				},
+			},
+			app: {
+				title: "Wash Ideas - Antani.",
+				configuration_form: {
+					token_label: "Token di accesso",
+					token_visibility_label: "Commuta visibilità del token",
+					url_label: "Url",
+					oauth2format_label: "Fornitore OAuth2",
+					name_label: "Nome",
+					email_label: "Email",
+					load_button_text: "Carica",
+				},
+			},
+			cards: {
+				edit_item: "Modifica",
+				project: {
+					goto_repo_url: "Vai al repository dei sorgenti",
+				},
 			},
 		},
 	},
