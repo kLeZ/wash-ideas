@@ -21,6 +21,12 @@ import { IPersistible } from "../../models/IPersistible";
 interface ICardProps {
 	item: IPersistible;
 	style: CSSProperties;
+	edit?: (event: React.MouseEvent<HTMLElement>, title: string) => void;
+	avatar?: React.ReactNode;
+	menuItems?: React.ReactNode | React.ReactNode[];
+	title?: React.ReactNode;
+	subheader?: React.ReactNode;
+	footer?: React.ReactNode | React.ReactNode[];
 }
 
 export default ICardProps;

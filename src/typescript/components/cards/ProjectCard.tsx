@@ -18,98 +18,75 @@
 import {
 	Avatar,
 	Badge,
-	Card,
 	CardContent,
 	CardHeader,
 	IconButton,
 	LinearProgress,
+	ListItemIcon,
 	Menu,
 	MenuItem,
 	Typography,
 } from "@material-ui/core";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { Edit as EditIcon, Link as LinkIcon, MoreVert as MoreVertIcon } from "@material-ui/icons";
 import * as React from "react";
 import { container } from "../../ioc/inversify.config";
 import Project from "../../models/Project";
 import { Types } from "../../repository/Symbols";
 import Localization from "../../util/Localization";
 import Rating from "../Rating";
+import Card from "./Card";
 import ICardProps from "./ICardProps";
+import ICardState from "./ICardState";
 
-interface IProjectCardState {
-	item: Project;
-	anchorEl: any;
-}
-
-class ProjectCard extends React.Component<ICardProps, IProjectCardState> {
+class ProjectCard extends React.Component<ICardProps, ICardState> {
 	constructor(props: ICardProps) {
 		super(props);
-		this.handleMenuClick = this.handleMenuClick.bind(this);
-		this.handleMenuClose = this.handleMenuClose.bind(this);
 		this.goTo = this.goTo.bind(this);
+		const item: Project = props.item as Project;
 		this.state = {
-			item: props.item as Project,
+			item,
 			anchorEl: null,
 		};
 	}
 
 	public render() {
-		const item: Project = this.state.item;
+		const item: Project = this.state.item as Project;
 		return (
-			<Card style={this.props.style}>
-				<CardHeader
-					avatar={
-						<Avatar aria-label="Project">
-							{item.author.name
-								.split(" ")
-								.map(w => w.charAt(0).toUpperCase())
-								.join("")}
-						</Avatar>
-					}
-					action={
-						<div>
-							<IconButton
-								aria-owns={this.state.anchorEl ? "actions-menu" : undefined}
-								aria-haspopup="true"
-								onClick={this.handleMenuClick}
-							>
-								<MoreVertIcon />
-							</IconButton>
-							<Menu
-								id="actions-menu"
-								anchorEl={this.state.anchorEl}
-								open={Boolean(this.state.anchorEl)}
-								onClose={this.handleMenuClose}
-							>
-								<MenuItem onClick={this.goTo(this.state.item.repoUrl)}>
-									{container.get<Localization>(Types.LOCALIZATION).t("cards.project.goto_repo_url")}
-								</MenuItem>
-							</Menu>
-						</div>
-					}
-					title={
-						<Badge color="primary" badgeContent={item.nextTaskHardness} style={{ padding: "0 16px" }}>
-							{item.title}
-						</Badge>
-					}
-					subheader={item.modified.toLocaleString()}
-				/>
-				<CardContent>
-					<Typography paragraph>{item.description}</Typography>
-				</CardContent>
-				<LinearProgress variant="determinate" value={item.progress} />
-				// Vaffanculo mo so dovuto fa da solo...
-				<Rating disabled rating={item.stars} />
+			<Card
+				item={item}
+				style={this.props.style}
+				avatar={
+					<Avatar aria-label="Project">
+						{item.author.name
+							.split(" ")
+							.map(w => w.charAt(0).toUpperCase())
+							.join("")}
+					</Avatar>
+				}
+				menuItems={
+					<MenuItem onClick={this.goTo(item.repoUrl)}>
+						<ListItemIcon>
+							<LinkIcon />
+						</ListItemIcon>
+						<Typography noWrap>
+							{container.get<Localization>(Types.LOCALIZATION).t("cards.project.goto_repo_url")}
+						</Typography>
+					</MenuItem>
+				}
+				title={
+					<Badge color="primary" badgeContent={item.nextTaskHardness} style={{ padding: "0 16px" }}>
+						{item.title}
+					</Badge>
+				}
+				subheader={item.modified.toLocaleString()}
+				footer={[
+					<LinearProgress key={0} variant="determinate" value={item.progress} />,
+					<Rating  key={1} disabled rating={item.stars} />,
+				]}
+			>
+				<Typography paragraph>{item.description}</Typography>
 			</Card>
 		);
-	}
-
-	private handleMenuClick(event: React.SyntheticEvent) {
-		this.setState({ anchorEl: event.currentTarget });
-	}
-
-	private handleMenuClose(event: React.SyntheticEvent) {
-		this.setState({ anchorEl: null });
 	}
 
 	private goTo(url: string) {

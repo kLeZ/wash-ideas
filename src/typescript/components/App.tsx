@@ -16,14 +16,10 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { IconButton } from "@material-ui/core";
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import { AppBar, CssBaseline, IconButton, Toolbar, Typography } from "@material-ui/core";
+import Colors from "@material-ui/core/colors";
 import { createMuiTheme, MuiThemeProvider, Theme } from "@material-ui/core/styles";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import MenuIcon from "@material-ui/icons/Menu";
-import RefreshIcon from "@material-ui/icons/Refresh";
+import { Menu as MenuIcon, Refresh as RefreshIcon } from "@material-ui/icons";
 import * as React from "react";
 import { container } from "../ioc/inversify.config";
 import { IContext } from "../models/IContext";
@@ -45,18 +41,23 @@ class App extends React.Component<any, any> {
 		this.board = React.createRef<WashBoard>();
 		this.toggle = this.toggle.bind(this);
 		this.refresh = this.refresh.bind(this);
+		this.loadCallback = this.loadCallback.bind(this);
 		this.state = {
 			repoType: null,
 		};
 	}
 
 	public render() {
-		const theme: Theme = createMuiTheme();
+		const theme: Theme = createMuiTheme({
+			palette: {
+				type: "dark"
+			}
+		});
 		return (
 			<MuiThemeProvider theme={theme}>
 				<CssBaseline />
-				<SideBar open={false} side="left" ref={this.sidebar}>
-					<ConfigurationForm loadCallback={this.loadCallback()} />
+				<SideBar open={true} side="left" ref={this.sidebar}>
+					<ConfigurationForm loadCallback={this.loadCallback} />
 				</SideBar>
 				<AppBar position="sticky" color="default">
 					<Toolbar>
@@ -87,15 +88,12 @@ class App extends React.Component<any, any> {
 	}
 
 	private loadCallback() {
-		const self = this;
-		return () => {
-			self.toggle();
-			const ctx = container.get<IContext>(Types.CONTEXT);
-			logComponent.debug(`Loaded Context :: ${JSON.stringify(ctx)}`);
-			const type = (ctx.configuration as IGitRepositoryConfiguration).oauth2format;
-			self.board.current.loadItems(type);
-			logComponent.debug("Just set WashBoard component");
-		};
+		this.toggle();
+		const ctx = container.get<IContext>(Types.CONTEXT);
+		logComponent.debug(`Loaded Context :: ${JSON.stringify(ctx)}`);
+		const type = (ctx.configuration as IGitRepositoryConfiguration).oauth2format;
+		this.board.current.loadItems(type);
+		logComponent.debug("Just set WashBoard component");
 	}
 }
 export default App;
