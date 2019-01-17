@@ -62,13 +62,13 @@ afterEach(() => {
 	container.restore();
 });
 
-it("clone branch data of wash-ideas repository without crash", async () => {
+it("open without crash", async () => {
 	const type = (container.get<IContext>(Types.CONTEXT).configuration as IGitRepositoryConfiguration).oauth2format;
 	const repo = container.get<IRepository<IPersistible>>(type);
 	await repo.open();
 });
 
-it("remove entire repository folder without crash", async () => {
+it("close without crash", async () => {
 	const type = (container.get<IContext>(Types.CONTEXT).configuration as IGitRepositoryConfiguration).oauth2format;
 	const repo = container.get<IRepository<IPersistible>>(type);
 	await repo.close();
