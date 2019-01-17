@@ -27,7 +27,7 @@ class Extender {
 	};
 	public static Conservative: IExtenderOptions = {
 		OverwriteObject: false,
-		OverwriteValue: false
+		OverwriteValue: false,
 	};
 	public static Default: IExtenderOptions = {
 		OverwriteObject: false,
@@ -43,11 +43,20 @@ class Extender {
 
 	private static extendSingle(options: IExtenderOptions, dst: any, src: any): any {
 		for (const prop in src) {
-			if (typeof src[prop] === "object") {
+			if (Array.isArray(src[prop]) === true) {
+				if (typeof dst[prop] === "undefined") {
+					dst[prop] = src[prop];
+				}
+				for (const srcEl of src[prop]) {
+					if (dst[prop].filter((i: any) => i === srcEl).length === 0) {
+						dst[prop].push(srcEl);
+					}
+				}
+			} else if (typeof src[prop] === "object") {
 				if (typeof dst[prop] === "undefined" || options.OverwriteObject) {
 					dst[prop] = src[prop];
 				}
-				Extender.extendSingle(options, src[prop], dst[prop]);
+				Extender.extendSingle(options, dst[prop], src[prop]);
 			} else {
 				if (typeof dst[prop] === "undefined" || options.OverwriteValue) {
 					dst[prop] = src[prop];

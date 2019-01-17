@@ -20,6 +20,7 @@ import { IPersistible } from "../../../src/typescript/models/IPersistible";
 import { GitHubRepository } from "../../../src/typescript/repository/GithubRepository";
 import { IRepository } from "../../../src/typescript/repository/IRepository";
 import { Types } from "../../../src/typescript/repository/Symbols";
+import Extender from "../../../src/typescript/util/Extender";
 import { IGitClient } from "../../../src/typescript/util/IGitClient";
 import Localization from "../../../src/typescript/util/Localization";
 import { GitClientMock } from "./GitClientMock";
@@ -31,14 +32,65 @@ beforeAll(() => {
 	container.bind<Localization>(Types.LOCALIZATION).toConstantValue(new Localization(resources));
 });
 
-it("Test extender functions", () => {
+describe("Test extender functions", () => {
+	it("Extends with Force option", () => {
+		const object1 = {
+			a: 1,
+			b: 2,
+			testArr: [888, { innArr: 1 }, 777],
+			data: { e: 12, c: { lol: 1 }, rofl: { O: 3 } },
+		};
+		const object2 = {
+			a: 6,
+			b: 9,
+			data: { a: 17, b: 18, e: 13, rofl: { O: 99, copter: { mao: 1 } } },
+			hexa: { tetra: 66 },
+		};
+		const object3 = { f: 13, g: 666, a: 333, data: { c: { xD: 45 } }, testArr: [888, { innArr: 3 }, 555] };
 
-	/*
-	 * var object1 = { a: 1, b: 2, testArr: [888, { innArr: 1 }, 777], data: { e: 12, c: { lol: 1 }, rofl: { O: 3 } } };
-	 * var object2 = { a: 6, b: 9, data: { a: 17, b: 18, e: 13, rofl: { O: 99, copter: { mao: 1 } } }, hexa: { tetra: 66 } };
-	 * var object3 = { f: 13, g: 666, a: 333, data: { c: { xD: 45 } }, testArr: [888, { innArr: 3 }, 555] };
-	 * FIXME: var newExtendedObject
-	 * FIXME: = extendObjects('overwriteValues_True', 'overwriteObjects_True', object1, object2, object3);
-	 */
-	expect(true); // TODO: do make tests
+		const expect1 = {
+			a: 333,
+			b: 9,
+			testArr: [888, { innArr: 1 }, 777, { innArr: 3 }, 555],
+			data: { c: { xD: 45 } },
+			hexa: { tetra: 66 },
+			f: 13,
+			g: 666,
+		};
+
+		expect(Extender.extends(Extender.Force, {}, object1, object2, object3)).toEqual(expect1);
+	});
+	it("Extends with Default option", () => {
+		const object1 = {
+			a: 1,
+			b: 2,
+			testArr: [888, { innArr: 1 }, 777],
+			data: { e: 12, c: { lol: 1 }, rofl: { O: 3 } },
+		};
+		const object2 = {
+			a: 6,
+			b: 9,
+			data: { a: 17, b: 18, e: 13, rofl: { O: 99, copter: { mao: 1 } } },
+			hexa: { tetra: 66 },
+		};
+		const object3 = { f: 13, g: 666, a: 333, data: { c: { xD: 45 } }, testArr: [888, { innArr: 3 }, 555] };
+
+		const expect1 = {
+			a: 333,
+			b: 9,
+			testArr: [888, { innArr: 1 }, 777, { innArr: 3 }, 555],
+			data: {
+				a: 17,
+				b: 18,
+				e: 13,
+				c: { lol: 1, xD: 45 },
+				rofl: { O: 99, copter: { mao: 1 } },
+			},
+			hexa: { tetra: 66 },
+			f: 13,
+			g: 666,
+		};
+
+		expect(Extender.extends(Extender.Default, {}, object1, object2, object3)).toEqual(expect1);
+	});
 });
