@@ -24,3 +24,6 @@ configuration_form:
   name_label: Nome
   email_label: Email
   load_button_text: Carica
+save_form:
+  title: Titolo
+  submit_btn: Salva

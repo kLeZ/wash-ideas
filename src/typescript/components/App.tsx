@@ -16,9 +16,9 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { AppBar, CssBaseline, IconButton, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, CssBaseline, IconButton, Modal, Toolbar, Typography } from "@material-ui/core";
 import { createMuiTheme, MuiThemeProvider, Theme } from "@material-ui/core/styles";
-import { Menu as MenuIcon, Refresh as RefreshIcon } from "@material-ui/icons";
+import { Add, Menu as MenuIcon, Refresh as RefreshIcon } from "@material-ui/icons";
 import * as React from "react";
 import { container } from "../ioc/inversify.config";
 import { IContext } from "../models/IContext";
@@ -27,6 +27,7 @@ import { Types } from "../repository/Symbols";
 import Localization from "../util/Localization";
 import { logComponent } from "../util/Logging";
 import ConfigurationForm from "./ConfigurationForm";
+import SaveForm from "./SaveForm";
 import SideBar from "./SideBar";
 import WashBoard from "./WashBoard";
 
@@ -40,9 +41,12 @@ class App extends React.Component<any, any> {
 		this.board = React.createRef<WashBoard>();
 		this.toggle = this.toggle.bind(this);
 		this.refresh = this.refresh.bind(this);
+		this.handleOpenModal = this.handleOpenModal.bind(this);
+		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.loadCallback = this.loadCallback.bind(this);
 		this.state = {
 			repoType: null,
+			showModal: false
 		};
 	}
 
@@ -66,14 +70,28 @@ class App extends React.Component<any, any> {
 						<Typography className="grow" variant="title" color="inherit">
 							{container.get<Localization>(Types.LOCALIZATION).t("app.title")}
 						</Typography>
+						<IconButton color="inherit" aria-label="New" onClick={this.handleOpenModal}>
+							<Add />
+						</IconButton>
 						<IconButton color="inherit" aria-label="Refresh" onClick={this.refresh}>
 							<RefreshIcon />
 						</IconButton>
 					</Toolbar>
 				</AppBar>
 				<WashBoard ref={this.board} />
+				<Modal open={this.state.showModal}>
+					<SaveForm />
+				</Modal>
 			</MuiThemeProvider>
 		);
+	}
+
+	private handleOpenModal() {
+		this.setState({ showModal: true });
+	}
+
+	private handleCloseModal() {
+		this.setState({ showModal: false });
 	}
 
 	private toggle() {
