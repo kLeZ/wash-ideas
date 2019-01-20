@@ -18,7 +18,7 @@
 
 import { AppBar, CssBaseline, IconButton, Modal, Toolbar, Typography } from "@material-ui/core";
 import { createMuiTheme, MuiThemeProvider, Theme } from "@material-ui/core/styles";
-import { Add, Menu as MenuIcon, Refresh as RefreshIcon } from "@material-ui/icons";
+import { Add as AddIcon, Menu as MenuIcon, Refresh as RefreshIcon } from "@material-ui/icons";
 import * as React from "react";
 import { container } from "../ioc/inversify.config";
 import { IContext } from "../models/IContext";
@@ -70,7 +70,7 @@ class App extends React.Component<any, any> {
 							{container.get<Localization>(Types.LOCALIZATION).t("app.title")}
 						</Typography>
 						<IconButton color="inherit" aria-label="New" onClick={this.handleOpenModal}>
-							<Add />
+							<AddIcon />
 						</IconButton>
 						<IconButton color="inherit" aria-label="Refresh" onClick={this.refresh}>
 							<RefreshIcon />

@@ -16,12 +16,11 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { Button, Divider, List, ListItem, TextField } from "@material-ui/core";
 import * as React from "react";
 import { container } from "../ioc/inversify.config";
+import Project from "../models/Project";
 import { Types } from "../repository/Symbols";
 import Localization from "../util/Localization";
-
 import "./modal/Modal.css";
 
 export default class SaveForm extends React.Component {
@@ -32,16 +31,15 @@ export default class SaveForm extends React.Component {
 		this.save = this.save.bind(this);
 		this.close = this.close.bind(this);
 		this.l10n = container.get<Localization>(Types.LOCALIZATION).t("app.save_form", { returnObjects: true });
+		this.state = { project: {} };
 	}
 
 	public save() {
-		// TODO: not implemented
-		throw new Error("is not implemented yet");
+		const p = new Project();
 	}
 
 	public close() {
 		this.setState({ showModal: false });
-		// TODO: reload board
 	}
 
 	public render() {
@@ -51,7 +49,6 @@ export default class SaveForm extends React.Component {
 					<form id="ausform">
 						<div className="modal-header">
 							<h3>{this.l10n.header}</h3>
-							<span className="close-modal-btn">×</span>
 						</div>
 						<div className="modal-body">
 							<table>
