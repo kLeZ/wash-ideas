@@ -25,5 +25,8 @@ configuration_form:
   email_label: Email
   load_button_text: Carica
 save_form:
+  header: Crea un nuovo progetto
   title: Titolo
-  submit_btn: Salva
+  description: Descrizione
+  cancel_btn: Cancella
+  save_btn: Salva

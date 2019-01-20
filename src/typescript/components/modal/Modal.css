@@ -3,7 +3,7 @@
 	border: 1px solid #d0cccc;
 	box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
 	margin: 100px auto 0;
-	transition: all .8s;
+	transition: all 0.8s;
 	width: 60%;
 }
 
@@ -42,11 +42,11 @@
 }
 
 .close-modal-btn:hover {
-	color: black;
+	color: cyan;
 }
 
 .btn-cancel,
-.btn-continue {
+.btn-save {
 	background: coral;
 	border: none;
 	color: white;
@@ -61,7 +61,7 @@
 	float: left;
 }
 
-.btn-continue {
+.btn-save {
 	background-color: #1b5e20;
 	float: right;
 }
@@ -78,4 +78,10 @@
 	margin: 15px;
 	padding: 10px;
 	font-weight: bold;
+}
+
+textarea {
+	resize: none;
+	height: 10em;
+	width: 22em;
 }

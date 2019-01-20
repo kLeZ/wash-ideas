@@ -42,7 +42,6 @@ class App extends React.Component<any, any> {
 		this.toggle = this.toggle.bind(this);
 		this.refresh = this.refresh.bind(this);
 		this.handleOpenModal = this.handleOpenModal.bind(this);
-		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.loadCallback = this.loadCallback.bind(this);
 		this.state = {
 			repoType: null,
@@ -88,10 +87,6 @@ class App extends React.Component<any, any> {
 
 	private handleOpenModal() {
 		this.setState({ showModal: true });
-	}
-
-	private handleCloseModal() {
-		this.setState({ showModal: false });
 	}
 
 	private toggle() {
