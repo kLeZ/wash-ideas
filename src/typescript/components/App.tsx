@@ -42,6 +42,7 @@ class App extends React.Component<any, any> {
 		this.toggle = this.toggle.bind(this);
 		this.refresh = this.refresh.bind(this);
 		this.handleOpenModal = this.handleOpenModal.bind(this);
+		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.loadCallback = this.loadCallback.bind(this);
 		this.state = {
 			repoType: null,
@@ -79,14 +80,19 @@ class App extends React.Component<any, any> {
 				</AppBar>
 				<WashBoard ref={this.board} />
 				<Modal open={this.state.showModal}>
-					<SaveForm />
+					<SaveForm close={this.handleCloseModal} />
 				</Modal>
 			</MuiThemeProvider>
 		);
 	}
 
 	private handleOpenModal() {
+		// FIXME: verificare se è stato inizializzato il contesto altrimenti non aprire
 		this.setState({ showModal: true });
+	}
+
+	private handleCloseModal() {
+		this.setState({ showModal: false });
 	}
 
 	private toggle() {
