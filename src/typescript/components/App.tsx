@@ -16,7 +16,7 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { AppBar, CssBaseline, IconButton, Modal, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, CssBaseline, Dialog, IconButton, Toolbar, Typography } from "@material-ui/core";
 import { createMuiTheme, MuiThemeProvider, Theme } from "@material-ui/core/styles";
 import { Add as AddIcon, Menu as MenuIcon, Refresh as RefreshIcon } from "@material-ui/icons";
 import * as React from "react";
@@ -40,10 +40,10 @@ class App extends React.Component<any, any> {
 		this.sidebar = React.createRef<SideBar>();
 		this.board = React.createRef<WashBoard>();
 		this.toggle = this.toggle.bind(this);
+		this.loadCallback = this.loadCallback.bind(this);
 		this.refresh = this.refresh.bind(this);
 		this.handleOpenModal = this.handleOpenModal.bind(this);
 		this.handleCloseModal = this.handleCloseModal.bind(this);
-		this.loadCallback = this.loadCallback.bind(this);
 		this.state = {
 			repoType: null,
 			showModal: false
@@ -79,16 +79,20 @@ class App extends React.Component<any, any> {
 					</Toolbar>
 				</AppBar>
 				<WashBoard ref={this.board} />
-				<Modal open={this.state.showModal}>
+				<Dialog aria-labelledby="responsive-dialog-title" maxWidth={"md"} fullWidth open={this.state.showModal}>
 					<SaveForm close={this.handleCloseModal} />
-				</Modal>
+				</Dialog>
 			</MuiThemeProvider>
 		);
 	}
 
 	private handleOpenModal() {
-		// FIXME: verificare se è stato inizializzato il contesto altrimenti non aprire
-		this.setState({ showModal: true });
+		// FIXME: context not found, raise Exception
+		const ctx = container.get<IContext>(Types.CONTEXT);
+		logComponent.debug(`Loaded Context :: ${JSON.stringify(ctx)}`);
+		if (ctx) {
+			this.setState({ showModal: true });
+		}
 	}
 
 	private handleCloseModal() {

@@ -16,7 +16,7 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { Button, Input, InputLabel, List, ListItem } from "@material-ui/core";
+import { Button, DialogActions, DialogContent, DialogTitle, TextField } from "@material-ui/core";
 import * as React from "react";
 import { container } from "../ioc/inversify.config";
 import { IContext } from "../models/IContext";
@@ -30,7 +30,6 @@ import { Types } from "../repository/Symbols";
 import Extender from "../util/Extender";
 import Localization from "../util/Localization";
 import { logComponent } from "../util/Logging";
-import "./modal/Modal.css";
 
 interface ISaveFormState {
 	project: Project;
@@ -99,43 +98,40 @@ export default class SaveForm extends React.Component<ISaveFormProps, ISaveFormS
 	public render() {
 		return (
 			<div>
-				<div className="modal-wrapper">
-					<div className="modal-header">
-						<h3>{this.l10n.header}</h3>
-					</div>
-					<div className="modal-body">
-						<List>
-							<ListItem>
-								<InputLabel htmlFor="title-compo">{this.l10n.title}</InputLabel>
-								<Input
-									id="title-compo"
-									type="text"
-									defaultValue={this.state.project.title}
-									onChange={this.handleProjectChange("title")}
-								/>
-							</ListItem>
-							<ListItem>
-								<InputLabel htmlFor="description-compo">{this.l10n.description}</InputLabel>
-								<Input
-									id="description-compo"
-									type="text"
-									multiline={true}
-									rows={6}
-									defaultValue={this.state.project.description}
-									onChange={this.handleProjectChange("description")}
-								/>
-							</ListItem>
-						</List>
-					</div>
-					<div className="modal-footer">
-						<Button className="btn-cancel" onClick={this.close}>
-							{this.l10n.cancel_btn}
-						</Button>
-						<Button className="btn-save" onClick={this.save}>
-							{this.l10n.save_btn}
-						</Button>
-					</div>
-				</div>
+				<DialogTitle id="responsive-dialog-title">{this.l10n.header}</DialogTitle>
+				<DialogContent>
+					<TextField
+						id="title"
+						label={this.l10n.title}
+						type="text"
+						defaultValue={this.state.project.title}
+						onChange={this.handleProjectChange("title")}
+						autoFocus
+						margin="dense"
+						required
+						fullWidth
+					/>
+					<TextField
+						id="description"
+						label={this.l10n.description}
+						type="text"
+						defaultValue={this.state.project.description}
+						onChange={this.handleProjectChange("description")}
+						margin="dense"
+						multiline
+						rows={6}
+						required
+						fullWidth
+					/>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={this.close} color="primary">
+						{this.l10n.cancel_btn}
+					</Button>
+					<Button onClick={this.save} color="primary">
+						{this.l10n.save_btn}
+					</Button>
+				</DialogActions>
 			</div>
 		);
 	}
