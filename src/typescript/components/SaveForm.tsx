@@ -17,6 +17,7 @@
 //
 
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@material-ui/core";
+import { Cancel as CancelIcon, Save as SaveIcon } from "@material-ui/icons";
 import * as React from "react";
 import { container } from "../ioc/inversify.config";
 import { IContext } from "../models/IContext";
@@ -45,11 +46,11 @@ export default class SaveForm extends React.Component<ISaveFormProps, ISaveFormS
 		super(props);
 		this.refClose = props.onClosing;
 		this.open = this.open.bind(this);
-		this.save = this.save.bind(this);
 		this.close = this.close.bind(this);
+		this.save = this.save.bind(this);
 		this.state = {
 			show: false,
-			project: new Project(),
+			project: new Project()
 		};
 	}
 
@@ -62,8 +63,8 @@ export default class SaveForm extends React.Component<ISaveFormProps, ISaveFormS
 				author: ctx.user,
 				editor: ctx.user,
 				created: creationDate,
-				modified: creationDate,
-			}),
+				modified: creationDate
+			})
 		});
 	}
 
@@ -88,7 +89,7 @@ export default class SaveForm extends React.Component<ISaveFormProps, ISaveFormS
 				const prev = JSON.stringify(this.state.project);
 				logComponent.debug(`project change :: [${name}]: ${event.target.value} :: prev: ${prev}`);
 				this.setState({
-					project: Extender.extends(Extender.Default, {}, this.state.project, { [name]: event.target.value }),
+					project: Extender.extends(Extender.Default, {}, this.state.project, { [name]: event.target.value })
 				});
 			}
 		};
@@ -106,9 +107,18 @@ export default class SaveForm extends React.Component<ISaveFormProps, ISaveFormS
 						type="text"
 						defaultValue={this.state.project.title}
 						onChange={this.handleProjectChange("title")}
-						autoFocus
 						margin="dense"
+						fullWidth
 						required
+						autoFocus
+					/>
+					<TextField
+						id="repoUrl"
+						label={l10n.repo_url}
+						type="text"
+						defaultValue={this.state.project.repoUrl}
+						onChange={this.handleProjectChange("repoUrl")}
+						margin="dense"
 						fullWidth
 					/>
 					<TextField
@@ -118,17 +128,19 @@ export default class SaveForm extends React.Component<ISaveFormProps, ISaveFormS
 						defaultValue={this.state.project.description}
 						onChange={this.handleProjectChange("description")}
 						margin="dense"
+						fullWidth
+						required
 						multiline
 						rows={6}
-						required
-						fullWidth
 					/>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={this.close} color="primary">
+					<Button variant="contained" color="secondary" onClick={this.close}>
+						<CancelIcon />
 						{l10n.cancel_btn}
 					</Button>
-					<Button onClick={this.save} color="primary">
+					<Button variant="contained" color="primary" onClick={this.save}>
+						<SaveIcon />
 						{l10n.save_btn}
 					</Button>
 				</DialogActions>
