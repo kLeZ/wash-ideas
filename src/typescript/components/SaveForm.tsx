@@ -49,7 +49,7 @@ export default class SaveForm extends React.Component<ISaveFormProps, ISaveFormS
 		this.close = this.close.bind(this);
 		this.state = {
 			show: false,
-			project: null,
+			project: new Project(),
 		};
 	}
 
