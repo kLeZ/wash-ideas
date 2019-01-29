@@ -31,6 +31,31 @@ class Project implements IPersistible {
 	public modified: Date; // ✓
 	public author: IUser; // ✓
 	public editor: IUser;
+
+	constructor() {
+		const date = new Date();
+		this.title = "";
+		this.encoding = "utf-8";
+		this.description = "";
+		this.repoUrl = "";
+		this.progress = 0;
+		this.stars = 0;
+		this.nextTaskHardness = 0;
+		this.author = {
+			name: "",
+			email: "",
+		};
+		this.editor = {
+			name: "",
+			email: "",
+		};
+		this.created = date;
+		this.modified = date;
+		this.getType = () => {
+			return PersistibleType.PROJECT;
+		};
+	}
+
 	public getType() {
 		return PersistibleType.PROJECT;
 	}

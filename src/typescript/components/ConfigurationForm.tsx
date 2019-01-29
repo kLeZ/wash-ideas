@@ -31,7 +31,7 @@ interface IConfigurationFormState {
 }
 
 interface IConfigurationFormProps {
-	loadCallback: () => void;
+	load: () => void;
 }
 
 class ConfigurationForm extends React.Component<IConfigurationFormProps, IConfigurationFormState> {
@@ -40,7 +40,7 @@ class ConfigurationForm extends React.Component<IConfigurationFormProps, IConfig
 
 	constructor(props: IConfigurationFormProps) {
 		super(props);
-		this.cb = props.loadCallback;
+		this.cb = props.load;
 
 		this.handleClickShowToken = this.handleClickShowToken.bind(this);
 		this.handleConfigurationChange = this.handleConfigurationChange.bind(this);

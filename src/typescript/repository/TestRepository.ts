@@ -22,18 +22,24 @@ import { IPersistible } from "../models/IPersistible";
 import Project from "../models/Project";
 import { PersistibleType } from "../models/Symbols";
 import Extender from "../util/Extender";
+import { logRepo } from "./../util/Logging";
 import { IRepository } from "./IRepository";
 
 @injectable()
 export class TestRepository<T extends IPersistible> implements IRepository<T> {
 	private items: IPersistible[];
 
+	constructor() {
+		this.items = [];
+		logRepo.trace("TestRepository constructed!");
+	}
+
 	public open(): Promise<void> {
 		const that = this;
 		return new Promise((resolve, reject) => {
 			const rng = new Prando();
 			const items: IPersistible[] = [];
-			for (let i = 1; i <= rng.nextInt(10, 100); i++) {
+			for (let i = 1; i <= rng.nextInt(1, 10); i++) {
 				const created = new Date();
 				created.setHours(created.getHours() - rng.nextInt(1, 6));
 				items.push({

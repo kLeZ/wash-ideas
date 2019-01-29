@@ -1,0 +1,84 @@
+{
+  "done": [],
+  "in-progress": [
+    {
+      "assignedTo": {
+        "name": "Alessandro Accardo"
+      },
+      "category": "UI",
+      "creation_time": "2019-01-17T17:53:14.507Z",
+      "description": {
+        "content": "Form di add/edit dei modelli disponibili.",
+        "mime": "text/markdown"
+      },
+      "id": "3",
+      "prio": 1,
+      "references": [],
+      "title": "Form di Add/Edit"
+    },
+    {
+      "assignedTo": {
+        "name": "Alessandro Accardo"
+      },
+      "category": "UI",
+      "creation_time": "2019-01-17T17:49:51.548Z",
+      "description": {
+        "content": "Bottone di Delete nel menu del componente Card e handler function che verrà chiamata dalle varie Card specializzate.",
+        "mime": "text/markdown"
+      },
+      "id": "1",
+      "prio": 1,
+      "references": [],
+      "title": "Delete action"
+    }
+  ],
+  "testing": [
+    {
+      "assignedTo": {
+        "name": "Alessandro Accardo"
+      },
+      "category": "UI",
+      "creation_time": "2019-01-17T17:51:44.546Z",
+      "description": {
+        "content": "Bottone di Add nella AppBar e handler function che discrimina la possibilità di inserire uno qualsiasi dei modelli disponibili.",
+        "mime": "text/markdown"
+      },
+      "id": "2",
+      "prio": 1,
+      "references": [],
+      "title": "Add action"
+    }
+  ],
+  "todo": [
+    {
+      "assignedTo": {
+        "name": "Alessandro Accardo"
+      },
+      "category": "UI",
+      "creation_time": "2019-01-17T17:57:38.075Z",
+      "description": {
+        "content": "Sulla base del modello Idea va implementata la card associata che visualizzi graficamente tutte le proprietà del modello.",
+        "mime": "text/markdown"
+      },
+      "id": "5",
+      "prio": 1,
+      "references": [],
+      "title": "Card Idea"
+    },
+    {
+      "assignedTo": {
+        "name": "Alessandro Accardo"
+      },
+      "category": "model",
+      "creation_time": "2019-01-17T17:56:30.172Z",
+      "description": {
+        "content": "Va implementato il modello delle idee, diverso dal progetto in quanto idea che potenzialmente può portare anche alla creazione di uno o più progetti (o nessuno).",
+        "mime": "text/markdown"
+      },
+      "id": "4",
+      "prio": 1,
+      "references": [],
+      "title": "Nuovo modello: Idea"
+    }
+  ]
+}

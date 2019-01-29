@@ -25,7 +25,7 @@ import {
 	MenuItem,
 	Typography,
 } from "@material-ui/core";
-import { Edit as EditIcon, MoreVert as MoreVertIcon } from "@material-ui/icons";
+import { Delete as DeleteIcon, Edit as EditIcon, MoreVert as MoreVertIcon } from "@material-ui/icons";
 import * as React from "react";
 import { container } from "../../ioc/inversify.config";
 import { IPersistible } from "../../models/IPersistible";
@@ -39,6 +39,7 @@ class Card extends React.Component<ICardProps, ICardState> {
 		super(props);
 		this.handleMenuClick = this.handleMenuClick.bind(this);
 		this.handleMenuClose = this.handleMenuClose.bind(this);
+		this.delete = this.delete.bind(this);
 		this.edit = this.edit.bind(this);
 		this.state = {
 			title: props.title || props.item.title,
@@ -76,6 +77,14 @@ class Card extends React.Component<ICardProps, ICardState> {
 										{container.get<Localization>(Types.LOCALIZATION).t("cards.edit_item")}
 									</Typography>
 								</MenuItem>
+								<MenuItem onClick={this.delete} data-title={item.title}>
+									<ListItemIcon>
+										<DeleteIcon />
+									</ListItemIcon>
+									<Typography noWrap>
+										{container.get<Localization>(Types.LOCALIZATION).t("cards.delete_item")}
+									</Typography>
+								</MenuItem>
 								{this.props.menuItems}
 							</Menu>
 						</div>
@@ -89,16 +98,20 @@ class Card extends React.Component<ICardProps, ICardState> {
 		);
 	}
 
-	private handleMenuClick(event: React.MouseEvent<HTMLElement>) {
-		this.setState({ anchorEl: event.currentTarget });
+	private handleMenuClick(e: React.MouseEvent<HTMLElement>) {
+		this.setState({ anchorEl: e.currentTarget });
 	}
 
-	private handleMenuClose(event: React.SyntheticEvent<{}>) {
+	private handleMenuClose(e: React.SyntheticEvent<{}>) {
 		this.setState({ anchorEl: null });
 	}
 
 	private edit(e: React.MouseEvent<HTMLElement>) {
 		return this.props.edit && this.props.edit(e, e.currentTarget.dataset.title);
+	}
+
+	private delete(e: React.MouseEvent<HTMLElement>) {
+		return this.props.delete && this.props.delete(e, e.currentTarget.dataset.title);
 	}
 }
 export default Card;

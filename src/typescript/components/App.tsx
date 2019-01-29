@@ -34,19 +34,19 @@ import WashBoard from "./WashBoard";
 class App extends React.Component<any, any> {
 	private sidebar: React.RefObject<SideBar>;
 	private board: React.RefObject<WashBoard>;
+	private saveForm: React.RefObject<SaveForm>;
 
 	constructor(props: any) {
 		super(props);
 		this.sidebar = React.createRef<SideBar>();
 		this.board = React.createRef<WashBoard>();
-		this.toggle = this.toggle.bind(this);
-		this.loadCallback = this.loadCallback.bind(this);
-		this.refresh = this.refresh.bind(this);
-		this.handleOpenModal = this.handleOpenModal.bind(this);
-		this.handleCloseModal = this.handleCloseModal.bind(this);
+		this.saveForm = React.createRef<SaveForm>();
+		this.onToggleSideBar = this.onToggleSideBar.bind(this);
+		this.doLoad = this.doLoad.bind(this);
+		this.onRefresh = this.onRefresh.bind(this);
+		this.onAdd = this.onAdd.bind(this);
 		this.state = {
-			repoType: null,
-			showModal: false
+			repoType: null
 		};
 	}
 
@@ -60,57 +60,50 @@ class App extends React.Component<any, any> {
 			<MuiThemeProvider theme={theme}>
 				<CssBaseline />
 				<SideBar open={true} side="left" ref={this.sidebar}>
-					<ConfigurationForm loadCallback={this.loadCallback} />
+					<ConfigurationForm load={this.doLoad} />
 				</SideBar>
 				<AppBar position="sticky" color="default">
 					<Toolbar>
-						<IconButton className="grow" color="inherit" aria-label="Menu" onClick={this.toggle}>
+						<IconButton className="grow" color="inherit" aria-label="Menu" onClick={this.onToggleSideBar}>
 							<MenuIcon />
 						</IconButton>
 						<Typography className="grow" variant="title" color="inherit">
 							{container.get<Localization>(Types.LOCALIZATION).t("app.title")}
 						</Typography>
-						<IconButton color="inherit" aria-label="New" onClick={this.handleOpenModal}>
+						<IconButton color="inherit" aria-label="New" onClick={this.onAdd}>
 							<AddIcon />
 						</IconButton>
-						<IconButton color="inherit" aria-label="Refresh" onClick={this.refresh}>
+						<IconButton color="inherit" aria-label="Refresh" onClick={this.onRefresh}>
 							<RefreshIcon />
 						</IconButton>
 					</Toolbar>
 				</AppBar>
 				<WashBoard ref={this.board} />
-				<Dialog aria-labelledby="responsive-dialog-title" maxWidth={"md"} fullWidth open={this.state.showModal}>
-					<SaveForm close={this.handleCloseModal} />
-				</Dialog>
+				<SaveForm onClosing={this.onRefresh} ref={this.saveForm} />
 			</MuiThemeProvider>
 		);
 	}
 
-	private handleOpenModal() {
-		// FIXME: context not found, raise Exception
-		const ctx = container.get<IContext>(Types.CONTEXT);
-		logComponent.debug(`Loaded Context :: ${JSON.stringify(ctx)}`);
-		if (ctx) {
-			this.setState({ showModal: true });
+	private onAdd() {
+		if (container.isBound(Types.CONTEXT)) {
+			this.saveForm.current.open();
 		}
 	}
 
-	private handleCloseModal() {
-		this.setState({ showModal: false });
-	}
-
-	private toggle() {
+	private onToggleSideBar() {
 		this.sidebar.current.toggleSideBar();
 	}
 
-	private refresh() {
-		const ctx = container.get<IContext>(Types.CONTEXT);
-		const type = (ctx.configuration as IGitRepositoryConfiguration).oauth2format;
-		this.board.current.loadItems(type);
+	private onRefresh() {
+		if (container.isBound(Types.CONTEXT)) {
+			const ctx = container.get<IContext>(Types.CONTEXT);
+			const type = (ctx.configuration as IGitRepositoryConfiguration).oauth2format;
+			this.board.current.loadItems(type);
+		}
 	}
 
-	private loadCallback() {
-		this.toggle();
+	private doLoad() {
+		this.onToggleSideBar();
 		const ctx = container.get<IContext>(Types.CONTEXT);
 		logComponent.debug(`Loaded Context :: ${JSON.stringify(ctx)}`);
 		const type = (ctx.configuration as IGitRepositoryConfiguration).oauth2format;

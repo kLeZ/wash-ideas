@@ -27,6 +27,8 @@ import ProjectCard from "./cards/ProjectCard";
 
 interface IWashBoardState {
 	items: IPersistible[];
+	repoType: string;
+	isOpen: boolean;
 }
 
 class WashBoard extends React.Component<any, IWashBoardState> {
@@ -34,6 +36,8 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 		super(props);
 		this.state = {
 			items: [],
+			repoType: "",
+			isOpen: false
 		};
 	}
 
@@ -53,22 +57,34 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 				}}
 			>
 				{this.state.items.map((item, index) => {
-					if (item.getType() === PersistibleType.PROJECT) {
-						return <ProjectCard style={style} item={item as Project} key={index} />;
-					} else {
-						return <Card style={style} item={item} key={index} />;
+					let card: React.ReactNode = null;
+					switch (item.getType()) {
+						case PersistibleType.PROJECT:
+							{
+								card = <ProjectCard repoType={this.state.repoType} style={style} item={item as Project} key={index} />;
+								break;
+							}
+						default:
+							{
+								card = <Card repoType={this.state.repoType} style={style} item={item} key={index} />;
+								break;
+							}
 					}
+					return card;
 				})}
 			</div>
 		);
 	}
 
 	public async loadItems(repoType: string) {
+		let isOpen = this.state.isOpen;
 		const repo = container.get<IRepository<IPersistible>>(repoType);
-		await repo.open();
+		if (isOpen === false || repoType !== this.state.repoType) {
+			await repo.open();
+			isOpen = true;
+		}
 		const items = await repo.find(_ => true);
-		this.setState({ items });
-		await repo.close();
+		this.setState({ items, repoType, isOpen });
 	}
 }
 export default WashBoard;
