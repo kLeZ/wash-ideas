@@ -1,38 +1,5 @@
 {
-  "done": [],
-  "in-progress": [
-    {
-      "assignedTo": {
-        "name": "Alessandro Accardo"
-      },
-      "category": "UI",
-      "creation_time": "2019-01-17T17:53:14.507Z",
-      "description": {
-        "content": "Form di add/edit dei modelli disponibili.",
-        "mime": "text/markdown"
-      },
-      "id": "3",
-      "prio": 1,
-      "references": [],
-      "title": "Form di Add/Edit"
-    },
-    {
-      "assignedTo": {
-        "name": "Alessandro Accardo"
-      },
-      "category": "UI",
-      "creation_time": "2019-01-17T17:49:51.548Z",
-      "description": {
-        "content": "Bottone di Delete nel menu del componente Card e handler function che verrà chiamata dalle varie Card specializzate.",
-        "mime": "text/markdown"
-      },
-      "id": "1",
-      "prio": 1,
-      "references": [],
-      "title": "Delete action"
-    }
-  ],
-  "testing": [
+  "done": [
     {
       "assignedTo": {
         "name": "Alessandro Accardo"
@@ -49,6 +16,39 @@
       "title": "Add action"
     }
   ],
+  "in-progress": [
+    {
+      "assignedTo": {
+        "name": "Alessandro Accardo"
+      },
+      "category": "UI",
+      "creation_time": "2019-01-17T17:49:51.548Z",
+      "description": {
+        "content": "Bottone di Delete nel menu del componente Card e handler function che verrà chiamata dalle varie Card specializzate.",
+        "mime": "text/markdown"
+      },
+      "id": "1",
+      "prio": 1,
+      "references": [],
+      "title": "Delete action"
+    },
+    {
+      "assignedTo": {
+        "name": "Alessandro Accardo"
+      },
+      "category": "UI",
+      "creation_time": "2019-01-17T17:53:14.507Z",
+      "description": {
+        "content": "Form di add/edit dei modelli disponibili.",
+        "mime": "text/markdown"
+      },
+      "id": "3",
+      "prio": 1,
+      "references": [],
+      "title": "Form di Add/Edit"
+    }
+  ],
+  "testing": [],
   "todo": [
     {
       "assignedTo": {

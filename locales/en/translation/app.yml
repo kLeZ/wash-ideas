@@ -27,7 +27,7 @@ configuration_form:
 save_form:
   header: Create new project
   title: Title
-  repo_url: Repository's URL
+  repo_url: Repository URL
   description: Description
   cancel_btn: Cancel
   save_btn: Save

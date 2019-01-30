@@ -73,7 +73,7 @@ class ProjectCard extends React.Component<ICardProps, ICardState> {
 					<LinearProgress key={0} variant="determinate" value={item.progress} />,
 					<Rating key={1} disabled rating={item.stars} />,
 				]}
-				delete={this.delete.bind(this)}
+				delete={this.props.delete}
 			>
 				<Typography paragraph>{item.description}</Typography>
 			</Card>
@@ -82,11 +82,6 @@ class ProjectCard extends React.Component<ICardProps, ICardState> {
 
 	private goTo(e: React.MouseEvent<HTMLElement>) {
 		window.open(e.currentTarget.dataset.url, "_blank").focus();
-	}
-
-	private async delete(e: React.MouseEvent<HTMLElement>, title: string) {
-		const repo = container.get<IRepository<Project>>(this.props.repoType);
-		const res = await repo.delete(title);
 	}
 }
 export default ProjectCard;

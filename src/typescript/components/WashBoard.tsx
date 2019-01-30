@@ -37,7 +37,7 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 		this.state = {
 			items: [],
 			repoType: "",
-			isOpen: false
+			isOpen: false,
 		};
 	}
 
@@ -59,16 +59,30 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 				{this.state.items.map((item, index) => {
 					let card: React.ReactNode = null;
 					switch (item.getType()) {
-						case PersistibleType.PROJECT:
-							{
-								card = <ProjectCard repoType={this.state.repoType} style={style} item={item as Project} key={index} />;
-								break;
-							}
-						default:
-							{
-								card = <Card repoType={this.state.repoType} style={style} item={item} key={index} />;
-								break;
-							}
+						case PersistibleType.PROJECT: {
+							card = (
+								<ProjectCard
+									repoType={this.state.repoType}
+									style={style}
+									item={item as Project}
+									key={item.title}
+									delete={this.delete.bind(this)}
+								/>
+							);
+							break;
+						}
+						default: {
+							card = (
+								<Card
+									repoType={this.state.repoType}
+									style={style}
+									item={item}
+									key={item.title}
+									delete={this.delete.bind(this)}
+								/>
+							);
+							break;
+						}
 					}
 					return card;
 				})}
@@ -85,6 +99,14 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 		}
 		const items = await repo.find(_ => true);
 		this.setState({ items, repoType, isOpen });
+	}
+
+	private delete(e: React.MouseEvent<HTMLElement>, title: string) {
+		(async (that) => {
+			const repo = container.get<IRepository<Project>>(this.state.repoType);
+			await repo.delete(title);
+			await that.loadItems(that.state.repoType);
+		})(this);
 	}
 }
 export default WashBoard;

@@ -107,11 +107,11 @@ class Card extends React.Component<ICardProps, ICardState> {
 	}
 
 	private edit(e: React.MouseEvent<HTMLElement>) {
-		return this.props.edit && this.props.edit(e, e.currentTarget.dataset.title);
+		return this.props.edit(e, e.currentTarget.dataset.title);
 	}
 
 	private delete(e: React.MouseEvent<HTMLElement>) {
-		return this.props.delete && this.props.delete(e, e.currentTarget.dataset.title);
+		return this.props.delete(e, e.currentTarget.dataset.title);
 	}
 }
 export default Card;
