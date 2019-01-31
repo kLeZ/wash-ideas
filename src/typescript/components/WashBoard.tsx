@@ -24,6 +24,7 @@ import { PersistibleType } from "../models/Symbols";
 import { IRepository } from "../repository/IRepository";
 import Card from "./cards/Card";
 import ProjectCard from "./cards/ProjectCard";
+import SaveForm from "./forms/SaveForm";
 
 interface IWashBoardState {
 	items: IPersistible[];
@@ -32,8 +33,11 @@ interface IWashBoardState {
 }
 
 class WashBoard extends React.Component<any, IWashBoardState> {
+	private saveForm: React.RefObject<SaveForm>;
+
 	constructor(props: any) {
 		super(props);
+		this.saveForm = React.createRef<SaveForm>();
 		this.state = {
 			items: [],
 			repoType: "",
@@ -45,6 +49,7 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 		const style: CSSProperties = {
 			margin: 15,
 			width: 320,
+			height: "0.1%",
 		};
 		return (
 			<div
@@ -67,6 +72,7 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 									item={item as Project}
 									key={item.title}
 									delete={this.delete.bind(this)}
+									edit={this.edit.bind(this)}
 								/>
 							);
 							break;
@@ -79,6 +85,7 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 									item={item}
 									key={item.title}
 									delete={this.delete.bind(this)}
+									edit={this.edit.bind(this)}
 								/>
 							);
 							break;
@@ -86,6 +93,7 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 					}
 					return card;
 				})}
+				<SaveForm onClosing={this.refresh.bind(this)} ref={this.saveForm} />
 			</div>
 		);
 	}
@@ -102,11 +110,19 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 	}
 
 	private delete(e: React.MouseEvent<HTMLElement>, title: string) {
-		(async (that) => {
+		(async that => {
 			const repo = container.get<IRepository<Project>>(this.state.repoType);
 			await repo.delete(title);
 			await that.loadItems(that.state.repoType);
 		})(this);
+	}
+
+	private edit(e: React.MouseEvent<HTMLElement>, title: string) {
+		this.saveForm.current.open(title);
+	}
+
+	private refresh() {
+		this.loadItems(this.state.repoType);
 	}
 }
 export default WashBoard;

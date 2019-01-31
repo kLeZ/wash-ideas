@@ -16,18 +16,19 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { AppBar, CssBaseline, Dialog, IconButton, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, CssBaseline, IconButton, Toolbar, Typography } from "@material-ui/core";
 import { createMuiTheme, MuiThemeProvider, Theme } from "@material-ui/core/styles";
 import { Add as AddIcon, Menu as MenuIcon, Refresh as RefreshIcon } from "@material-ui/icons";
 import * as React from "react";
 import { container } from "../ioc/inversify.config";
 import { IContext } from "../models/IContext";
 import { IGitRepositoryConfiguration } from "../models/IGitRepositoryConfiguration";
+import { PersistibleType } from "../models/Symbols";
 import { Types } from "../repository/Symbols";
 import Localization from "../util/Localization";
 import { logComponent } from "../util/Logging";
-import ConfigurationForm from "./ConfigurationForm";
-import SaveForm from "./SaveForm";
+import ConfigurationForm from "./forms/ConfigurationForm";
+import SaveForm from "./forms/SaveForm";
 import SideBar from "./SideBar";
 import WashBoard from "./WashBoard";
 
@@ -46,15 +47,15 @@ class App extends React.Component<any, any> {
 		this.onRefresh = this.onRefresh.bind(this);
 		this.onAdd = this.onAdd.bind(this);
 		this.state = {
-			repoType: null
+			repoType: null,
 		};
 	}
 
 	public render() {
 		const theme: Theme = createMuiTheme({
 			palette: {
-				type: "dark"
-			}
+				type: "dark",
+			},
 		});
 		return (
 			<MuiThemeProvider theme={theme}>
@@ -79,9 +80,23 @@ class App extends React.Component<any, any> {
 					</Toolbar>
 				</AppBar>
 				<WashBoard ref={this.board} />
-				<SaveForm onClosing={this.onRefresh} ref={this.saveForm} />
+				<SaveForm
+					onClosing={this.onRefresh}
+					ref={this.saveForm}
+					createDefaultItem={this.onCreateDefaultItem.bind(this)}
+				/>
 			</MuiThemeProvider>
 		);
+	}
+
+	private onCreateDefaultItem() {
+		return {
+			title: "",
+			encoding: "utf8",
+			getType: () => {
+				return PersistibleType.GENERIC;
+			},
+		};
 	}
 
 	private onAdd() {

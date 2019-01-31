@@ -25,9 +25,6 @@ configuration_form:
   email_label: Email
   load_button_text: Load
 save_form:
-  header: Create new project
-  title: Title
-  repo_url: Repository URL
-  description: Description
+  header: Create new item
   cancel_btn: Cancel
   save_btn: Save

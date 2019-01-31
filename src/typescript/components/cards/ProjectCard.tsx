@@ -74,6 +74,7 @@ class ProjectCard extends React.Component<ICardProps, ICardState> {
 					<Rating key={1} disabled rating={item.stars} />,
 				]}
 				delete={this.props.delete}
+				edit={this.props.edit}
 			>
 				<Typography paragraph>{item.description}</Typography>
 			</Card>
