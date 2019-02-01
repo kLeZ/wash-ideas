@@ -16,6 +16,8 @@
 # along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 
 title: Wash Ideas - Borogoves.
+project_item: Project
+persistible_item: Item
 configuration_form:
   token_label: Access Token
   token_visibility_label: Toggle token visibility

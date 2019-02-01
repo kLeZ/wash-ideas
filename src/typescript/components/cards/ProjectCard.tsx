@@ -34,7 +34,6 @@ class ProjectCard extends React.Component<ICardProps, ICardState> {
 		const item: Project = props.item as Project;
 		this.state = {
 			item,
-			anchorEl: null,
 		};
 	}
 

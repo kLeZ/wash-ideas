@@ -16,29 +16,37 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { AppBar, CssBaseline, IconButton, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, CssBaseline, IconButton, ListItemIcon, MenuItem, Toolbar, Typography } from "@material-ui/core";
 import { createMuiTheme, MuiThemeProvider, Theme } from "@material-ui/core/styles";
-import { Add as AddIcon, Menu as MenuIcon, Refresh as RefreshIcon } from "@material-ui/icons";
+import {
+	Add as AddIcon,
+	Assignment as AssignmentIcon,
+	Description as DescriptionIcon,
+	Menu as MenuIcon,
+	Refresh as RefreshIcon,
+} from "@material-ui/icons";
 import * as React from "react";
 import { container } from "../ioc/inversify.config";
 import { IContext } from "../models/IContext";
 import { IGitRepositoryConfiguration } from "../models/IGitRepositoryConfiguration";
+import Project from "../models/Project";
 import { PersistibleType } from "../models/Symbols";
 import { Types } from "../repository/Symbols";
 import Localization from "../util/Localization";
 import { logComponent } from "../util/Logging";
+import ActionsMenu from "./ActionsMenu";
 import ConfigurationForm from "./forms/ConfigurationForm";
 import SaveForm from "./forms/SaveForm";
 import SideBar from "./SideBar";
 import WashBoard from "./WashBoard";
 
-class App extends React.Component<any, any> {
+class App extends React.Component {
 	private sidebar: React.RefObject<SideBar>;
 	private board: React.RefObject<WashBoard>;
 	private saveForm: React.RefObject<SaveForm>;
 
-	constructor(props: any) {
-		super(props);
+	constructor() {
+		super({});
 		this.sidebar = React.createRef<SideBar>();
 		this.board = React.createRef<WashBoard>();
 		this.saveForm = React.createRef<SaveForm>();
@@ -46,9 +54,6 @@ class App extends React.Component<any, any> {
 		this.doLoad = this.doLoad.bind(this);
 		this.onRefresh = this.onRefresh.bind(this);
 		this.onAdd = this.onAdd.bind(this);
-		this.state = {
-			repoType: null,
-		};
 	}
 
 	public render() {
@@ -71,37 +76,63 @@ class App extends React.Component<any, any> {
 						<Typography className="grow" variant="title" color="inherit">
 							{container.get<Localization>(Types.LOCALIZATION).t("app.title")}
 						</Typography>
-						<IconButton color="inherit" aria-label="New" onClick={this.onAdd}>
-							<AddIcon />
-						</IconButton>
+						<ActionsMenu menuId="persistible-type-menu" buttonContent={<AddIcon />}>
+							<MenuItem onClick={this.onAdd} data-type={PersistibleType.PROJECT.toString()}>
+								<ListItemIcon>
+									<AssignmentIcon />
+								</ListItemIcon>
+								<Typography noWrap>
+									{container.get<Localization>(Types.LOCALIZATION).t("app.project_item")}
+								</Typography>
+							</MenuItem>
+							<MenuItem onClick={this.onAdd} data-type={PersistibleType.GENERIC.toString()}>
+								<ListItemIcon>
+									<DescriptionIcon />
+								</ListItemIcon>
+								<Typography noWrap>
+									{container.get<Localization>(Types.LOCALIZATION).t("app.persistible_item")}
+								</Typography>
+							</MenuItem>
+						</ActionsMenu>
 						<IconButton color="inherit" aria-label="Refresh" onClick={this.onRefresh}>
 							<RefreshIcon />
 						</IconButton>
 					</Toolbar>
 				</AppBar>
 				<WashBoard ref={this.board} />
-				<SaveForm
-					onClosing={this.onRefresh}
-					ref={this.saveForm}
-					createDefaultItem={this.onCreateDefaultItem.bind(this)}
-				/>
+				<SaveForm onClosing={this.onRefresh} ref={this.saveForm} />
 			</MuiThemeProvider>
 		);
 	}
 
-	private onCreateDefaultItem() {
-		return {
-			title: "",
-			encoding: "utf8",
-			getType: () => {
-				return PersistibleType.GENERIC;
-			},
-		};
-	}
-
-	private onAdd() {
+	private onAdd(e: React.MouseEvent<HTMLElement>) {
 		if (container.isBound(Types.CONTEXT)) {
-			this.saveForm.current.open();
+			const ctx = container.get<IContext>(Types.CONTEXT);
+			const type = e.currentTarget.dataset.type;
+			let item = null;
+			switch (type) {
+				case PersistibleType.PROJECT.toString(): {
+					const date = new Date();
+					const prj = new Project();
+					prj.created = date;
+					prj.modified = date;
+					prj.author = ctx.user;
+					prj.editor = ctx.user;
+					item = prj;
+					break;
+				}
+				default: {
+					item = {
+						title: "",
+						encoding: "utf8",
+						getType: () => {
+							return PersistibleType.GENERIC;
+						},
+					};
+					break;
+				}
+			}
+			this.saveForm.current.open(undefined, item);
 		}
 	}
 

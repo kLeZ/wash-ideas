@@ -16,6 +16,8 @@
 # along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 
 title: Wash Ideas - Antani.
+project_item: Progetto
+persistible_item: Elemento
 configuration_form:
   token_label: Token di accesso
   token_visibility_label: Commuta visibilità del token

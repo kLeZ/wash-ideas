@@ -29,15 +29,15 @@ class PersistibleForm extends React.Component<IPersistibleFormProps, IPersistibl
 	}
 
 	public render() {
-		const l10n = container.get<Localization>(Types.LOCALIZATION).t("app.save_form", { returnObjects: true });
+		const l10n = container.get<Localization>(Types.LOCALIZATION).t("forms.persistible_form", { returnObjects: true });
 		return (
 			<DialogContent>
 				<TextField
-					id="title"
 					type="text"
 					label={l10n.title}
 					inputProps={{
-						"data-field": "title"
+						/* infame fracico... dentro all'inputProps l'ho dovuto mettere... */
+						"data-field": "title",
 					}}
 					defaultValue={this.props.item.title}
 					onChange={this.change.bind(this)}
