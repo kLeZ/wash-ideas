@@ -19,3 +19,8 @@ delete_item: Cancella
 edit_item: Modifica
 project:
   goto_repo_url: Vai al repository dei sorgenti
+  confirm_delete:
+    title: Stai per cancellare quell'elemento
+    message: Se confermi questa azione eliminerai quell'elemento. Questa azione non può essere annullata successivamente.
+    agreeText: Confermo
+    disagreeText: Dissento

@@ -98,10 +98,10 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 		);
 	}
 
-	public async loadItems(repoType: string) {
+	public async loadItems(repoType: string, force?: boolean) {
 		let isOpen = this.state.isOpen;
 		const repo = container.get<IRepository<IPersistible>>(repoType);
-		if (isOpen === false || repoType !== this.state.repoType) {
+		if (force === true || isOpen === false || repoType !== this.state.repoType) {
 			await repo.open();
 			isOpen = true;
 		}
@@ -109,7 +109,7 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 		this.setState({ items, repoType, isOpen });
 	}
 
-	private delete(e: React.MouseEvent<HTMLElement>, title: string) {
+	private delete(title: string) {
 		(async that => {
 			const repo = container.get<IRepository<Project>>(this.state.repoType);
 			await repo.delete(title);
@@ -117,7 +117,7 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 		})(this);
 	}
 
-	private edit(e: React.MouseEvent<HTMLElement>, title: string) {
+	private edit(title: string) {
 		this.saveForm.current.open(title);
 	}
 

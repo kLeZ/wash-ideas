@@ -59,6 +59,10 @@ class ActionsMenu extends React.Component<IActionsMenuProps, IActionsMenuState> 
 		);
 	}
 
+	public close() {
+		this.setState({ anchorEl: null });
+	}
+
 	private handleMenuClick(e: React.MouseEvent<HTMLElement>) {
 		this.setState({ anchorEl: e.currentTarget });
 	}

@@ -44,12 +44,14 @@ class App extends React.Component {
 	private sidebar: React.RefObject<SideBar>;
 	private board: React.RefObject<WashBoard>;
 	private saveForm: React.RefObject<SaveForm>;
+	private addMenu: React.RefObject<ActionsMenu>;
 
-	constructor() {
-		super({});
+	constructor(props: any) {
+		super(props);
 		this.sidebar = React.createRef<SideBar>();
 		this.board = React.createRef<WashBoard>();
 		this.saveForm = React.createRef<SaveForm>();
+		this.addMenu = React.createRef<ActionsMenu>();
 		this.onToggleSideBar = this.onToggleSideBar.bind(this);
 		this.doLoad = this.doLoad.bind(this);
 		this.onRefresh = this.onRefresh.bind(this);
@@ -76,7 +78,7 @@ class App extends React.Component {
 						<Typography className="grow" variant="title" color="inherit">
 							{container.get<Localization>(Types.LOCALIZATION).t("app.title")}
 						</Typography>
-						<ActionsMenu menuId="persistible-type-menu" buttonContent={<AddIcon />}>
+						<ActionsMenu menuId="persistible-type-menu" buttonContent={<AddIcon />} ref={this.addMenu}>
 							<MenuItem onClick={this.onAdd} data-type={PersistibleType.PROJECT.toString()}>
 								<ListItemIcon>
 									<AssignmentIcon />
@@ -132,6 +134,7 @@ class App extends React.Component {
 					break;
 				}
 			}
+			this.addMenu.current.close();
 			this.saveForm.current.open(undefined, item);
 		}
 	}
@@ -153,7 +156,7 @@ class App extends React.Component {
 		const ctx = container.get<IContext>(Types.CONTEXT);
 		logComponent.debug(`Loaded Context :: ${JSON.stringify(ctx)}`);
 		const type = (ctx.configuration as IGitRepositoryConfiguration).oauth2format;
-		this.board.current.loadItems(type);
+		this.board.current.loadItems(type, true);
 		logComponent.debug("Just set WashBoard component");
 	}
 }

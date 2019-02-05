@@ -114,9 +114,15 @@ export default class SaveForm extends React.Component<ISaveFormProps, ISaveFormS
 		const ctx = container.get<IContext>(Types.CONTEXT);
 		const type: string = (ctx.configuration as IGitRepositoryConfiguration).oauth2format;
 		const repository = container.get<IRepository<IPersistible>>(type);
-		repository.create(this.state.item).then(() => {
-			that.close();
-		});
+		if (this.state.edit === false) {
+			repository.create(this.state.item).then(() => {
+				that.close();
+			});
+		} else {
+			repository.update(this.state.item.title, this.state.item).then(() => {
+				that.close();
+			});
+		}
 	}
 
 	private handleChange(
@@ -136,11 +142,11 @@ export default class SaveForm extends React.Component<ISaveFormProps, ISaveFormS
 		let form: JSX.Element = null;
 		switch (this.state.item.getType()) {
 			case PersistibleType.PROJECT: {
-				form = <ProjectForm item={this.state.item} change={this.handleChange.bind(this)} />;
+				form = <ProjectForm edit={this.state.edit} item={this.state.item} change={this.handleChange.bind(this)} />;
 				break;
 			}
 			default: {
-				form = <PersistibleForm item={this.state.item} change={this.handleChange.bind(this)} />;
+				form = <PersistibleForm  edit={this.state.edit} item={this.state.item} change={this.handleChange.bind(this)} />;
 				break;
 			}
 		}

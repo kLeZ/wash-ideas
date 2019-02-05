@@ -21,15 +21,16 @@ import { container } from "../../ioc/inversify.config";
 import { Types } from "../../repository/Symbols";
 import Localization from "../../util/Localization";
 import IPersistibleFormProps from "./IPersistibleFormProps";
-import IPersistibleFormState from "./IPersistibleFormState";
 
-class PersistibleForm extends React.Component<IPersistibleFormProps, IPersistibleFormState> {
+class PersistibleForm extends React.Component<IPersistibleFormProps> {
 	constructor(props: IPersistibleFormProps) {
 		super(props);
 	}
 
 	public render() {
-		const l10n = container.get<Localization>(Types.LOCALIZATION).t("forms.persistible_form", { returnObjects: true });
+		const l10n = container
+			.get<Localization>(Types.LOCALIZATION)
+			.t("forms.persistible_form", { returnObjects: true });
 		return (
 			<DialogContent>
 				<TextField

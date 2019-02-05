@@ -1,5 +1,21 @@
 {
-  "done": [],
+  "done": [
+    {
+      "assignedTo": {
+        "name": "Alessandro Accardo"
+      },
+      "category": "UI",
+      "creation_time": "2019-01-17T17:51:44.546Z",
+      "description": {
+        "content": "Bottone di Add nella AppBar e handler function che discrimina la possibilità di inserire uno qualsiasi dei modelli disponibili.",
+        "mime": "text/markdown"
+      },
+      "id": "2",
+      "prio": 1,
+      "references": [],
+      "title": "Add action"
+    }
+  ],
   "in-progress": [
     {
       "assignedTo": {
@@ -32,24 +48,24 @@
       "title": "Form di Add/Edit"
     }
   ],
-  "testing": [
+  "testing": [],
+  "todo": [
     {
       "assignedTo": {
         "name": "Alessandro Accardo"
       },
-      "category": "UI",
-      "creation_time": "2019-01-17T17:51:44.546Z",
+      "category": "repository",
+      "creation_time": "2019-02-01T08:19:52.062Z",
       "description": {
-        "content": "Bottone di Add nella AppBar e handler function che discrimina la possibilità di inserire uno qualsiasi dei modelli disponibili.",
+        "content": "Ho provato a effettuare l'edit di un elemento, l'operazione va a buon fine ma il risultato è che trovo l'item duplicato in board.",
         "mime": "text/markdown"
       },
-      "id": "2",
+      "id": "7",
       "prio": 1,
       "references": [],
-      "title": "Add action"
-    }
-  ],
-  "todo": [
+      "title": "L'operazione di edit crea un duplicato",
+      "type": "bug"
+    },
     {
       "assignedTo": {
         "name": "Alessandro Accardo"
@@ -99,17 +115,29 @@
       "assignedTo": {
         "name": "Alessandro Accardo"
       },
-      "category": "repository",
-      "creation_time": "2019-02-01T08:19:52.062Z",
+      "category": "Localization",
+      "creation_time": "2019-02-05T07:23:01.341Z",
       "description": {
-        "content": "Ho provato a effettuare l'edit di un elemento, l'operazione va a buon fine ma il risultato è che trovo l'item duplicato in board.",
+        "content": "Aggiungere la lingua dello imperatore!",
         "mime": "text/markdown"
       },
-      "id": "7",
-      "prio": 1,
+      "id": "8",
       "references": [],
-      "title": "L'operazione di edit crea un duplicato",
-      "type": "bug"
+      "title": "Aggiungere traduzione in italiano volgare"
+    },
+    {
+      "assignedTo": {
+        "name": "Alessandro Accardo"
+      },
+      "category": "UI",
+      "creation_time": "2019-02-05T07:23:48.124Z",
+      "description": {
+        "content": "Aggiungere un menu di scelta della lingua nella toolbar.",
+        "mime": "text/markdown"
+      },
+      "id": "9",
+      "references": [],
+      "title": "Bottone di scelta della lingua"
     }
   ]
 }

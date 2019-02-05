@@ -9,7 +9,7 @@ import {
 	List,
 	ListItem,
 	NativeSelect,
-	TextField
+	TextField,
 } from "@material-ui/core";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -61,12 +61,12 @@ class ConfigurationForm extends React.Component<IConfigurationFormProps, IConfig
 				oauth2format: OAuth2Format.GitHub,
 				token: "",
 				branch: "data",
-				fsconf: { fs: "IndexedDB", options: {} }
+				fsconf: { fs: "IndexedDB", options: {} },
 			},
 			user: {
 				name: "kLeZ",
-				email: "julius8774@gmail.com"
-			}
+				email: "julius8774@gmail.com",
+			},
 		};
 	}
 
@@ -81,8 +81,8 @@ class ConfigurationForm extends React.Component<IConfigurationFormProps, IConfig
 				logComponent.debug(`configuration change :: [${name}]: ${event.target.value} :: prev: ${prev}`);
 				this.setState({
 					configuration: Extender.extends(Extender.Default, {}, this.state.configuration, {
-						[name]: event.target.value
-					})
+						[name]: event.target.value,
+					}),
 				});
 			}
 		};
@@ -94,19 +94,21 @@ class ConfigurationForm extends React.Component<IConfigurationFormProps, IConfig
 				const prev = JSON.stringify(this.state.user);
 				logComponent.debug(`user change :: [${name}]: ${event.target.value} :: prev: ${prev}`);
 				this.setState({
-					user: Extender.extends(Extender.Default, {}, this.state.user, { [name]: event.target.value })
+					user: Extender.extends(Extender.Default, {}, this.state.user, { [name]: event.target.value }),
 				});
 			}
 		};
 	}
 
 	public initContext(): void {
-		const ctx: IContext = {
-			user: this.state.user,
-			configuration: this.state.configuration
-		};
-		logComponent.debug(`Binding Context :: ${JSON.stringify(ctx)}`);
-		container.bind<IContext>(Types.CONTEXT).toConstantValue(ctx);
+		if (!container.isBound(Types.CONTEXT)) {
+			const ctx: IContext = {
+				user: this.state.user,
+				configuration: this.state.configuration,
+			};
+			logComponent.debug(`Binding Context :: ${JSON.stringify(ctx)}`);
+			container.bind<IContext>(Types.CONTEXT).toConstantValue(ctx);
+		}
 		this.cb();
 	}
 
@@ -151,7 +153,7 @@ class ConfigurationForm extends React.Component<IConfigurationFormProps, IConfig
 							onChange={this.handleConfigurationChange("oauth2format")}
 							inputProps={{
 								id: "oauth2format-compo",
-								name: "oauth2format"
+								name: "oauth2format",
 							}}
 							fullWidth
 						>

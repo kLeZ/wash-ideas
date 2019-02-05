@@ -22,8 +22,8 @@ interface ICardProps {
 	repoType: string;
 	item: IPersistible;
 	style: CSSProperties;
-	delete?: (event: React.MouseEvent<HTMLElement>, title: string) => void;
-	edit?: (event: React.MouseEvent<HTMLElement>, title: string) => void;
+	delete?: (title: string) => void;
+	edit?: (title: string) => void;
 	avatar?: React.ReactNode;
 	menuItems?: React.ReactNode | React.ReactNode[];
 	title?: React.ReactNode;

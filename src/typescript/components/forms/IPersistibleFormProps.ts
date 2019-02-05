@@ -18,6 +18,7 @@
 import { IPersistible } from "../../models/IPersistible";
 
 interface IPersistibleFormProps {
+	edit: boolean;
 	item: IPersistible;
 	change?: (e: React.ChangeEvent<HTMLElement>, field: string) => void;
 }

@@ -23,14 +23,20 @@ import { IPersistible } from "../../models/IPersistible";
 import { Types } from "../../repository/Symbols";
 import Localization from "../../util/Localization";
 import ActionsMenu from "../ActionsMenu";
+import Confirm from "../Confirm";
 import ICardProps from "./ICardProps";
 import ICardState from "./ICardState";
 
 class Card extends React.Component<ICardProps, ICardState> {
+	private menu: React.RefObject<ActionsMenu>;
+	private confirm: React.RefObject<Confirm>;
+
 	constructor(props: ICardProps) {
 		super(props);
 		this.delete = this.delete.bind(this);
 		this.edit = this.edit.bind(this);
+		this.menu = React.createRef();
+		this.confirm = React.createRef();
 		this.state = {
 			title: props.title || props.item.title,
 			item: props.item,
@@ -38,13 +44,16 @@ class Card extends React.Component<ICardProps, ICardState> {
 	}
 
 	public render() {
+		const confirmL10n = container
+			.get<Localization>(Types.LOCALIZATION)
+			.t("cards.confirm_delete", { returnObjects: true });
 		const item: IPersistible = this.state.item;
 		return (
 			<MUICard style={this.props.style}>
 				<CardHeader
 					avatar={this.props.avatar}
 					action={
-						<ActionsMenu menuId="actions-menu" buttonContent={<MoreVertIcon />}>
+						<ActionsMenu menuId="actions-menu" buttonContent={<MoreVertIcon />} ref={this.menu}>
 							<MenuItem onClick={this.edit} data-title={item.title}>
 								<ListItemIcon>
 									<EditIcon />
@@ -69,16 +78,28 @@ class Card extends React.Component<ICardProps, ICardState> {
 				/>
 				<CardContent>{this.props.children}</CardContent>
 				{this.props.footer}
+				<Confirm
+					ref={this.confirm}
+					title={confirmL10n.title}
+					message={confirmL10n.message}
+					agreeText={confirmL10n.agreeText}
+					disagreeText={confirmL10n.disagreeText}
+				/>
 			</MUICard>
 		);
 	}
 
 	private edit(e: React.MouseEvent<HTMLElement>) {
-		return this.props.edit(e, e.currentTarget.dataset.title);
+		this.menu.current.close();
+		return this.props.edit(e.currentTarget.dataset.title);
 	}
 
 	private delete(e: React.MouseEvent<HTMLElement>) {
-		return this.props.delete(e, e.currentTarget.dataset.title);
+		this.menu.current.close();
+		const title = e.currentTarget.dataset.title;
+		this.confirm.current.open(() => {
+			this.props.delete(title);
+		});
 	}
 }
 export default Card;
