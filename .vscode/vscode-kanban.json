@@ -14,9 +14,7 @@
       "prio": 1,
       "references": [],
       "title": "Add action"
-    }
-  ],
-  "in-progress": [
+    },
     {
       "assignedTo": {
         "name": "Alessandro Accardo"
@@ -36,6 +34,24 @@
       "assignedTo": {
         "name": "Alessandro Accardo"
       },
+      "category": "repository",
+      "creation_time": "2019-02-01T08:19:52.062Z",
+      "description": {
+        "content": "Ho provato a effettuare l'edit di un elemento, l'operazione va a buon fine ma il risultato è che trovo l'item duplicato in board.",
+        "mime": "text/markdown"
+      },
+      "id": "7",
+      "prio": 1,
+      "references": [],
+      "title": "L'operazione di edit crea un duplicato",
+      "type": "bug"
+    }
+  ],
+  "in-progress": [
+    {
+      "assignedTo": {
+        "name": "Alessandro Accardo"
+      },
       "category": "UI",
       "creation_time": "2019-01-17T17:53:14.507Z",
       "description": {
@@ -50,22 +66,6 @@
   ],
   "testing": [],
   "todo": [
-    {
-      "assignedTo": {
-        "name": "Alessandro Accardo"
-      },
-      "category": "repository",
-      "creation_time": "2019-02-01T08:19:52.062Z",
-      "description": {
-        "content": "Ho provato a effettuare l'edit di un elemento, l'operazione va a buon fine ma il risultato è che trovo l'item duplicato in board.",
-        "mime": "text/markdown"
-      },
-      "id": "7",
-      "prio": 1,
-      "references": [],
-      "title": "L'operazione di edit crea un duplicato",
-      "type": "bug"
-    },
     {
       "assignedTo": {
         "name": "Alessandro Accardo"
