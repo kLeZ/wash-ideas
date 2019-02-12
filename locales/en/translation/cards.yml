@@ -15,6 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 
+delete_item: Delete
 edit_item: Edit
 project:
   goto_repo_url: Navigate to code repository
+confirm_delete:
+  title: You're about to delete that item
+  message: If you confirm this action you will delete that item. This action cannot be recovered later.
+  agreeText: I agree
+  disagreeText: I disagree

@@ -2,5 +2,11 @@
 	"licenser.author": "Alessandro Accardo a.k.a. kLeZ & Fabio Scotto di Santolo a.k.a. Plague",
 	"licenser.license": "GPLv3",
 	"licenser.projectName": "Wash Ideas",
-	"prettier.printWidth": 120
+	"prettier.printWidth": 120,
+	"search.exclude": {
+		"**/coverage": true
+	},
+	"files.watcherExclude": {
+		"**/coverage/**": true
+	}
 }

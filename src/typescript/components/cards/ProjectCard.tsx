@@ -15,22 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 
-import {
-	Avatar,
-	Badge,
-	CardContent,
-	CardHeader,
-	IconButton,
-	LinearProgress,
-	ListItemIcon,
-	Menu,
-	MenuItem,
-	Typography,
-} from "@material-ui/core";
-import { Edit as EditIcon, Link as LinkIcon, MoreVert as MoreVertIcon } from "@material-ui/icons";
+import { Avatar, Badge, LinearProgress, ListItemIcon, MenuItem, Typography } from "@material-ui/core";
+import { Link as LinkIcon } from "@material-ui/icons";
 import * as React from "react";
 import { container } from "../../ioc/inversify.config";
 import Project from "../../models/Project";
+import { IRepository } from "../../repository/IRepository";
 import { Types } from "../../repository/Symbols";
 import Localization from "../../util/Localization";
 import Rating from "../Rating";
@@ -41,11 +31,9 @@ import ICardState from "./ICardState";
 class ProjectCard extends React.Component<ICardProps, ICardState> {
 	constructor(props: ICardProps) {
 		super(props);
-		this.goTo = this.goTo.bind(this);
 		const item: Project = props.item as Project;
 		this.state = {
 			item,
-			anchorEl: null,
 		};
 	}
 
@@ -53,6 +41,7 @@ class ProjectCard extends React.Component<ICardProps, ICardState> {
 		const item: Project = this.state.item as Project;
 		return (
 			<Card
+				repoType={this.props.repoType}
 				item={item}
 				style={this.props.style}
 				avatar={
@@ -64,7 +53,7 @@ class ProjectCard extends React.Component<ICardProps, ICardState> {
 					</Avatar>
 				}
 				menuItems={
-					<MenuItem onClick={this.goTo(item.repoUrl)}>
+					<MenuItem onClick={this.goTo.bind(this)} data-url={item.repoUrl}>
 						<ListItemIcon>
 							<LinkIcon />
 						</ListItemIcon>
@@ -81,18 +70,18 @@ class ProjectCard extends React.Component<ICardProps, ICardState> {
 				subheader={item.modified.toLocaleString()}
 				footer={[
 					<LinearProgress key={0} variant="determinate" value={item.progress} />,
-					<Rating  key={1} disabled rating={item.stars} />,
+					<Rating key={1} disabled rating={item.stars} />,
 				]}
+				delete={this.props.delete}
+				edit={this.props.edit}
 			>
 				<Typography paragraph>{item.description}</Typography>
 			</Card>
 		);
 	}
 
-	private goTo(url: string) {
-		return (event: React.SyntheticEvent) => {
-			window.open(url, "_blank").focus();
-		};
+	private goTo(e: React.MouseEvent<HTMLElement>) {
+		window.open(e.currentTarget.dataset.url, "_blank").focus();
 	}
 }
 export default ProjectCard;

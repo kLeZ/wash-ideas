@@ -34,7 +34,7 @@ import Localization from "./util/Localization";
 import { logUtils } from "./util/Logging";
 
 container.bind<IGitClient>(Types.GIT_CLIENT).to(GitClient);
-container.bind<IRepository<IPersistible>>("test").to(TestRepository);
+container.bind<IRepository<IPersistible>>("test").to(TestRepository).inSingletonScope();
 container.bind<IRepository<IPersistible>>("github").to(GitHubRepository);
 container.bind<Localization>(Types.LOCALIZATION).toConstantValue(new Localization(resources));
 

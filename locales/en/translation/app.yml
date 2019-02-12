@@ -16,6 +16,8 @@
 # along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 
 title: Wash Ideas - Borogoves.
+project_item: Project
+persistible_item: Item
 configuration_form:
   token_label: Access Token
   token_visibility_label: Toggle token visibility
@@ -24,3 +26,7 @@ configuration_form:
   name_label: Name
   email_label: Email
   load_button_text: Load
+save_form:
+  header: Create new item
+  cancel_btn: Cancel
+  save_btn: Save

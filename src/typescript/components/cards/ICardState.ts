@@ -20,7 +20,6 @@ import { IPersistible } from "../../models/IPersistible";
 interface ICardState {
 	title?: React.ReactNode;
 	item: IPersistible;
-	anchorEl: HTMLElement;
 }
 
 export default ICardState;

@@ -24,16 +24,24 @@ import { PersistibleType } from "../models/Symbols";
 import { IRepository } from "../repository/IRepository";
 import Card from "./cards/Card";
 import ProjectCard from "./cards/ProjectCard";
+import SaveForm from "./forms/SaveForm";
 
 interface IWashBoardState {
 	items: IPersistible[];
+	repoType: string;
+	isOpen: boolean;
 }
 
 class WashBoard extends React.Component<any, IWashBoardState> {
+	private saveForm: React.RefObject<SaveForm>;
+
 	constructor(props: any) {
 		super(props);
+		this.saveForm = React.createRef<SaveForm>();
 		this.state = {
 			items: [],
+			repoType: "",
+			isOpen: false,
 		};
 	}
 
@@ -41,6 +49,7 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 		const style: CSSProperties = {
 			margin: 15,
 			width: 320,
+			height: "0.1%",
 		};
 		return (
 			<div
@@ -53,22 +62,67 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 				}}
 			>
 				{this.state.items.map((item, index) => {
-					if (item.getType() === PersistibleType.PROJECT) {
-						return <ProjectCard style={style} item={item as Project} key={index} />;
-					} else {
-						return <Card style={style} item={item} key={index} />;
+					let card: React.ReactNode = null;
+					switch (item.getType()) {
+						case PersistibleType.PROJECT: {
+							card = (
+								<ProjectCard
+									repoType={this.state.repoType}
+									style={style}
+									item={item as Project}
+									key={item.title}
+									delete={this.delete.bind(this)}
+									edit={this.edit.bind(this)}
+								/>
+							);
+							break;
+						}
+						default: {
+							card = (
+								<Card
+									repoType={this.state.repoType}
+									style={style}
+									item={item}
+									key={item.title}
+									delete={this.delete.bind(this)}
+									edit={this.edit.bind(this)}
+								/>
+							);
+							break;
+						}
 					}
+					return card;
 				})}
+				<SaveForm onClosing={this.refresh.bind(this)} ref={this.saveForm} />
 			</div>
 		);
 	}
 
-	public async loadItems(repoType: string) {
+	public async loadItems(repoType: string, force?: boolean) {
+		let isOpen = this.state.isOpen;
 		const repo = container.get<IRepository<IPersistible>>(repoType);
-		await repo.open();
+		if (force === true || isOpen === false || repoType !== this.state.repoType) {
+			await repo.open();
+			isOpen = true;
+		}
 		const items = await repo.find(_ => true);
-		this.setState({ items });
-		await repo.close();
+		this.setState({ items, repoType, isOpen });
+	}
+
+	private delete(title: string) {
+		(async that => {
+			const repo = container.get<IRepository<Project>>(this.state.repoType);
+			await repo.delete(title);
+			await that.loadItems(that.state.repoType);
+		})(this);
+	}
+
+	private edit(title: string) {
+		this.saveForm.current.open(title);
+	}
+
+	private refresh() {
+		this.loadItems(this.state.repoType);
 	}
 }
 export default WashBoard;
