@@ -25,7 +25,6 @@ class Project implements IPersistible {
 	public description: string; // ✓
 	public repoUrl: string; // ✓
 	public progress: number; // ✓
-	public stars: number; // ✓
 	public nextTaskHardness: number; // ✓
 	public created: Date;
 	public modified: Date; // ✓
@@ -39,7 +38,6 @@ class Project implements IPersistible {
 		this.description = "";
 		this.repoUrl = "";
 		this.progress = 0;
-		this.stars = 0;
 		this.nextTaskHardness = 0;
 		this.author = {
 			name: "",

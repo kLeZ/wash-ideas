@@ -18,7 +18,7 @@
 import * as React from "react";
 
 interface IRatingProps {
-	disabled: boolean;
+	disabled?: boolean;
 	rating: number;
 	count?: number;
 }
@@ -27,6 +27,7 @@ interface IRatingState {
 	count: number;
 	rating: number;
 	temp_rating: number;
+	disabled: boolean;
 }
 
 class Rating extends React.Component<IRatingProps, IRatingState> {
@@ -36,6 +37,7 @@ class Rating extends React.Component<IRatingProps, IRatingState> {
 			count: this.props.count || 5,
 			rating: this.props.rating || null,
 			temp_rating: null,
+			disabled: this.props.disabled || false
 		};
 	}
 
@@ -43,9 +45,18 @@ class Rating extends React.Component<IRatingProps, IRatingState> {
 		const stars = [];
 
 		for (let i = 0; i < this.state.count; i++) {
-			stars.push(this.getStar(this.props.disabled, i, this.getClassName(i)));
+			stars.push(this.getStar(this.state.disabled, i, this.getClassName(i)));
 		}
 		return <div className="star-rating">{stars}</div>;
+	}
+
+	public shouldComponentUpdate(nextProps: IRatingProps, nextState: IRatingState, nextContext: any): boolean {
+		let ret = this.state !== nextState;
+		if (nextProps.rating !== this.state.rating) {
+			this.rate(nextProps.rating);
+			ret = true;
+		}
+		return ret;
 	}
 
 	public rate(rating: number): void {

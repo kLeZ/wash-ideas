@@ -33,7 +33,6 @@ class ProjectForm extends PersistibleForm {
 					type="text"
 					label={l10n.title}
 					inputProps={{
-						/* infame fracico... dentro all'inputProps l'ho dovuto mettere... */
 						"data-field": "title",
 					}}
 					defaultValue={item.title}
@@ -45,21 +44,8 @@ class ProjectForm extends PersistibleForm {
 				/>
 				<TextField
 					type="text"
-					label={l10n.repo_url}
-					inputProps={{
-						/* infame fracico... dentro all'inputProps l'ho dovuto mettere... */
-						"data-field": "repoUrl",
-					}}
-					defaultValue={item.repoUrl}
-					onChange={this.change.bind(this)}
-					margin="dense"
-					fullWidth
-				/>
-				<TextField
-					type="text"
 					label={l10n.description}
 					inputProps={{
-						/* infame fracico... dentro all'inputProps l'ho dovuto mettere... */
 						"data-field": "description",
 					}}
 					defaultValue={item.description}
@@ -69,6 +55,39 @@ class ProjectForm extends PersistibleForm {
 					required
 					multiline
 					rows={6}
+				/>
+				<TextField
+					type="text"
+					label={l10n.repo_url}
+					inputProps={{
+						"data-field": "repoUrl",
+					}}
+					defaultValue={item.repoUrl}
+					onChange={this.change.bind(this)}
+					margin="dense"
+					fullWidth
+				/>
+				<TextField
+					type="number"
+					label={l10n.progress}
+					inputProps={{
+						"data-field": "progress",
+					}}
+					defaultValue={item.progress}
+					onChange={this.change.bind(this)}
+					margin="dense"
+					fullWidth
+				/>
+				<TextField
+					type="number"
+					label={l10n.nextTaskHardness}
+					inputProps={{
+						"data-field": "nextTaskHardness",
+					}}
+					defaultValue={item.nextTaskHardness}
+					onChange={this.change.bind(this)}
+					margin="dense"
+					fullWidth
 				/>
 			</DialogContent>
 		);

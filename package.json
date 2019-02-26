@@ -14,8 +14,9 @@
 		"prebuild": "npm run test",
 		"build": "webpack --mode $npm_package_config_webpackenv",
 		"prestart": "npm run build",
-		"start": "http-server -c-1",
+		"start": "npm run serve",
 		"watch": "watch 'webpack --mode $npm_package_config_webpackenv' src/",
+		"serve": "http-server -c-1",
 		"dist-track": "git update-index --no-skip-worktree dist/*.*",
 		"dist-skip": "git update-index --skip-worktree dist/*.*"
 	},

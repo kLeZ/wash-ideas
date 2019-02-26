@@ -21,3 +21,5 @@ project_form:
   title: Title
   repo_url: Repository Url
   description: Description
+  progress: Progress
+  nextTaskHardness: Next Task hardness

@@ -62,15 +62,11 @@ class ProjectCard extends React.Component<ICardProps, ICardState> {
 						</Typography>
 					</MenuItem>
 				}
-				title={
-					<Badge color="primary" badgeContent={item.nextTaskHardness} style={{ padding: "0 16px" }}>
-						{item.title}
-					</Badge>
-				}
+				title={item.title}
 				subheader={item.modified.toLocaleString()}
 				footer={[
 					<LinearProgress key={0} variant="determinate" value={item.progress} />,
-					<Rating key={1} disabled rating={item.stars} />,
+					<Rating key={1} rating={(item.nextTaskHardness / 20)} />,
 				]}
 				delete={this.props.delete}
 				edit={this.props.edit}
