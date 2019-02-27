@@ -16,12 +16,13 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+var fs = require('fs');
 var path = require('path');
 var webpack = require('webpack');
 var ExtractText = require('extract-text-webpack-plugin');
 var ProgressBar = require('progress-bar-webpack-plugin');
 var Visualizer = require('webpack-visualizer-plugin');
-var fs = require('fs');
+var HardSource = require('hard-source-webpack-plugin');
 
 module.exports = {
 	entry: {
@@ -84,7 +85,8 @@ module.exports = {
 			filename: 'main.css'
 		}),
 		new Visualizer(),
-		new ProgressBar()
+		new ProgressBar(),
+		new HardSource()
 	],
 	node: {
 		process: false,
