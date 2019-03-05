@@ -15,14 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Avatar, Badge, LinearProgress, ListItemIcon, MenuItem, Typography } from "@material-ui/core";
+import { Avatar, LinearProgress, ListItemIcon, MenuItem, Typography } from "@material-ui/core";
 import { Link as LinkIcon } from "@material-ui/icons";
 import * as React from "react";
 import { container } from "../../ioc/inversify.config";
 import Project from "../../models/Project";
-import { IRepository } from "../../repository/IRepository";
 import { Types } from "../../repository/Symbols";
 import Localization from "../../util/Localization";
+import MyMath from "../../util/MyMath";
 import Rating from "../Rating";
 import Card from "./Card";
 import ICardProps from "./ICardProps";
@@ -66,7 +66,7 @@ class ProjectCard extends React.Component<ICardProps, ICardState> {
 				subheader={item.modified.toLocaleString()}
 				footer={[
 					<LinearProgress key={0} variant="determinate" value={item.progress} />,
-					<Rating key={1} rating={(item.nextTaskHardness / 20)} />,
+					<Rating key={1} disabled rating={MyMath.rate(item.nextTaskHardness)} />,
 				]}
 				delete={this.props.delete}
 				edit={this.props.edit}

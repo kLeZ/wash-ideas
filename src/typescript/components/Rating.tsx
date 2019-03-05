@@ -44,19 +44,16 @@ class Rating extends React.Component<IRatingProps, IRatingState> {
 	public render() {
 		const stars = [];
 
-		for (let i = 0; i < this.state.count; i++) {
+		for (let i = 1; i <= this.state.count; i++) {
 			stars.push(this.getStar(this.state.disabled, i, this.getClassName(i)));
 		}
 		return <div className="star-rating">{stars}</div>;
 	}
 
-	public shouldComponentUpdate(nextProps: IRatingProps, nextState: IRatingState, nextContext: any): boolean {
-		let ret = this.state !== nextState;
+	public componentWillReceiveProps(nextProps: IRatingProps): void {
 		if (nextProps.rating !== this.state.rating) {
 			this.rate(nextProps.rating);
-			ret = true;
 		}
-		return ret;
 	}
 
 	public rate(rating: number): void {
