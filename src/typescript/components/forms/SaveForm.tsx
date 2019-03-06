@@ -134,6 +134,11 @@ export default class SaveForm extends React.Component<ISaveFormProps, ISaveFormS
 			logComponent.debug(`project change :: [${field}]: ${e.target.value} :: prev: ${prev}`);
 			this.setState({
 				item: Extender.extends(Extender.Default, {}, this.state.item, { [field]: e.target.value }),
+				/*
+				 * FIXME: e.target.value è una stringa, mentre io sto tentando
+				 * di salvare in un attributo che potrebbe non esserlo.
+				 * Possibili side effects.
+				 */
 			});
 		}
 	}

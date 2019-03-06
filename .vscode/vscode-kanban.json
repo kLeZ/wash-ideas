@@ -45,9 +45,7 @@
       "prio": 1,
       "references": [],
       "title": "Delete action"
-    }
-  ],
-  "in-progress": [
+    },
     {
       "assignedTo": {
         "name": "Alessandro Accardo"
@@ -64,6 +62,7 @@
       "title": "Form di Add/Edit"
     }
   ],
+  "in-progress": [],
   "testing": [],
   "todo": [
     {
@@ -115,6 +114,20 @@
       "assignedTo": {
         "name": "Alessandro Accardo"
       },
+      "creation_time": "2019-02-27T08:18:18.017Z",
+      "description": {
+        "content": "Il form di salvataggio non tiene conto del tipo degli attributi dell'oggetto da salvare. Viene cambiato il tipo a run-time.",
+        "mime": "text/markdown"
+      },
+      "id": "10",
+      "references": [],
+      "title": "Il form di salvataggio non tiene conto del tipo degli attributi",
+      "type": "bug"
+    },
+    {
+      "assignedTo": {
+        "name": "Alessandro Accardo"
+      },
       "category": "Localization",
       "creation_time": "2019-02-05T07:23:01.341Z",
       "description": {
@@ -138,20 +151,6 @@
       "id": "9",
       "references": [],
       "title": "Bottone di scelta della lingua"
-    },
-    {
-      "assignedTo": {
-        "name": "Alessandro Accardo"
-      },
-      "creation_time": "2019-02-27T08:18:18.017Z",
-      "description": {
-        "content": "Il form di salvataggio non tiene conto del tipo degli attributi dell'oggetto da salvare. Viene cambiato il tipo a run-time.",
-        "mime": "text/markdown"
-      },
-      "id": "10",
-      "references": [],
-      "title": "Il form di salvataggio non tiene conto del tipo degli attributi",
-      "type": "bug"
     }
   ]
 }

@@ -17,26 +17,15 @@
 
 class MyMath {
 	public static rate(x: number): number {
-		let ret: number;
-
-		ret = Math.max(0, x);
-		ret = Math.min(x, 100);
-
-		ret = ret / 20;
-
-		ret = this.roundUp(ret, 2);
-		ret = ret = Math.ceil(ret);
-
-		return ret;
+		return this.roundNearest(Math.min(Math.max(0, x), 100) / 20, 1);
 	}
 
-	/**
-	 * @param num The number to round
-	 * @param precision The number of decimal places to preserve
-	 */
-	public static roundUp(num: number, precision: number): number {
-		precision = Math.pow(10, precision);
-		return Math.ceil(num * precision) / precision;
+	public static roundNearest(num: number, acc: number): number {
+		if (acc < 0) {
+			return Math.round(num * acc) / acc;
+		} else {
+			return Math.round(num / acc) * acc;
+		}
 	}
 }
 export default MyMath;
