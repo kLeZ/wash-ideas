@@ -20,7 +20,6 @@ import { injectable } from "inversify";
 import Prando from "prando";
 import { IPersistible } from "../models/IPersistible";
 import Project from "../models/Project";
-import { PersistibleType } from "../models/Symbols";
 import Extender from "../util/Extender";
 import { logRepo } from "./../util/Logging";
 import { IRepository } from "./IRepository";
@@ -61,7 +60,7 @@ export class TestRepository<T extends IPersistible> implements IRepository<T> {
 						name: "kLeZ",
 						email: "klez@pm.me",
 					},
-					getType: () => PersistibleType.PROJECT,
+					type: "Project",
 				} as Project);
 			}
 			that.items = items;

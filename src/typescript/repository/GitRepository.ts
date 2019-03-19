@@ -37,8 +37,12 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 			await self.client.init();
 
 			if (self.client.exists(config.dir) === false) {
+				logRepo.trace("Repository folder does not exist.");
 				self.client.mkdir(config.dir);
-				self.client.readdir(config.dir);
+				const contents = self.client.readdir(config.dir);
+				for (const cont of contents) {
+					logRepo.debug(cont);
+				}
 				await self.client.clone({
 					dir: config.dir,
 					corsProxy: "https://cors.isomorphic-git.org",
@@ -129,7 +133,8 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 			try {
 				const items: T[] = self.client
 					.readdir(config.dir)
-					.map(file => JSON.parse(self.client.readFile(file, "utf-8")) as T)
+					.filter(item => item.endsWith(".json") && item.length > ".json".length)
+					.map(file => JSON.parse(self.client.readFile(`${config.dir}/${file}`, "utf-8")) as T)
 					.filter(comparer);
 				resolve(items);
 			} catch (e) {

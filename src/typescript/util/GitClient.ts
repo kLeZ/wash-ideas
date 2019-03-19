@@ -17,10 +17,9 @@
 //
 
 import * as BrowserFS from "browserfs";
-import FS, { FSModule } from "browserfs/dist/node/core/FS";
+import { FSModule } from "browserfs/dist/node/core/FS";
 import { inject, injectable } from "inversify";
 import * as git from "isomorphic-git";
-import * as pify from "pify";
 import { IContext } from "../models/IContext";
 import { IGitRepositoryConfiguration } from "../models/IGitRepositoryConfiguration";
 import { Types } from "../repository/Symbols";
@@ -31,7 +30,6 @@ import { Sha, ShaType } from "./Sha";
 @injectable()
 export class GitClient implements IGitClient {
 	private config: IGitRepositoryConfiguration;
-	private pfs: FS;
 
 	constructor(@inject(Types.CONTEXT) ctx: IContext) {
 		this.config = ctx.configuration as IGitRepositoryConfiguration;
@@ -59,7 +57,8 @@ export class GitClient implements IGitClient {
 		});
 	}
 	public exists(path: string): boolean {
-		return this.pfs.existsSync(path);
+		const fs = BrowserFS.BFSRequire("fs");
+		return fs.existsSync(path);
 	}
 	public init(): Promise<void> {
 		const self = this;
@@ -67,17 +66,17 @@ export class GitClient implements IGitClient {
 			self.initFS().then(fs => {
 				// Initialize isomorphic-git with our new file system
 				git.plugins.set("fs", fs);
-				// make a Promisified version for convenience
-				self.pfs = pify(fs);
 				resolve();
 			});
 		});
 	}
 	public mkdir(path: string): void {
-		return this.pfs.mkdirSync(path);
+		const fs = BrowserFS.BFSRequire("fs");
+		return fs.mkdirSync(path);
 	}
 	public readdir(path: string): string[] {
-		return this.pfs.readdirSync(path);
+		const fs = BrowserFS.BFSRequire("fs");
+		return fs.readdirSync(path);
 	}
 	public pull(args: IPullArgs): Promise<void> {
 		return git.pull(args);
@@ -86,28 +85,35 @@ export class GitClient implements IGitClient {
 		return git.push(args);
 	}
 	public writeFile(path: string, content: string, encoding: string): void {
-		return this.pfs.writeFileSync(path, content, encoding);
+		const fs = BrowserFS.BFSRequire("fs");
+		return fs.writeFileSync(path, content, encoding);
 	}
 	public readFile(path: string, encoding: string): string {
-		return this.pfs.readFileSync(path, encoding);
+		const fs = BrowserFS.BFSRequire("fs");
+		return fs.readFileSync(path, encoding);
 	}
 	public deleteFile(path: string): void {
-		return this.pfs.unlinkSync(path);
+		const fs = BrowserFS.BFSRequire("fs");
+		return fs.unlinkSync(path);
 	}
 
 	private initFS(): Promise<FSModule> {
 		const self = this;
 		return new Promise<FSModule>((resolve, reject) => {
-			BrowserFS.configure(self.config.fsconf, err => {
-				if (err) {
-					logUtils.error(err.message, err);
-					reject(err);
-				} else {
-					const fs = BrowserFS.BFSRequire("fs");
-					logUtils.trace("BrowserFS configured!");
-					resolve(fs);
+			// FIXME: refactoring fsconf!!!
+			BrowserFS.install(window);
+			BrowserFS.configure(self.config.fsconf,
+				err => {
+					if (err) {
+						logUtils.error(err.message, err);
+						reject(err);
+					} else {
+						const fs = BrowserFS.BFSRequire("fs");
+						logUtils.trace("BrowserFS configured!");
+						resolve(fs);
+					}
 				}
-			});
+			);
 		});
 	}
 }

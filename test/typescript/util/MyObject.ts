@@ -19,13 +19,12 @@
 import { IPersistible } from "../../../src/typescript/models/IPersistible";
 
 export class MyObject implements IPersistible {
+	public type: string;
 	public title: string;
 	public encoding: string;
 	public constructor(title: string, encoding: string) {
+		this.type = "MyObject";
 		this.title = title;
 		this.encoding = encoding;
-	}
-	public getType() {
-		return Symbol.for("MyObject");
 	}
 }

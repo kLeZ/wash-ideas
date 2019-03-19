@@ -23,7 +23,6 @@ import { container } from "../../ioc/inversify.config";
 import { IContext } from "../../models/IContext";
 import { IGitRepositoryConfiguration } from "../../models/IGitRepositoryConfiguration";
 import { IPersistible } from "../../models/IPersistible";
-import { PersistibleType } from "../../models/Symbols";
 import { IRepository } from "../../repository/IRepository";
 import { Types } from "../../repository/Symbols";
 import Extender from "../../util/Extender";
@@ -145,8 +144,8 @@ export default class SaveForm extends React.Component<ISaveFormProps, ISaveFormS
 
 	private getForm(): JSX.Element {
 		let form: JSX.Element = null;
-		switch (this.state.item.getType()) {
-			case PersistibleType.PROJECT: {
+		switch (this.state.item.type) {
+			case "Project": {
 				form = <ProjectForm edit={this.state.edit} item={this.state.item} change={this.handleChange.bind(this)} />;
 				break;
 			}
