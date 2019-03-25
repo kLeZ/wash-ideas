@@ -79,6 +79,7 @@ it("Tests the find one method searching for the 'Goofy0' instance", async () => 
 	const repo = container.get<IRepository<IPersistible>>(type);
 	const el = await repo.findOne("Goofy0");
 	expect(el).toEqual({
+		type: "MyObject",
 		title: "Goofy0",
 		encoding: "utf-8"
 	});

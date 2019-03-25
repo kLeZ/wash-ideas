@@ -14,9 +14,3 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
-
-const PersistibleType = {
-	GENERIC: Symbol.for("Generic"),
-	PROJECT: Symbol.for("Project")
-};
-export { PersistibleType };

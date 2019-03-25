@@ -61,7 +61,10 @@ class ConfigurationForm extends React.Component<IConfigurationFormProps, IConfig
 				oauth2format: OAuth2Format.GitHub,
 				token: "",
 				branch: "data",
-				fsconf: { fs: "IndexedDB", options: {} },
+				fsconf: {
+					fs: "LocalStorage",
+					options: {},
+				},
 			},
 			user: {
 				name: "kLeZ",

@@ -16,10 +16,8 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { PersistibleType } from "./Symbols";
-
 export interface IPersistible {
+	type: string;
 	title: string;
 	encoding: string;
-	getType: () => symbol;
 }

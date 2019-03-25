@@ -38,15 +38,11 @@ export class GitClientMock implements IGitClient {
 
 	public constructor() {
 		this.elements = new Map<string, string>();
-		this.elements.set(`${this.ROOT_PATH}/${this.tkn[0]}0.json`, JSON.stringify(new MyObject(`${this.tkn[0]}0`, "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/${this.tkn[0]}1.json`, JSON.stringify(new MyObject(`${this.tkn[0]}1`, "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/${this.tkn[0]}2.json`, JSON.stringify(new MyObject(`${this.tkn[0]}2`, "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/${this.tkn[1]}0.json`, JSON.stringify(new MyObject(`${this.tkn[1]}0`, "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/${this.tkn[1]}1.json`, JSON.stringify(new MyObject(`${this.tkn[1]}1`, "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/${this.tkn[1]}2.json`, JSON.stringify(new MyObject(`${this.tkn[1]}2`, "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/${this.tkn[2]}0.json`, JSON.stringify(new MyObject(`${this.tkn[2]}0`, "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/${this.tkn[2]}1.json`, JSON.stringify(new MyObject(`${this.tkn[2]}1`, "utf-8")));
-		this.elements.set(`${this.ROOT_PATH}/${this.tkn[2]}2.json`, JSON.stringify(new MyObject(`${this.tkn[2]}2`, "utf-8")));
+		for (const t of this.tkn) {
+			for (let i = 0; i <= 2; i++) {
+				this.elements.set(`${this.ROOT_PATH}/${t}${i}.json`, JSON.stringify(new MyObject(`${t}${i}`, "utf-8")));
+			}
+		}
 	}
 
 	public add(args: IAddArgs): Promise<void> {
@@ -77,7 +73,13 @@ export class GitClientMock implements IGitClient {
 		return;
 	}
 	public readdir(path: string): string[] {
-		return Array.from(this.elements.keys());
+		const ret: string[] = [];
+		for (const key of this.elements.keys()) {
+			if (key.startsWith(path)) {
+				ret.push(key.substring(key.indexOf(path) + path.length + 1));
+			}
+		}
+		return ret;
 	}
 	public pull(args: IPullArgs): Promise<void> {
 		return new Promise<void>((resolve, reject) => {

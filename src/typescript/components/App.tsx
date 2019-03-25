@@ -30,7 +30,6 @@ import { container } from "../ioc/inversify.config";
 import { IContext } from "../models/IContext";
 import { IGitRepositoryConfiguration } from "../models/IGitRepositoryConfiguration";
 import Project from "../models/Project";
-import { PersistibleType } from "../models/Symbols";
 import { Types } from "../repository/Symbols";
 import Localization from "../util/Localization";
 import { logComponent } from "../util/Logging";
@@ -79,7 +78,7 @@ class App extends React.Component {
 							{container.get<Localization>(Types.LOCALIZATION).t("app.title")}
 						</Typography>
 						<ActionsMenu menuId="persistible-type-menu" buttonContent={<AddIcon />} ref={this.addMenu}>
-							<MenuItem onClick={this.onAdd} data-type={PersistibleType.PROJECT.toString()}>
+							<MenuItem onClick={this.onAdd} data-type="Project">
 								<ListItemIcon>
 									<AssignmentIcon />
 								</ListItemIcon>
@@ -87,7 +86,7 @@ class App extends React.Component {
 									{container.get<Localization>(Types.LOCALIZATION).t("app.project_item")}
 								</Typography>
 							</MenuItem>
-							<MenuItem onClick={this.onAdd} data-type={PersistibleType.GENERIC.toString()}>
+							<MenuItem onClick={this.onAdd} data-type="Generic">
 								<ListItemIcon>
 									<DescriptionIcon />
 								</ListItemIcon>
@@ -113,7 +112,7 @@ class App extends React.Component {
 			const type = e.currentTarget.dataset.type;
 			let item = null;
 			switch (type) {
-				case PersistibleType.PROJECT.toString(): {
+				case "Project": {
 					const date = new Date();
 					const prj = new Project();
 					prj.created = date;
@@ -127,9 +126,7 @@ class App extends React.Component {
 					item = {
 						title: "",
 						encoding: "utf8",
-						getType: () => {
-							return PersistibleType.GENERIC;
-						},
+						type: "Generic",
 					};
 					break;
 				}

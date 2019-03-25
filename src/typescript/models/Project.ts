@@ -17,9 +17,9 @@
 
 import { IPersistible } from "./IPersistible";
 import { IUser } from "./IUser";
-import { PersistibleType } from "./Symbols";
 
 class Project implements IPersistible {
+	public type: string;
 	public title: string; // ✓
 	public encoding: string; // ✓
 	public description: string; // ✓
@@ -49,13 +49,7 @@ class Project implements IPersistible {
 		};
 		this.created = date;
 		this.modified = date;
-		this.getType = () => {
-			return PersistibleType.PROJECT;
-		};
-	}
-
-	public getType() {
-		return PersistibleType.PROJECT;
+		this.type = "Project";
 	}
 }
 export default Project;

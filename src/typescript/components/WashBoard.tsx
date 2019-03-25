@@ -20,7 +20,6 @@ import { CSSProperties } from "react";
 import { container } from "../ioc/inversify.config";
 import { IPersistible } from "../models/IPersistible";
 import Project from "../models/Project";
-import { PersistibleType } from "../models/Symbols";
 import { IRepository } from "../repository/IRepository";
 import Card from "./cards/Card";
 import ProjectCard from "./cards/ProjectCard";
@@ -63,8 +62,8 @@ class WashBoard extends React.Component<any, IWashBoardState> {
 			>
 				{this.state.items.map((item, index) => {
 					let card: React.ReactNode = null;
-					switch (item.getType()) {
-						case PersistibleType.PROJECT: {
+					switch (item.type) {
+						case "Project": {
 							card = (
 								<ProjectCard
 									repoType={this.state.repoType}
