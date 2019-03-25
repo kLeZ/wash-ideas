@@ -81,7 +81,8 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 
 				const path = `${config.dir}/${item.title}.json`;
 				if (self.client.exists(path) === false) {
-					await self.persist(path, item, resolve);
+					this.client.writeFile(path, JSON.stringify(item), item.encoding);
+					await self.persist("Add", item.title, resolve);
 				} else {
 					logRepo.warn("Specified entity already exists! Please use the update method");
 					reject("Specified entity already exists! Please use the update method");
@@ -101,7 +102,8 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 
 				const path = `${config.dir}/${filename}.json`;
 				if (self.client.exists(path) === true) {
-					await self.persist(path, item, resolve);
+					this.client.writeFile(path, JSON.stringify(item), item.encoding);
+					await self.persist("Updat", item.title, resolve);
 				} else {
 					logRepo.warn("Specified entity doesn't exist yet! Please use the create method");
 					reject("Specified entity doesn't exist yet! Please use the create method");
@@ -112,13 +114,15 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 			}
 		});
 	}
-	public delete(path: string): Promise<boolean> {
+	public delete(filename: string): Promise<boolean> {
 		const self = this;
 		const config = self.context.configuration as IGitRepositoryConfiguration;
 
-		return new Promise<boolean>((resolve, reject) => {
+		return new Promise<boolean>(async (resolve, reject) => {
 			try {
+				const path = `${config.dir}/${filename}.json`;
 				self.client.deleteFile(path);
+				await self.persist("Delet", filename, resolve);
 				resolve(self.client.exists(path) === false);
 			} catch (e) {
 				reject(e);
@@ -169,16 +173,15 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 			resolve(response.errors === null || response.errors ? response.errors.length === 0 : true);
 		});
 	}
-	private async persist(path: string, item: T, resolve: (value?: boolean | PromiseLike<boolean>) => void) {
+	private async persist(op: string, title: string, resolve: (value?: boolean | PromiseLike<boolean>) => void) {
 		const config = this.context.configuration as IGitRepositoryConfiguration;
-		this.client.writeFile(path, JSON.stringify(item), item.encoding);
 		await this.client.add({
 			dir: config.dir,
-			filepath: `${item.title}.json`,
+			filepath: `${title}.json`,
 		});
 		const sha = await this.client.commit({
 			dir: config.dir,
-			message: `Added new ${item.constructor.name}: ${item.title}.json`,
+			message: `${op}ed new Item: ${title}.json`,
 			author: {
 				name: this.context.user.name,
 				email: this.context.user.email,
