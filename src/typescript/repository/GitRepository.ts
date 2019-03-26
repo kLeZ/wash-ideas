@@ -174,18 +174,16 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 		});
 	}
 	private async persist(op: string, filepath: string, resolve: (value?: boolean | PromiseLike<boolean>) => void) {
-		const config = this.context.configuration as IGitRepositoryConfiguration;
+		const dir = (this.context.configuration as IGitRepositoryConfiguration).dir;
+		const author = this.context.user;
 		await this.client.add({
-			dir: config.dir,
-			filepath: `${filepath}.json`,
+			dir,
+			filepath
 		});
 		const sha = await this.client.commit({
-			dir: config.dir,
-			message: `${op} new Item: ${filepath}.json`,
-			author: {
-				name: this.context.user.name,
-				email: this.context.user.email,
-			},
+			dir,
+			message: `${op} new Item: ${filepath}`,
+			author
 		});
 		if (sha !== null) {
 			const ret = await this.sync();
