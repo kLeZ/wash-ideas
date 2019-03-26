@@ -82,7 +82,7 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 				const path = `${config.dir}/${item.title}.json`;
 				if (self.client.exists(path) === false) {
 					this.client.writeFile(path, JSON.stringify(item), item.encoding);
-					await self.persist("Add", item.title, resolve);
+					await self.persist("Added", path, resolve);
 				} else {
 					logRepo.warn("Specified entity already exists! Please use the update method");
 					reject("Specified entity already exists! Please use the update method");
@@ -103,7 +103,7 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 				const path = `${config.dir}/${filename}.json`;
 				if (self.client.exists(path) === true) {
 					this.client.writeFile(path, JSON.stringify(item), item.encoding);
-					await self.persist("Updat", item.title, resolve);
+					await self.persist("Updated", path, resolve);
 				} else {
 					logRepo.warn("Specified entity doesn't exist yet! Please use the create method");
 					reject("Specified entity doesn't exist yet! Please use the create method");
@@ -122,7 +122,7 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 			try {
 				const path = `${config.dir}/${filename}.json`;
 				self.client.deleteFile(path);
-				await self.persist("Delet", filename, resolve);
+				await self.persist("Deleted", path, resolve);
 				resolve(self.client.exists(path) === false);
 			} catch (e) {
 				reject(e);
@@ -173,15 +173,15 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 			resolve(response.errors === null || response.errors ? response.errors.length === 0 : true);
 		});
 	}
-	private async persist(op: string, title: string, resolve: (value?: boolean | PromiseLike<boolean>) => void) {
+	private async persist(op: string, filepath: string, resolve: (value?: boolean | PromiseLike<boolean>) => void) {
 		const config = this.context.configuration as IGitRepositoryConfiguration;
 		await this.client.add({
 			dir: config.dir,
-			filepath: `${title}.json`,
+			filepath: `${filepath}.json`,
 		});
 		const sha = await this.client.commit({
 			dir: config.dir,
-			message: `${op}ed new Item: ${title}.json`,
+			message: `${op} new Item: ${filepath}.json`,
 			author: {
 				name: this.context.user.name,
 				email: this.context.user.email,
