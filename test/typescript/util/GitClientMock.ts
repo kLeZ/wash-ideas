@@ -25,6 +25,7 @@ import {
 	IPullArgs,
 	IPushArgs,
 	IPushResult,
+	IRemoveArgs,
 } from "../../../src/typescript/util/IGitClient";
 import { Sha, ShaType } from "../../../src/typescript/util/Sha";
 import { MyObject } from "./MyObject";
@@ -46,6 +47,11 @@ export class GitClientMock implements IGitClient {
 	}
 
 	public add(args: IAddArgs): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			resolve();
+		});
+	}
+	public remove(args: IRemoveArgs): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
 			resolve();
 		});

@@ -151,6 +151,17 @@
       "id": "9",
       "references": [],
       "title": "Bottone di scelta della lingua"
+    },
+    {
+      "category": "repository",
+      "creation_time": "2019-03-27T08:02:27.858Z",
+      "description": {
+        "content": "Va implementato il concetto di transazione e transazionalità. I principi ACID sono un must.",
+        "mime": "text/markdown"
+      },
+      "id": "11",
+      "references": [],
+      "title": "ACID Compliance"
     }
   ]
 }

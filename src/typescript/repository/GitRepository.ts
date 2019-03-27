@@ -79,10 +79,26 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 			try {
 				await self.client.init();
 
-				const path = `${config.dir}/${item.title}.json`;
-				if (self.client.exists(path) === false) {
-					this.client.writeFile(path, JSON.stringify(item), item.encoding);
-					await self.persist("Added", path, resolve);
+				const dir = (this.context.configuration as IGitRepositoryConfiguration).dir;
+				const author = this.context.user;
+				const filepath = `${config.dir}/${item.title}.json`;
+				if (self.client.exists(filepath) === false) {
+					this.client.writeFile(filepath, JSON.stringify(item), item.encoding);
+					await this.client.add({
+						dir,
+						filepath
+					});
+					const sha = await this.client.commit({
+						dir,
+						message: `Added new Item: ${filepath}`,
+						author
+					});
+					if (sha !== null) {
+						const ret = await this.sync();
+						resolve(ret);
+					} else {
+						resolve(false);
+					}
 				} else {
 					logRepo.warn("Specified entity already exists! Please use the update method");
 					reject("Specified entity already exists! Please use the update method");
@@ -100,10 +116,26 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 			try {
 				await self.client.init();
 
-				const path = `${config.dir}/${filename}.json`;
-				if (self.client.exists(path) === true) {
-					this.client.writeFile(path, JSON.stringify(item), item.encoding);
-					await self.persist("Updated", path, resolve);
+				const dir = (this.context.configuration as IGitRepositoryConfiguration).dir;
+				const author = this.context.user;
+				const filepath = `${config.dir}/${item.title}.json`;
+				if (self.client.exists(filepath) === true) {
+					this.client.writeFile(filepath, JSON.stringify(item), item.encoding);
+					await this.client.add({
+						dir,
+						filepath
+					});
+					const sha = await this.client.commit({
+						dir,
+						message: `Updated new Item: ${filepath}`,
+						author
+					});
+					if (sha !== null) {
+						const ret = await this.sync();
+						resolve(ret);
+					} else {
+						resolve(false);
+					}
 				} else {
 					logRepo.warn("Specified entity doesn't exist yet! Please use the create method");
 					reject("Specified entity doesn't exist yet! Please use the create method");
@@ -120,10 +152,25 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 
 		return new Promise<boolean>(async (resolve, reject) => {
 			try {
-				const path = `${config.dir}/${filename}.json`;
-				self.client.deleteFile(path);
-				await self.persist("Deleted", path, resolve);
-				resolve(self.client.exists(path) === false);
+				const dir = (this.context.configuration as IGitRepositoryConfiguration).dir;
+				const filepath = `${config.dir}/${filename}.json`;
+				const author = this.context.user;
+				self.client.deleteFile(filepath);
+				await this.client.remove({
+					dir,
+					filepath
+				});
+				const sha = await this.client.commit({
+					dir,
+					message: `Deleted new Item: ${filepath}`,
+					author
+				});
+				if (sha !== null) {
+					const ret = await this.sync();
+					resolve(self.client.exists(filepath) === false);
+				} else {
+					reject("Errors with commit");
+				}
 			} catch (e) {
 				reject(e);
 			}
@@ -172,24 +219,5 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 			});
 			resolve(response.errors === null || response.errors ? response.errors.length === 0 : true);
 		});
-	}
-	private async persist(op: string, filepath: string, resolve: (value?: boolean | PromiseLike<boolean>) => void) {
-		const dir = (this.context.configuration as IGitRepositoryConfiguration).dir;
-		const author = this.context.user;
-		await this.client.add({
-			dir,
-			filepath
-		});
-		const sha = await this.client.commit({
-			dir,
-			message: `${op} new Item: ${filepath}`,
-			author
-		});
-		if (sha !== null) {
-			const ret = await this.sync();
-			resolve(ret);
-		} else {
-			resolve(false);
-		}
 	}
 }

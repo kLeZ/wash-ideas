@@ -26,6 +26,13 @@ export interface IAddArgs {
 	gitdir?: string;
 	filepath: string;
 }
+export interface IRemoveArgs {
+	core?: string;
+	fs?: any;
+	dir: string;
+	gitdir?: string;
+	filepath: string;
+}
 export interface ICloneArgs {
 	core?: string;
 	fs?: any;
@@ -105,6 +112,7 @@ export interface IPushResult {
 
 export interface IGitClient {
 	add(args: IAddArgs): Promise<void>;
+	remove(args: IRemoveArgs): Promise<void>;
 	clone(args: ICloneArgs): Promise<void>;
 	commit(args: ICommitArgs): Promise<Sha>;
 	exists(path: string): boolean;

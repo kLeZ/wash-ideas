@@ -24,7 +24,16 @@ import { IContext } from "../models/IContext";
 import { IGitRepositoryConfiguration } from "../models/IGitRepositoryConfiguration";
 import { Types } from "../repository/Symbols";
 import { logUtils } from "../util/Logging";
-import { IAddArgs, ICloneArgs, ICommitArgs, IGitClient, IPullArgs, IPushArgs, IPushResult } from "./IGitClient";
+import {
+	IAddArgs,
+	ICloneArgs,
+	ICommitArgs,
+	IGitClient,
+	IPullArgs,
+	IPushArgs,
+	IPushResult,
+	IRemoveArgs,
+} from "./IGitClient";
 import { Sha, ShaType } from "./Sha";
 
 @injectable()
@@ -37,6 +46,9 @@ export class GitClient implements IGitClient {
 
 	public add(args: IAddArgs): Promise<void> {
 		return git.add(args);
+	}
+	public remove(args: IRemoveArgs): Promise<void> {
+		return git.remove(args);
 	}
 	public clone(args: ICloneArgs): Promise<void> {
 		return git.clone(args);
@@ -102,18 +114,16 @@ export class GitClient implements IGitClient {
 		return new Promise<FSModule>((resolve, reject) => {
 			// FIXME: refactoring fsconf!!!
 			BrowserFS.install(window);
-			BrowserFS.configure(self.config.fsconf,
-				err => {
-					if (err) {
-						logUtils.error(err.message, err);
-						reject(err);
-					} else {
-						const fs = BrowserFS.BFSRequire("fs");
-						logUtils.trace("BrowserFS configured!");
-						resolve(fs);
-					}
+			BrowserFS.configure(self.config.fsconf, err => {
+				if (err) {
+					logUtils.error(err.message, err);
+					reject(err);
+				} else {
+					const fs = BrowserFS.BFSRequire("fs");
+					logUtils.trace("BrowserFS configured!");
+					resolve(fs);
 				}
-			);
+			});
 		});
 	}
 }
