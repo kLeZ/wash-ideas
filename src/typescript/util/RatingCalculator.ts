@@ -15,11 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 
-class MyMath {
-	public static rate(points: number): number {
-		const controlledPoints = Math.min(Math.max(0, points), 100);
+export default class RatingCalculator {
+	private points: number;
+
+	constructor(points: number) {
+		this.points = points;
+	}
+
+	public rate(): number {
+		const controlledPoints = Math.min(Math.max(0, this.points), 100);
 		const rating = Math.floor(controlledPoints / 16.666666667);
 		return Math.max(0, Math.min(rating, 5));
 	}
 }
-export default MyMath;

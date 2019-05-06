@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 
-import MyMath from "../../../src/typescript/util/MyMath";
+import RatingCalculator from "../../../src/typescript/util/RatingCalculator";
 
 /**
  * Rating inteval:
@@ -28,7 +28,8 @@ import MyMath from "../../../src/typescript/util/MyMath";
  */
 describe("Calculate rating from 0 to 5 converting values from 0 to 100", () => {
 	const ratingBehaviour = (points: number, expectedRating: number) => {
-		expect(MyMath.rate(points)).toBe(expectedRating);
+		const calculator = new RatingCalculator(points);
+		expect(calculator.rate()).toBe(expectedRating);
 	};
 
 	it("Given minimum value give me minimum rating", () => {

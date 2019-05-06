@@ -22,7 +22,7 @@ import { container } from "../../ioc/inversify.config";
 import Project from "../../models/Project";
 import { Types } from "../../repository/Symbols";
 import Localization from "../../util/Localization";
-import MyMath from "../../util/MyMath";
+import RatingCalculator from "../../util/RatingCalculator";
 import Rating from "../Rating";
 import Card from "./Card";
 import ICardProps from "./ICardProps";
@@ -39,6 +39,7 @@ class ProjectCard extends React.Component<ICardProps, ICardState> {
 
 	public render() {
 		const item: Project = this.state.item as Project;
+		const calculator = new RatingCalculator(item.nextTaskHardness);
 		return (
 			<Card
 				repoType={this.props.repoType}
@@ -66,7 +67,7 @@ class ProjectCard extends React.Component<ICardProps, ICardState> {
 				subheader={item.modified.toLocaleString()}
 				footer={[
 					<LinearProgress key={0} variant="determinate" value={item.progress} />,
-					<Rating key={1} disabled rating={MyMath.rate(item.nextTaskHardness)} />,
+					<Rating key={1} disabled rating={calculator.rate()} />,
 				]}
 				delete={this.props.delete}
 				edit={this.props.edit}
