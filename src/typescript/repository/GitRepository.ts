@@ -86,11 +86,11 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 					this.client.writeFile(filepath, JSON.stringify(item), item.encoding);
 					await this.client.add({
 						dir,
-						filepath
+						filepath: `${item.title}.json`
 					});
 					const sha = await this.client.commit({
 						dir,
-						message: `Added new Item: ${filepath}`,
+						message: `Added new Item: ${item.title}`,
 						author
 					});
 					if (sha !== null) {
@@ -123,11 +123,11 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 					this.client.writeFile(filepath, JSON.stringify(item), item.encoding);
 					await this.client.add({
 						dir,
-						filepath
+						filepath: `${item.title}.json`
 					});
 					const sha = await this.client.commit({
 						dir,
-						message: `Updated new Item: ${filepath}`,
+						message: `Updated new Item: ${item.title}`,
 						author
 					});
 					if (sha !== null) {
@@ -158,11 +158,11 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 				self.client.deleteFile(filepath);
 				await this.client.remove({
 					dir,
-					filepath
+					filepath: `${filename}.json`
 				});
 				const sha = await this.client.commit({
 					dir,
-					message: `Deleted new Item: ${filepath}`,
+					message: `Deleted new Item: ${filename}.json`,
 					author
 				});
 				if (sha !== null) {
