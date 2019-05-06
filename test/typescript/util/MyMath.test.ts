@@ -17,10 +17,54 @@
 
 import MyMath from "../../../src/typescript/util/MyMath";
 
-it("Round number to the nearest number", () => {
-	expect(MyMath.roundNearest(3.0, 1)).toBe(3);
-	expect(MyMath.roundNearest(3.4, 1)).toBe(3);
-	expect(MyMath.roundNearest(3.5, 1)).toBe(4);
-	expect(MyMath.roundNearest(3.9, 1)).toBe(4);
-	expect(MyMath.roundNearest(4.0, 1)).toBe(4);
+/**
+ * Rating inteval:
+ * 1) 0 - 16
+ * 2) 17 - 33
+ * 3) 34 - 50
+ * 4) 51 - 66
+ * 5) 67 - 83
+ * 6) 84 - 100
+ */
+describe("Calculate rating from 0 to 5 converting values from 0 to 100", () => {
+	const ratingBehaviour = (points: number, expectedRating: number) => {
+		expect(MyMath.rate(points)).toBe(expectedRating);
+	};
+
+	it("Given minimum value give me minimum rating", () => {
+		ratingBehaviour(0, 0);
+	});
+	it("Given maximum value give me maximum rating", () => {
+		ratingBehaviour(100, 5);
+	});
+	it("First interval: with the maximum value, it should be 0", () => {
+		ratingBehaviour(16, 0);
+	});
+	it("Second interval: with the minimum value, it should be 1", () => {
+		ratingBehaviour(17, 1);
+	});
+	it("Second interval: with the maximum value, it should be 1", () => {
+		ratingBehaviour(33, 1);
+	});
+	it("Third interval: with the minimum value, it should be 2", () => {
+		ratingBehaviour(34, 2);
+	});
+	it("Third interval: with the maximum value, it should be 2", () => {
+		ratingBehaviour(50, 2);
+	});
+	it("Fourth interval: with the minimum value, it should be 3", () => {
+		ratingBehaviour(51, 3);
+	});
+	it("Fourth interval: with the maximum value, it should be 3", () => {
+		ratingBehaviour(66, 3);
+	});
+	it("Fifth interval: with the minimum value, it should be 4", () => {
+		ratingBehaviour(67, 4);
+	});
+	it("Fifth interval: with the maximum value, it should be 4", () => {
+		ratingBehaviour(83, 4);
+	});
+	it("Sixth interval: with the minimum value, it should be 5", () => {
+		ratingBehaviour(84, 5);
+	});
 });

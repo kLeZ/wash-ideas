@@ -16,16 +16,10 @@
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 
 class MyMath {
-	public static rate(x: number): number {
-		return this.roundNearest(Math.min(Math.max(0, x), 100) / 20, 1);
-	}
-
-	public static roundNearest(num: number, acc: number): number {
-		if (acc < 0) {
-			return Math.round(num * acc) / acc;
-		} else {
-			return Math.round(num / acc) * acc;
-		}
+	public static rate(points: number): number {
+		const controlledPoints = Math.min(Math.max(0, points), 100);
+		const rating = Math.floor(controlledPoints / 16.666666667);
+		return Math.max(0, Math.min(rating, 5));
 	}
 }
 export default MyMath;
