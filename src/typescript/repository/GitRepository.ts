@@ -45,7 +45,7 @@ export abstract class GitRepository<T extends IPersistible> implements IReposito
 				}
 				await self.client.clone({
 					dir: config.dir,
-					corsProxy: "https://cors.isomorphic-git.org",
+					// FIXME: corsProxy: "https://cors.isomorphic-git.org",
 					url: config.url,
 					ref: config.branch,
 					singleBranch: true,

@@ -10,7 +10,7 @@
 		"clean": "rimraf dist",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
 		"pretest": "npm run lint",
-		"test": "GIT_HTTP_MOCK_SERVER_ROOT=__fixtures__ git-http-mock-server start && jest --coverage && GIT_HTTP_MOCK_SERVER_ROOT=__fixtures__ git-http-mock-server stop",
+		"test": "jest --coverage",
 		"prebuild": "npm run test",
 		"build": "webpack --mode $npm_package_config_webpackenv",
 		"prestart": "npm run build",

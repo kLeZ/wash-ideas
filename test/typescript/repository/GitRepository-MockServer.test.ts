@@ -39,7 +39,7 @@ beforeAll(() => {
 		type: "git",
 		dir: "wash-ideas",
 		branch: "data",
-		url: "http://localhost:8174/wash-ideas-fake.git",
+		url: "http://localhost:8174/wash-ideas-fake",
 		oauth2format: OAuth2Format.GitHub,
 		token: "",
 		fsconf: { fs: "InMemory", options: {} },
@@ -62,16 +62,14 @@ afterEach(() => {
 	container.restore();
 });
 
-it("Fake", () => {});
+it("open without crash", async () => {
+	const type = (container.get<IContext>(Types.CONTEXT).configuration as IGitRepositoryConfiguration).oauth2format;
+	const repo = container.get<IRepository<IPersistible>>(type);
+	await repo.open();
+});
 
-// it("open without crash", async () => {
-// 	const type = (container.get<IContext>(Types.CONTEXT).configuration as IGitRepositoryConfiguration).oauth2format;
-// 	const repo = container.get<IRepository<IPersistible>>(type);
-// 	await repo.open();
-// });
-
-// it("close without crash", async () => {
-// 	const type = (container.get<IContext>(Types.CONTEXT).configuration as IGitRepositoryConfiguration).oauth2format;
-// 	const repo = container.get<IRepository<IPersistible>>(type);
-// 	await repo.close();
-// });
+it("close without crash", async () => {
+	const type = (container.get<IContext>(Types.CONTEXT).configuration as IGitRepositoryConfiguration).oauth2format;
+	const repo = container.get<IRepository<IPersistible>>(type);
+	await repo.close();
+});
