@@ -44,5 +44,8 @@ module.exports = {
 		'!src/typescript/util/GitClient.ts', // This is a proxy for a library. We do not test 3rd party libraries!
 		'!src/typescript/util/Locales.ts', // This is a data file.
 		'!src/typescript/models/*.ts', // These are model classes.
-	]
+	],
+	// Setup Enzyme
+	"snapshotSerializers": ["enzyme-to-json/serializer"],
+	"setupFilesAfterEnv": ["<rootDir>/enzyme.config.ts"]
 };
