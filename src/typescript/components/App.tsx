@@ -62,6 +62,9 @@ class App extends React.Component {
 			palette: {
 				type: "dark",
 			},
+			typography: {
+				useNextVariants: true,
+			},
 		});
 		return (
 			<MuiThemeProvider theme={theme}>
@@ -74,7 +77,7 @@ class App extends React.Component {
 						<IconButton className="grow" color="inherit" aria-label="Menu" onClick={this.onToggleSideBar}>
 							<MenuIcon />
 						</IconButton>
-						<Typography className="grow" variant="title" color="inherit">
+						<Typography className="grow" variant="h6" color="inherit">
 							{container.get<Localization>(Types.LOCALIZATION).t("app.title")}
 						</Typography>
 						<ActionsMenu menuId="persistible-type-menu" buttonContent={<AddIcon />} ref={this.addMenu}>

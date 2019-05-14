@@ -15,24 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 
-import * as i18next from "i18next";
+import i18next from "i18next";
 
 export class Localization {
-	private i18n: i18next.i18n;
-
 	constructor(res: any) {
-		this.i18n = i18next.init({
+		i18next.init({
 			fallbackLng: "en",
 			resources: res
 		});
 	}
 
-	public t(key: string | string[], options?: i18next.TranslationOptions<object>): any {
-		return this.i18n.t(key, options);
+	public t(key: string | string[], options?: i18next.TOptions<object>): any {
+		return i18next.t(key, options);
 	}
 
 	public changeLanguage(lng: string, callback?: i18next.Callback): void {
-		this.i18n.changeLanguage(lng, callback);
+		i18next.changeLanguage(lng, callback);
 	}
 }
 export default Localization;
