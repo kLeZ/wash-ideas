@@ -18,6 +18,8 @@
 
 import * as React from "react";
 
-describe('', () => {
-
+describe("", () => {
+	it("", () => {
+		expect(true).toBeTruthy();
+	});
 });
