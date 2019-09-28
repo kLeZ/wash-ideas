@@ -62,9 +62,6 @@ class App extends React.Component {
 			palette: {
 				type: "dark",
 			},
-			typography: {
-				useNextVariants: true,
-			},
 		});
 		return (
 			<MuiThemeProvider theme={theme}>

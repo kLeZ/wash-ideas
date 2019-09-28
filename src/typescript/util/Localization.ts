@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Wash Ideas.  If not, see <http://www.gnu.org/licenses/>.
 
-import i18next from "i18next";
+import * as i18next from "i18next";
 
 export class Localization {
 	constructor(res: any) {
