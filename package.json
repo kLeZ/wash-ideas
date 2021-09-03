@@ -44,7 +44,7 @@
 		"browserfs": "^1.4.3",
 		"i18next": "^12.1.0",
 		"inversify": "^4.13.0",
-		"isomorphic-git": "^0.31.1",
+		"isomorphic-git": "^1.8.2",
 		"pify": "^4.0.1",
 		"prando": "^5.1.0",
 		"react": "^16.8.3",
